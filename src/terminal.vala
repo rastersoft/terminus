@@ -18,6 +18,7 @@
 
 using Vte;
 using Gtk;
+using Gdk;
 using GLib;
 
 namespace Terminus {
@@ -27,12 +28,16 @@ namespace Terminus {
 		public Vte.Terminal vte_terminal;
 		public int pid;
 
+		private Gtk.Menu menu;
+		private Gtk.MenuItem item_copy;
+
 		public signal void ended();
 
 		public Terminal(string command = "/bin/bash") {
 
 			this.orientation = Gtk.Orientation.HORIZONTAL;
 			this.vte_terminal = new Vte.Terminal();
+
 			this.pack_start(this.vte_terminal);
 
 			var scroll = new Gtk.Scrollbar(Gtk.Orientation.VERTICAL,this.vte_terminal.vadjustment);
@@ -42,6 +47,46 @@ namespace Terminus {
 			cmd += command;
 			this.vte_terminal.spawn_sync(Vte.PtyFlags.DEFAULT,null,cmd,GLib.Environ.get(),0,null,out this.pid);
 			this.vte_terminal.child_exited.connect(this.child_exited);
+
+			this.menu = new Gtk.Menu();
+			this.item_copy = new Gtk.MenuItem.with_label(_("Copy"));
+			this.menu.add(this.item_copy);
+
+			var item = new Gtk.MenuItem.with_label(_("Paste"));
+			this.menu.add(item);
+
+			this.menu.add(new Gtk.SeparatorMenuItem());
+
+			item = new Gtk.MenuItem.with_label(_("Split horizontally"));
+			this.menu.add(item);
+			item = new Gtk.MenuItem.with_label(_("Split vertically"));
+			this.menu.add(item);
+
+			this.menu.add(new Gtk.SeparatorMenuItem());
+
+			item = new Gtk.MenuItem.with_label(_("Preferences"));
+			this.menu.add(item);
+
+			this.menu.add(new Gtk.SeparatorMenuItem());
+
+			item = new Gtk.MenuItem.with_label(_("Close"));
+			this.menu.add(item);
+			this.menu.show_all();
+
+			this.vte_terminal.button_press_event.connect(this.button_event);
+			this.vte_terminal.events = Gdk.EventMask.BUTTON_PRESS_MASK;
+
+		}
+
+		public bool button_event(Gdk.EventButton event) {
+
+			if (event.button == 3) {
+				this.menu.popup(null,null,null,3,0);
+				return true;
+			}
+
+			return false;
+
 		}
 
 		public void child_exited(int status) {
