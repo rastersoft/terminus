@@ -22,9 +22,21 @@ include (ValaVersion)
 ensure_vala_version ("0.32" MINIMUM)
 include (ValaPrecompile)
 
+set (VALA_PACKAGES ${VALA_PACKAGES} atk)
+set (VALA_PACKAGES ${VALA_PACKAGES} cairo)
+set (VALA_PACKAGES ${VALA_PACKAGES} gdk-3.0)
+set (VALA_PACKAGES ${VALA_PACKAGES} gdk-pixbuf-2.0)
+set (VALA_PACKAGES ${VALA_PACKAGES} gio-2.0)
 set (VALA_PACKAGES ${VALA_PACKAGES} glib-2.0)
+set (VALA_PACKAGES ${VALA_PACKAGES} gobject-2.0)
+set (VALA_PACKAGES ${VALA_PACKAGES} gtk+-3.0)
+set (VALA_PACKAGES ${VALA_PACKAGES} pango)
+set (VALA_PACKAGES ${VALA_PACKAGES} vte-2.91)
+set (VALA_PACKAGES ${VALA_PACKAGES} x11)
 
 set (APP_SOURCES ${APP_SOURCES} ${CMAKE_CURRENT_BINARY_DIR}/Config.vala)
+set (APP_SOURCES ${APP_SOURCES} container.vala)
+set (APP_SOURCES ${APP_SOURCES} terminal.vala)
 set (APP_SOURCES ${APP_SOURCES} terminus.vala)
 
 vala_precompile(VALA_C terminus

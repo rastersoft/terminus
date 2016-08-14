@@ -18,22 +18,39 @@
 
 using Vte;
 using Gtk;
+using GLib;
 
 namespace Terminus {
 
+	class Container : Gtk.Bin {
+
+		private bool has_terminal;
+		private Terminus.Terminal? child1;
+		private Terminus.Terminal? child2;
 
 
-}
+		signal void ended(Terminus.Container who);
 
-int main(string[] argv) {
+		public Container(Terminus.Terminal? child) {
 
-	Gtk.init(ref argv);
+			this.has_terminal = true;
 
-	var window = new Gtk.Window();
-	var ch = new Terminus.Container(null);
-	window.add(ch);
-	window.show_all();
-	Gtk.main();
+			if (child == null) {
+				this.child1 = new Terminus.Terminal();
+				this.add(this.child1);
+				this.child1.ended.connect(this.child1_exited);
+			} else {
+				this.add(child);
+				child.ended.connect(this.child1_exited);
+				this.child1 = child;
+			}
+			this.child2 = null;
+		}
 
-	return 0;
+		public void child1_exited() {
+			if (this.child2 == null) {
+				this.ended(this);
+			}
+		}
+	}
 }

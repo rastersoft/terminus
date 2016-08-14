@@ -18,22 +18,36 @@
 
 using Vte;
 using Gtk;
+using GLib;
 
 namespace Terminus {
 
+	class Terminal : Gtk.Box {
 
+		public Vte.Terminal vte_terminal;
+		public int pid;
 
-}
+		public signal void ended();
 
-int main(string[] argv) {
+		public Terminal(string command = "/bin/bash") {
 
-	Gtk.init(ref argv);
+			this.orientation = Gtk.Orientation.HORIZONTAL;
+			this.vte_terminal = new Vte.Terminal();
+			this.pack_start(this.vte_terminal);
 
-	var window = new Gtk.Window();
-	var ch = new Terminus.Container(null);
-	window.add(ch);
-	window.show_all();
-	Gtk.main();
+			var scroll = new Gtk.Scrollbar(Gtk.Orientation.VERTICAL,this.vte_terminal.vadjustment);
+			this.pack_start(scroll);
 
-	return 0;
+			string[] cmd = {};
+			cmd += command;
+			this.vte_terminal.spawn_sync(Vte.PtyFlags.DEFAULT,null,cmd,GLib.Environ.get(),0,null,out this.pid);
+			this.vte_terminal.child_exited.connect(this.child_exited);
+		}
+
+		public void child_exited(int status) {
+			this.ended();
+		}
+
+	}
+
 }

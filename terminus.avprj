@@ -5,11 +5,25 @@ project_name: terminus
 
 
 *vala_binary: src/terminus
+*vala_check_package: atk
+*vala_check_package: cairo
+*vala_check_package: gdk-3.0
+*vala_check_package: gdk-pixbuf-2.0
+*vala_check_package: gio-2.0
 *vala_check_package: glib-2.0
+*vala_check_package: gobject-2.0
+*vala_check_package: gtk+-3.0
+*vala_check_package: pango
+*vala_check_package: vte-2.91
+*vala_check_package: x11
+*vala_source: container.vala
+*vala_source: terminal.vala
 *vala_source: terminus.vala
 
 *po: po
 
+*translate: vala src/container.vala
+*translate: vala src/terminal.vala
 *translate: vala src/terminus.vala
 
 *data: data/local
