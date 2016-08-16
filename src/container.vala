@@ -41,7 +41,7 @@ namespace Terminus {
 		private Terminus.Container top_container;
 
 
-		signal void ended(Terminus.Container who);
+		public signal void ended(Terminus.Container who);
 
 		public Container(Terminus.Terminal? terminal, Terminus.Container? top_container = null) {
 

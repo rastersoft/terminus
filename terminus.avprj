@@ -5,6 +5,7 @@ project_name: terminus
 
 
 *vala_binary: src/terminus
+*version: 0.1.0
 *vala_package: posix
 *vala_check_package: atk
 *vala_check_package: cairo
@@ -26,11 +27,11 @@ project_name: terminus
 
 *po: po
 
-*translate: vala src/terminal.vala
-*translate: vala src/container.vala
-*translate: vala src/notetab.vala
-*translate: vala src/PanedPercentage.vala
 *translate: vala src/terminus.vala
+*translate: vala src/notetab.vala
+*translate: vala src/container.vala
+*translate: vala src/PanedPercentage.vala
+*translate: vala src/terminal.vala
 
 *data: data/local
 

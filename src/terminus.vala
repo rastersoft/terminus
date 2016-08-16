@@ -19,6 +19,8 @@
 using Vte;
 using Gtk;
 
+//project version = 0.1.0
+
 namespace Terminus {
 
 	/**
@@ -40,6 +42,9 @@ namespace Terminus {
 		public void new_terminal_tab() {
 
 			var term = new Terminus.Container(null);
+			term.ended.connect( (w) => {
+				this.delete_page(term);
+			});
 			term.show_all();
 			var page = this.append_page(term,term.notetab);
 			this.set_current_page(page);
@@ -55,6 +60,9 @@ namespace Terminus {
 		public void check_pages(Gtk.Widget child, uint page_num) {
 
 			var npages = this.get_n_pages();
+			if (npages == 0) {
+				Gtk.main_quit();
+			}
 			if (npages <= 1) {
 				this.show_tabs = false;
 			} else {
@@ -70,6 +78,9 @@ int main(string[] argv) {
 	Gtk.init(ref argv);
 
 	var window = new Gtk.Window();
+	window.destroy.connect( (w) => {
+		Gtk.main_quit();
+	});
 	var ch = new Terminus.TerminusBase();
 	window.add(ch);
 	window.show_all();
