@@ -43,10 +43,10 @@ namespace Terminus {
 			this.orientation = Gtk.Orientation.HORIZONTAL;
 			this.vte_terminal = new Vte.Terminal();
 
-			this.pack_start(this.vte_terminal);
+			this.pack_start(this.vte_terminal, true, true);
 
 			var scroll = new Gtk.Scrollbar(Gtk.Orientation.VERTICAL,this.vte_terminal.vadjustment);
-			this.pack_start(scroll);
+			this.pack_start(scroll, false, true);
 
 			string[] cmd = {};
 			cmd += command;
