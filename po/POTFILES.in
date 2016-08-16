@@ -1,3 +1,4 @@
+src/PanedPercentage.vala
 src/container.vala
 src/terminal.vala
 src/terminus.vala

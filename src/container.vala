@@ -25,7 +25,7 @@ namespace Terminus {
 	class Container : Gtk.Bin {
 
 		private Terminus.Terminal? terminal;
-		private Gtk.Paned? paned;
+		private Terminus.PanedPercentage? paned;
 		public Terminus.Container? container1;
 		public Terminus.Container? container2;
 
@@ -92,7 +92,7 @@ namespace Terminus {
 			this.terminal.split_vertical.disconnect(this.split_vertical_cb);
 			this.terminal.ended.disconnect(this.ended_cb);
 			this.terminal = null;
-			this.paned = new Gtk.Paned( horizontal ? Gtk.Orientation.VERTICAL : Gtk.Orientation.HORIZONTAL);
+			this.paned = new Terminus.PanedPercentage( horizontal ? Gtk.Orientation.VERTICAL : Gtk.Orientation.HORIZONTAL, 0.5);
 			this.container1 = new Terminus.Container(this.terminal);
 			this.container2 = new Terminus.Container(null);
 			this.container1.ended.connect(this.ended_child);
@@ -122,7 +122,7 @@ namespace Terminus {
 				this.terminal = new_child as Terminus.Terminal;
 				this.set_terminal_child();
 			} else {
-				this.paned = new_child as Gtk.Paned;
+				this.paned = new_child as Terminus.PanedPercentage;
 				this.container1 = old_container.container1;
 				this.container2 = old_container.container2;
 				this.container1.ended.connect(this.ended_child);
