@@ -43,6 +43,8 @@ set (APP_SOURCES ${APP_SOURCES} notetab.vala)
 set (APP_SOURCES ${APP_SOURCES} terminal.vala)
 set (APP_SOURCES ${APP_SOURCES} terminus.vala)
 
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 " )
+
 vala_precompile(VALA_C terminus
 	${APP_SOURCES}
 PACKAGES
