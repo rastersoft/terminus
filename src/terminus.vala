@@ -21,12 +21,19 @@ using Gtk;
 
 namespace Terminus {
 
+	/**
+	 * This is the main class, that contains everything. This class must be
+	 * enclosed in a window.
+	 */
+
 	class TerminusBase : Gtk.Notebook {
 
 		public TerminusBase() {
 			Terminus.Container.main_container = this;
 			Terminus.Terminal.main_container = this;
 			Terminus.Notetab.main_container = this;
+			this.page_added.connect(this.check_pages);
+			this.page_removed.connect(this.check_pages);
 			this.new_terminal_tab();
 		}
 
@@ -42,6 +49,16 @@ namespace Terminus {
 			var page = this.page_num(top_container);
 			if (page != -1) {
 				this.remove_page(page);
+			}
+		}
+
+		public void check_pages(Gtk.Widget child, uint page_num) {
+
+			var npages = this.get_n_pages();
+			if (npages <= 1) {
+				this.show_tabs = false;
+			} else {
+				this.show_tabs = true;
 			}
 		}
 

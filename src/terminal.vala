@@ -24,6 +24,10 @@ using Posix;
 
 namespace Terminus {
 
+	/**
+	 * This is the terminal itself, available in each container.
+	 */
+
 	class Terminal : Gtk.Box {
 
 		public Vte.Terminal vte_terminal;

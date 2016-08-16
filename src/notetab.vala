@@ -21,6 +21,10 @@ using Gtk;
 
 namespace Terminus {
 
+	/**
+	 * This is the widget put in each tab
+	 */
+
 	class Notetab : Gtk.Box {
 
 		public static Terminus.TerminusBase main_container;
@@ -32,6 +36,7 @@ namespace Terminus {
 			this.top_container = top_container;
 			this.orientation = Gtk.Orientation.HORIZONTAL;
 			this.title = new Gtk.Label("");
+			this.title.margin_end = 3;
 			var close_button = new Gtk.Button.from_icon_name("window-close");
 			this.pack_start(this.title,true,true);
 			this.pack_start(close_button,false,true);

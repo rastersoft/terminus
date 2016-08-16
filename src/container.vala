@@ -22,6 +22,12 @@ using GLib;
 
 namespace Terminus {
 
+	/**
+	 * This is the terminal container. It can contain one terminal, or a Paned with
+	 * two containers. It can be splited in two elements and reagruped in a single
+	 * one.
+	 */
+
 	class Container : Gtk.Bin {
 
 		public static Terminus.TerminusBase main_container;
