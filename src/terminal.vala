@@ -30,10 +30,12 @@ namespace Terminus {
 
 	class Terminal : Gtk.Box {
 
-		public Vte.Terminal vte_terminal;
-		public int pid;
 		public static Terminus.TerminusBase main_container;
 
+		private int pid;
+		private Vte.Terminal vte_terminal;
+		private Gtk.Label title;
+		private Gtk.EventBox titlebox;
 		private Gtk.Menu menu;
 		private Gtk.MenuItem item_copy;
 		private Terminus.Container top_container;
@@ -47,7 +49,16 @@ namespace Terminus {
 		public Terminal(Terminus.Container top_container, string command = "/bin/bash") {
 
 			this.top_container = top_container;
-			this.orientation = Gtk.Orientation.HORIZONTAL;
+			this.orientation = Gtk.Orientation.VERTICAL;
+
+			this.title = new Gtk.Label("");
+			this.titlebox = new Gtk.EventBox();
+			this.titlebox.add(this.title);
+
+			var newbox = new Gtk.Box(Gtk.Orientation.HORIZONTAL,0);
+			this.pack_start(this.titlebox,false,true);
+			this.pack_start(newbox,true,true);
+
 			this.vte_terminal = new Vte.Terminal();
 			this.vte_terminal.window_title_changed.connect( () => {
 				this.update_title();
@@ -56,11 +67,18 @@ namespace Terminus {
 				this.update_title();
 				return false;
 			});
+			this.vte_terminal.focus_out_event.connect( () => {
+				this.update_title();
+				return false;
+			});
+			this.vte_terminal.resize_window.connect( (x,y) => {
+				this.update_title();
+			});
 
-			this.pack_start(this.vte_terminal, true, true);
+			newbox.pack_start(this.vte_terminal, true, true);
 
 			var scroll = new Gtk.Scrollbar(Gtk.Orientation.VERTICAL,this.vte_terminal.vadjustment);
-			this.pack_start(scroll, false, true);
+			newbox.pack_start(scroll, false, true);
 
 			string[] cmd = {};
 			cmd += command;
@@ -132,6 +150,27 @@ namespace Terminus {
 				title = "/bin/bash";
 			}
 			this.top_container.set_tab_title(title);
+			var bgcolor = Gdk.RGBA();
+			string fg;
+			string bg;
+			if (this.vte_terminal.has_focus) {
+				bgcolor.red = 1.0;
+				bgcolor.green = 0.0;
+				bgcolor.blue = 0.0;
+				bgcolor.alpha = 1.0;
+				fg = "#FFFFFF";
+				bg = "#FF0000";
+			} else {
+				bgcolor.red = 0.6666666;
+				bgcolor.green = 0.6666666;
+				bgcolor.blue = 0.6666666;
+				bgcolor.alpha = 1.0;
+				fg = "#000000";
+				bg = "#AAAAAA";
+			}
+			this.title.label = "<span foreground=\"%s\" background=\"%s\" size=\"small\">%s %ldx%ld</span>".printf(fg,bg,title,this.vte_terminal.get_column_count(),this.vte_terminal.get_row_count());
+			this.titlebox.override_background_color(Gtk.StateFlags.NORMAL,bgcolor);
+			this.title.use_markup = true;
 		}
 
 		public bool button_event(Gdk.EventButton event) {
