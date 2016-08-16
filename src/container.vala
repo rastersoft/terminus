@@ -24,32 +24,111 @@ namespace Terminus {
 
 	class Container : Gtk.Bin {
 
-		private bool has_terminal;
-		private Terminus.Terminal? child1;
-		private Terminus.Terminal? child2;
-
+		private Terminus.Terminal? terminal;
+		private Gtk.Paned? paned;
+		public Terminus.Container? container1;
+		public Terminus.Container? container2;
 
 		signal void ended(Terminus.Container who);
 
-		public Container(Terminus.Terminal? child) {
+		public Container(Terminus.Terminal? terminal) {
 
-			this.has_terminal = true;
-
-			if (child == null) {
-				this.child1 = new Terminus.Terminal();
-				this.add(this.child1);
-				this.child1.ended.connect(this.child1_exited);
+			if (terminal == null) {
+				this.terminal = new Terminus.Terminal();
 			} else {
-				this.add(child);
-				child.ended.connect(this.child1_exited);
-				this.child1 = child;
+				this.terminal = terminal;
 			}
-			this.child2 = null;
+
+			this.set_terminal_child();
 		}
 
-		public void child1_exited() {
-			if (this.child2 == null) {
-				this.ended(this);
+		public void set_terminal_child() {
+			this.add(this.terminal);
+			this.terminal.ended.connect(this.ended_cb);
+
+			this.terminal.split_horizontal.connect(this.split_horizontal_cb);
+			this.terminal.split_vertical.connect(this.split_vertical_cb);
+
+			this.paned = null;
+			this.container1 = null;
+			this.container2 = null;
+		}
+
+		public Gtk.Widget? get_current_child() {
+
+			if (this.terminal != null) {
+				print("Punto0\n");
+				this.terminal.split_horizontal.disconnect(this.split_horizontal_cb);
+				this.terminal.split_vertical.disconnect(this.split_vertical_cb);
+				this.terminal.ended.disconnect(this.ended_cb);
+				this.remove(this.terminal);
+				print("Punto1\n");
+				return this.terminal;
+			} else {
+				print("Punto2\n");
+				this.container1.ended.disconnect(this.ended_child);
+				this.container2.ended.disconnect(this.ended_child);
+				this.remove(this.paned);
+				print("Punto3\n");
+				return this.paned;
+			}
+		}
+
+		public void ended_cb() {
+			this.ended(this);
+		}
+
+		public void split_horizontal_cb() {
+			this.split(true);
+		}
+
+		public void split_vertical_cb() {
+			this.split(false);
+		}
+
+		private void split(bool horizontal) {
+			this.remove(terminal);
+			this.terminal.split_horizontal.disconnect(this.split_horizontal_cb);
+			this.terminal.split_vertical.disconnect(this.split_vertical_cb);
+			this.terminal.ended.disconnect(this.ended_cb);
+			this.terminal = null;
+			this.paned = new Gtk.Paned( horizontal ? Gtk.Orientation.VERTICAL : Gtk.Orientation.HORIZONTAL);
+			this.container1 = new Terminus.Container(this.terminal);
+			this.container2 = new Terminus.Container(null);
+			this.container1.ended.connect(this.ended_child);
+			this.container2.ended.connect(this.ended_child);
+			this.paned.add1(this.container1);
+			this.paned.add2(this.container2);
+			this.add(this.paned);
+			this.paned.show_all();
+		}
+
+		public void ended_child(Terminus.Container child) {
+
+			Terminus.Container old_container;
+
+			if (child == this.container1) {
+				old_container = this.container2;
+			} else {
+				old_container = this.container1;
+			}
+			var new_child = old_container.get_current_child();
+			this.paned.remove(this.container1);
+			this.paned.remove(this.container2);
+			this.container1.ended.disconnect(this.ended_child);
+			this.container2.ended.disconnect(this.ended_child);
+			this.remove(this.paned);
+			if (new_child is Terminus.Terminal) {
+				this.terminal = new_child as Terminus.Terminal;
+				this.set_terminal_child();
+			} else {
+				this.paned = new_child as Gtk.Paned;
+				this.container1 = old_container.container1;
+				this.container2 = old_container.container2;
+				this.container1.ended.connect(this.ended_child);
+				this.container2.ended.connect(this.ended_child);
+				this.add(this.paned);
+				this.paned.show_all();
 			}
 		}
 	}

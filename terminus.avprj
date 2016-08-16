@@ -5,6 +5,7 @@ project_name: terminus
 
 
 *vala_binary: src/terminus
+*vala_package: posix
 *vala_check_package: atk
 *vala_check_package: cairo
 *vala_check_package: gdk-3.0
@@ -14,6 +15,7 @@ project_name: terminus
 *vala_check_package: gobject-2.0
 *vala_check_package: gtk+-3.0
 *vala_check_package: pango
+*vala_check_package: pangocairo
 *vala_check_package: vte-2.91
 *vala_check_package: x11
 *vala_source: container.vala

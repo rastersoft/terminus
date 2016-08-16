@@ -20,6 +20,7 @@ using Vte;
 using Gtk;
 using Gdk;
 using GLib;
+using Posix;
 
 namespace Terminus {
 
@@ -31,7 +32,11 @@ namespace Terminus {
 		private Gtk.Menu menu;
 		private Gtk.MenuItem item_copy;
 
-		public signal void ended();
+		public signal void ended(Terminus.Terminal terminal);
+		public signal void new_tab(Terminus.Terminal terminal);
+		public signal void split_horizontal(Terminus.Terminal terminal);
+		public signal void split_vertical(Terminus.Terminal terminal);
+
 
 		public Terminal(string command = "/bin/bash") {
 
@@ -46,20 +51,39 @@ namespace Terminus {
 			string[] cmd = {};
 			cmd += command;
 			this.vte_terminal.spawn_sync(Vte.PtyFlags.DEFAULT,null,cmd,GLib.Environ.get(),0,null,out this.pid);
-			this.vte_terminal.child_exited.connect(this.child_exited);
+			this.vte_terminal.child_exited.connect( () => {
+				this.ended(this);
+			});
 
 			this.menu = new Gtk.Menu();
 			this.item_copy = new Gtk.MenuItem.with_label(_("Copy"));
+			this.item_copy.activate.connect( () => {
+				this.vte_terminal.copy_primary();
+			});
 			this.menu.add(this.item_copy);
 
 			var item = new Gtk.MenuItem.with_label(_("Paste"));
+			item.activate.connect( () => {
+				this.vte_terminal.paste_primary();
+			});
 			this.menu.add(item);
 
 			this.menu.add(new Gtk.SeparatorMenuItem());
 
 			item = new Gtk.MenuItem.with_label(_("Split horizontally"));
+			item.activate.connect( () => {
+				this.split_horizontal(this);
+			});
 			this.menu.add(item);
 			item = new Gtk.MenuItem.with_label(_("Split vertically"));
+			item.activate.connect( () => {
+				this.split_vertical(this);
+			});
+			this.menu.add(item);
+			item = new Gtk.MenuItem.with_label(_("New tab"));
+			item.activate.connect( () => {
+				this.new_tab(this);
+			});
 			this.menu.add(item);
 
 			this.menu.add(new Gtk.SeparatorMenuItem());
@@ -70,6 +94,9 @@ namespace Terminus {
 			this.menu.add(new Gtk.SeparatorMenuItem());
 
 			item = new Gtk.MenuItem.with_label(_("Close"));
+			item.activate.connect( () => {
+				Posix.kill(this.pid,9);
+			});
 			this.menu.add(item);
 			this.menu.show_all();
 
@@ -81,16 +108,11 @@ namespace Terminus {
 		public bool button_event(Gdk.EventButton event) {
 
 			if (event.button == 3) {
-				this.menu.popup(null,null,null,3,0);
+				this.menu.popup(null,null,null,3,Gtk.get_current_event_time());
 				return true;
 			}
 
 			return false;
-
-		}
-
-		public void child_exited(int status) {
-			this.ended();
 		}
 
 	}
