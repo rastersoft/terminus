@@ -24,22 +24,44 @@ namespace Terminus {
 
 	class Container : Gtk.Bin {
 
-		private Terminus.Terminal? terminal;
-		private Terminus.PanedPercentage? paned;
+		public static Terminus.TerminusBase main_container;
+
 		public Terminus.Container? container1;
 		public Terminus.Container? container2;
+		public Terminus.Notetab? notetab;
+
+		private Terminus.Terminal? terminal;
+		private Terminus.PanedPercentage? paned;
+		private Terminus.Container top_container;
+
 
 		signal void ended(Terminus.Container who);
 
-		public Container(Terminus.Terminal? terminal) {
+		public Container(Terminus.Terminal? terminal, Terminus.Container? top_container = null) {
+
+			if (top_container == null) {
+				this.top_container = this;
+				this.notetab = new Terminus.Notetab(this);
+			} else {
+				this.top_container = top_container;
+				this.notetab = null;
+			}
 
 			if (terminal == null) {
-				this.terminal = new Terminus.Terminal();
+				this.terminal = new Terminus.Terminal(this.top_container);
+				this.terminal.grab_focus();
 			} else {
 				this.terminal = terminal;
 			}
 
 			this.set_terminal_child();
+		}
+
+		public void set_tab_title(string title) {
+
+			if (this.notetab != null) {
+				this.notetab.change_title(title);
+			}
 		}
 
 		public void set_terminal_child() {
@@ -57,19 +79,15 @@ namespace Terminus {
 		public Gtk.Widget? get_current_child() {
 
 			if (this.terminal != null) {
-				print("Punto0\n");
 				this.terminal.split_horizontal.disconnect(this.split_horizontal_cb);
 				this.terminal.split_vertical.disconnect(this.split_vertical_cb);
 				this.terminal.ended.disconnect(this.ended_cb);
 				this.remove(this.terminal);
-				print("Punto1\n");
 				return this.terminal;
 			} else {
-				print("Punto2\n");
 				this.container1.ended.disconnect(this.ended_child);
 				this.container2.ended.disconnect(this.ended_child);
 				this.remove(this.paned);
-				print("Punto3\n");
 				return this.paned;
 			}
 		}
@@ -91,16 +109,17 @@ namespace Terminus {
 			this.terminal.split_horizontal.disconnect(this.split_horizontal_cb);
 			this.terminal.split_vertical.disconnect(this.split_vertical_cb);
 			this.terminal.ended.disconnect(this.ended_cb);
-			this.terminal = null;
+
 			this.paned = new Terminus.PanedPercentage( horizontal ? Gtk.Orientation.VERTICAL : Gtk.Orientation.HORIZONTAL, 0.5);
-			this.container1 = new Terminus.Container(this.terminal);
-			this.container2 = new Terminus.Container(null);
+			this.container1 = new Terminus.Container(this.terminal, this.top_container);
+			this.container2 = new Terminus.Container(null, this.top_container);
 			this.container1.ended.connect(this.ended_child);
 			this.container2.ended.connect(this.ended_child);
 			this.paned.add1(this.container1);
 			this.paned.add2(this.container2);
 			this.add(this.paned);
 			this.paned.show_all();
+			this.terminal = null;
 		}
 
 		public void ended_child(Terminus.Container child) {

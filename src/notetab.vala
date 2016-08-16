@@ -21,42 +21,30 @@ using Gtk;
 
 namespace Terminus {
 
-	class TerminusBase : Gtk.Notebook {
+	class Notetab : Gtk.Box {
 
-		public TerminusBase() {
-			Terminus.Container.main_container = this;
-			Terminus.Terminal.main_container = this;
-			Terminus.Notetab.main_container = this;
-			this.new_terminal_tab();
+		public static Terminus.TerminusBase main_container;
+
+		private Terminus.Container top_container;
+		private Gtk.Label title;
+
+		public Notetab(Terminus.Container top_container) {
+			this.top_container = top_container;
+			this.orientation = Gtk.Orientation.HORIZONTAL;
+			this.title = new Gtk.Label("");
+			var close_button = new Gtk.Button.from_icon_name("window-close");
+			this.pack_start(this.title,true,true);
+			this.pack_start(close_button,false,true);
+			this.show_all();
+			close_button.clicked.connect( () => {
+				Terminus.Notetab.main_container.delete_page(this.top_container);
+			});
 		}
 
-		public void new_terminal_tab() {
+		public void change_title(string new_title) {
 
-			var term = new Terminus.Container(null);
-			term.show_all();
-			var page = this.append_page(term,term.notetab);
-			this.set_current_page(page);
+			this.title.label = new_title;
 		}
-
-		public void delete_page(Terminus.Container top_container) {
-			var page = this.page_num(top_container);
-			if (page != -1) {
-				this.remove_page(page);
-			}
-		}
-
 	}
-}
 
-int main(string[] argv) {
-
-	Gtk.init(ref argv);
-
-	var window = new Gtk.Window();
-	var ch = new Terminus.TerminusBase();
-	window.add(ch);
-	window.show_all();
-	Gtk.main();
-
-	return 0;
 }

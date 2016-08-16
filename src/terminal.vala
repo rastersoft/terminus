@@ -28,9 +28,11 @@ namespace Terminus {
 
 		public Vte.Terminal vte_terminal;
 		public int pid;
+		public static Terminus.TerminusBase main_container;
 
 		private Gtk.Menu menu;
 		private Gtk.MenuItem item_copy;
+		private Terminus.Container top_container;
 
 		public signal void ended(Terminus.Terminal terminal);
 		public signal void new_tab(Terminus.Terminal terminal);
@@ -38,10 +40,18 @@ namespace Terminus {
 		public signal void split_vertical(Terminus.Terminal terminal);
 
 
-		public Terminal(string command = "/bin/bash") {
+		public Terminal(Terminus.Container top_container, string command = "/bin/bash") {
 
+			this.top_container = top_container;
 			this.orientation = Gtk.Orientation.HORIZONTAL;
 			this.vte_terminal = new Vte.Terminal();
+			this.vte_terminal.window_title_changed.connect( () => {
+				this.update_title();
+			});
+			this.vte_terminal.focus_in_event.connect( () => {
+				this.update_title();
+				return false;
+			});
 
 			this.pack_start(this.vte_terminal, true, true);
 
@@ -82,7 +92,7 @@ namespace Terminus {
 			this.menu.add(item);
 			item = new Gtk.MenuItem.with_label(_("New tab"));
 			item.activate.connect( () => {
-				this.new_tab(this);
+				Terminus.Terminal.main_container.new_terminal_tab();
 			});
 			this.menu.add(item);
 
@@ -102,12 +112,28 @@ namespace Terminus {
 
 			this.vte_terminal.button_press_event.connect(this.button_event);
 			this.vte_terminal.events = Gdk.EventMask.BUTTON_PRESS_MASK;
+			this.update_title();
+		}
 
+		private void update_title() {
+
+			string title = this.vte_terminal.get_window_title();
+			if (title == null) {
+				title = this.vte_terminal.get_current_file_uri();
+			}
+			if (title == null) {
+				title = this.vte_terminal.get_current_directory_uri();
+			}
+			if (title == null) {
+				title = "/bin/bash";
+			}
+			this.top_container.set_tab_title(title);
 		}
 
 		public bool button_event(Gdk.EventButton event) {
 
 			if (event.button == 3) {
+				this.item_copy.sensitive = this.vte_terminal.get_has_selection();
 				this.menu.popup(null,null,null,3,Gtk.get_current_event_time());
 				return true;
 			}
