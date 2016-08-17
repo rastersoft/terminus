@@ -11,6 +11,11 @@
       <summary>Font used in terminals</summary>
       <description></description>
     </key>
+    <key type="i" name="color-scheme">
+      <default>1</default>
+      <summary>Color scheme used</summary>
+      <description></description>
+    </key>
     <key type="s" name="fg-color">
       <default>"#C0C0C0"</default>
       <summary>Text color</summary>
