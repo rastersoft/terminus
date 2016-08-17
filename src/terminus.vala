@@ -31,6 +31,7 @@ namespace Terminus {
 	class TerminusBase : Gtk.Notebook {
 
 		public TerminusBase() {
+
 			Terminus.Container.main_container = this;
 			Terminus.Terminal.main_container = this;
 			Terminus.Notetab.main_container = this;

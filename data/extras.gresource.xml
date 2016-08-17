@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/com/rastersoft/terminus">
+    <file>pixmaps/horizontal.svg</file>
+    <file>pixmaps/vertical.svg</file>
+    <!-- <file compressed="true">interface/binary_properties.ui</file> -->
+  </gresource>
+</gresources>

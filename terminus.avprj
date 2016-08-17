@@ -3,10 +3,13 @@ autovala_version: 20
 project_name: terminus
 *vala_version: 0.32
 
+*gresource: extras_gresource_xml data/extras.gresource.xml
+
 
 vala_binary: src/terminus
 *version: 0.1.0
 compile_c_options: -O2
+use_gresource: extras_gresource_xml
 *vala_package: posix
 *vala_check_package: atk
 *vala_check_package: cairo
@@ -29,9 +32,9 @@ compile_c_options: -O2
 *po: po
 
 *translate: vala src/container.vala
+*translate: vala src/terminus.vala
 *translate: vala src/notetab.vala
 *translate: vala src/PanedPercentage.vala
-*translate: vala src/terminus.vala
 *translate: vala src/terminal.vala
 
 *data: data/local

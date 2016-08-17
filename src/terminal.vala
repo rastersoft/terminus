@@ -102,16 +102,30 @@ namespace Terminus {
 
 			this.menu.add(new Gtk.SeparatorMenuItem());
 
-			item = new Gtk.MenuItem.with_label(_("Split horizontally"));
+			item = new Gtk.MenuItem();
+			var tmpbox = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 2);
+			var tmplabel = new Gtk.Label(_("Split horizontally"));
+			var tmpicon = new Gtk.Image.from_resource ("/com/rastersoft/terminus/pixmaps/horizontal.svg");
+			tmpbox.pack_start(tmpicon,false,true);
+			tmpbox.pack_start(tmplabel,false,true);
+			item.add(tmpbox);
 			item.activate.connect( () => {
 				this.split_horizontal(this);
 			});
 			this.menu.add(item);
-			item = new Gtk.MenuItem.with_label(_("Split vertically"));
+
+			item = new Gtk.MenuItem();
+			tmpbox = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 2);
+			tmplabel = new Gtk.Label(_("Split vertically"));
+			tmpicon = new Gtk.Image.from_resource ("/com/rastersoft/terminus/pixmaps/vertical.svg");
+			tmpbox.pack_start(tmpicon,false,true);
+			tmpbox.pack_start(tmplabel,false,true);
+			item.add(tmpbox);
 			item.activate.connect( () => {
 				this.split_vertical(this);
 			});
 			this.menu.add(item);
+
 			item = new Gtk.MenuItem.with_label(_("New tab"));
 			item.activate.connect( () => {
 				Terminus.Terminal.main_container.new_terminal_tab();

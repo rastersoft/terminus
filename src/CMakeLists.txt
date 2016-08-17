@@ -51,7 +51,9 @@ PACKAGES
 	${VALA_PACKAGES}
 )
 
+SET (VALA_C ${VALA_C} ${extras_gresource_xml_C_FILE})
 add_executable(terminus ${VALA_C})
+add_dependencies (terminus extras_gresource_xml)
 
 
 install(TARGETS

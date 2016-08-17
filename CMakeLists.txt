@@ -43,6 +43,12 @@ set(MODULES_TO_CHECK ${MODULES_TO_CHECK} x11)
 
 pkg_check_modules(DEPS REQUIRED ${MODULES_TO_CHECK})
 
+find_program ( WHERE_GRESOURCE glib-compile-resources )
+if ( NOT WHERE_GRESOURCE )
+	MESSAGE(FATAL_ERROR "Error! GLIB-COMPILE-RESOURCES is not installed.")
+endif()
+
 add_subdirectory(po)
+add_subdirectory(data)
 add_subdirectory(src)
 
