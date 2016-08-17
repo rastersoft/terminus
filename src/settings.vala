@@ -47,6 +47,8 @@ namespace Terminus {
 
 		private GLib.Settings settings;
 		private Gtk.CheckButton use_system_font;
+		private Gtk.CheckButton infinite_scroll;
+		private Gtk.SpinButton scroll_value;
 		private Gtk.Button custom_font;
 		private Gtk.ColorButton fg_color;
 		private Gtk.ColorButton bg_color;
@@ -68,7 +70,7 @@ namespace Terminus {
 			};
 
 			var main_window = new Gtk.Builder();
-			string[] elements = {"properties_notebook", "liststore1", "list_schemes", "list_keybindings", "scroll_lines", "transparency_level"};
+			string[] elements = {"properties_notebook", "list_schemes", "list_keybindings", "scroll_lines", "transparency_level"};
 			main_window.add_objects_from_resource("/com/rastersoft/terminus/interface/properties.ui",elements);
 			this.add(main_window.get_object("properties_notebook") as Gtk.Widget);
 
@@ -113,9 +115,20 @@ namespace Terminus {
 				}
 			});
 
+			var scroll_lines = main_window.get_object("scroll_lines") as Gtk.Adjustment;
+			this.infinite_scroll = main_window.get_object("infinite_scroll") as Gtk.CheckButton;
+			this.scroll_value = main_window.get_object("scroll_spinbutton") as Gtk.SpinButton;
+			this.infinite_scroll.toggled.connect( () => {
+				this.scroll_value.sensitive = !this.infinite_scroll.active;
+			});
+
 			this.settings.bind("color-scheme",this.color_scheme,"active",GLib.SettingsBindFlags.DEFAULT);
 			this.settings.bind("use-system-font",this.use_system_font,"active",GLib.SettingsBindFlags.DEFAULT);
 			this.settings.bind("terminal-font",this.custom_font,"font_name",GLib.SettingsBindFlags.DEFAULT);
+			this.settings.bind("scroll-lines",scroll_lines,"value",GLib.SettingsBindFlags.DEFAULT);
+			this.settings.bind("infinite-scroll",this.infinite_scroll,"active",GLib.SettingsBindFlags.DEFAULT);
+			this.settings.bind("scroll-on-output",main_window.get_object("scroll_on_output") as Gtk.CheckButton,"active",GLib.SettingsBindFlags.DEFAULT);
+			this.settings.bind("scroll-on-keystroke",main_window.get_object("scroll_on_keystroke") as Gtk.CheckButton,"active",GLib.SettingsBindFlags.DEFAULT);
 
 			var list_schemes = main_window.get_object("list_schemes") as Gtk.ListStore;
 			int counter = 0;
@@ -138,6 +151,7 @@ namespace Terminus {
 		private void update_interface() {
 
 			this.custom_font.sensitive = !this.use_system_font.active;
+			this.scroll_value.sensitive = !this.infinite_scroll.active;
 			var fg_color = Gdk.RGBA();
 			var bg_color = Gdk.RGBA();
 			fg_color.parse(this.settings.get_string("fg-color"));
