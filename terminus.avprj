@@ -26,18 +26,23 @@ use_gresource: extras_gresource_xml
 *vala_source: PanedPercentage.vala
 *vala_source: container.vala
 *vala_source: notetab.vala
+*vala_source: settings.vala
 *vala_source: terminal.vala
 *vala_source: terminus.vala
 
 *po: po
 
-*translate: vala src/container.vala
 *translate: vala src/terminus.vala
 *translate: vala src/notetab.vala
+*translate: vala src/settings.vala
 *translate: vala src/PanedPercentage.vala
+*translate: vala src/container.vala
 *translate: vala src/terminal.vala
+*translate: glade data/interface/properties.ui
 
 *data: data/local
 
 *doc: doc
+
+*scheme: data/org.rastersoft.terminus.gschema.xml
 

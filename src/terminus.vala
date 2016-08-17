@@ -30,14 +30,19 @@ namespace Terminus {
 
 	class TerminusBase : Gtk.Notebook {
 
+		public static GLib.Settings settings;
+		public static Terminus.TerminusBase main_container;
+
 		public TerminusBase() {
 
-			Terminus.Container.main_container = this;
-			Terminus.Terminal.main_container = this;
-			Terminus.Notetab.main_container = this;
+			Terminus.TerminusBase.main_container = this;
+			Terminus.TerminusBase.settings = new GLib.Settings("org.rastersoft.terminus");
 			this.page_added.connect(this.check_pages);
 			this.page_removed.connect(this.check_pages);
 			this.new_terminal_tab();
+			var tmp = new Terminus.Properties(TerminusBase.settings);
+			tmp.show_all();
+
 		}
 
 		public void new_terminal_tab() {
@@ -76,6 +81,11 @@ namespace Terminus {
 
 int main(string[] argv) {
 
+	Intl.bindtextdomain(Constants.GETTEXT_PACKAGE, GLib.Path.build_filename(Constants.DATADIR,"locale"));
+
+	Intl.textdomain(Constants.GETTEXT_PACKAGE);
+	Intl.bind_textdomain_codeset(Constants.GETTEXT_PACKAGE, "UTF-8" );
+
 	Gtk.init(ref argv);
 
 	var window = new Gtk.Window();
@@ -85,6 +95,7 @@ int main(string[] argv) {
 	var ch = new Terminus.TerminusBase();
 	window.add(ch);
 	window.show_all();
+
 	Gtk.main();
 
 	return 0;

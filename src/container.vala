@@ -30,8 +30,6 @@ namespace Terminus {
 
 	class Container : Gtk.Bin {
 
-		public static Terminus.TerminusBase main_container;
-
 		public Terminus.Container? container1;
 		public Terminus.Container? container2;
 		public Terminus.Notetab? notetab;

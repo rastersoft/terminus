@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.rastersoft.terminus" path="/org/rastersoft/terminus/">
+    <key type="b" name="use-system-font">
+      <default>true</default>
+      <summary>Use the default system font</summary>
+      <description></description>
+    </key>
+    <key type="s" name="terminal-font">
+      <default>"Monospace 11"</default>
+      <summary>Font used in terminals</summary>
+      <description></description>
+    </key>
+    <key type="s" name="fg-color">
+      <default>"#C0C0C0"</default>
+      <summary>Text color</summary>
+      <description>The default color used for the terminal text</description>
+    </key>
+    <key type="s" name="bg-color">
+      <default>"#000000"</default>
+      <summary>Background color</summary>
+      <description>The default color used for the terminal background</description>
+    </key>
+    <key type="u" name="scroll-lines">
+      <default>500</default>
+      <summary>Scroll lines</summary>
+      <description></description>
+    </key>
+    <key type="b" name="infinite-scroll">
+      <default>false</default>
+      <summary>Store infinite lines in the scroll buffer</summary>
+      <description></description>
+    </key>
+    <key type="b" name="scroll-on-output">
+      <default>true</default>
+      <summary>Scroll on screen output</summary>
+      <description></description>
+    </key>
+    <key type="b" name="scroll-on-keystroke">
+      <default>true</default>
+      <summary>Scroll on user keypress</summary>
+      <description></description>
+    </key>
+	<!--<key type="" name="">
+      <default></default>
+      <summary></summary>
+      <description></description>
+    </key> -->
+  </schema>
+  <schema id="org.rastersoft.terminus.keybindings" path="/org/rastersoft/terminus/keybindings/">
+    <key type="as" name="new-tab">
+      <default><![CDATA[['<Shift><Ctrl>t']]]></default>
+      <summary>Open new tab</summary>
+      <description>Pressing this key will open a new terminal</description>
+    </key>
+    <key type="as" name="next-tab">
+      <default><![CDATA[['<Shift><Alt>Page_Down']]]></default>
+      <summary>Next tab</summary>
+      <description></description>
+    </key>
+    <key type="as" name="previous-tab">
+      <default><![CDATA[['<Shift><Alt>Page_Up']]]></default>
+      <summary>Previous tab</summary>
+      <description></description>
+    </key>
+    <key type="as" name="guake-mode">
+      <default><![CDATA[['<Shift><Alt>F12']]]></default>
+      <summary>Show Guake-style terminal</summary>
+      <description></description>
+    </key>
+  </schema>
+</schemalist>

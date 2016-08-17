@@ -50,5 +50,6 @@ endif()
 
 add_subdirectory(po)
 add_subdirectory(data)
+add_subdirectory(data/interface)
 add_subdirectory(src)
 

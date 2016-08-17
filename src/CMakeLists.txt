@@ -40,6 +40,7 @@ set (APP_SOURCES ${APP_SOURCES} ${CMAKE_CURRENT_BINARY_DIR}/Config.vala)
 set (APP_SOURCES ${APP_SOURCES} PanedPercentage.vala)
 set (APP_SOURCES ${APP_SOURCES} container.vala)
 set (APP_SOURCES ${APP_SOURCES} notetab.vala)
+set (APP_SOURCES ${APP_SOURCES} settings.vala)
 set (APP_SOURCES ${APP_SOURCES} terminal.vala)
 set (APP_SOURCES ${APP_SOURCES} terminus.vala)
 

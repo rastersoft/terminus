@@ -1,5 +1,7 @@
 src/PanedPercentage.vala
 src/container.vala
 src/notetab.vala
+src/settings.vala
 src/terminal.vala
 src/terminus.vala
+data/interface/properties.ui

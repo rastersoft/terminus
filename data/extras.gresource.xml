@@ -3,6 +3,6 @@
   <gresource prefix="/com/rastersoft/terminus">
     <file>pixmaps/horizontal.svg</file>
     <file>pixmaps/vertical.svg</file>
-    <!-- <file compressed="true">interface/binary_properties.ui</file> -->
+    <file compressed="true">interface/properties.ui</file>
   </gresource>
 </gresources>

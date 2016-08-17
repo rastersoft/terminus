@@ -27,8 +27,6 @@ namespace Terminus {
 
 	class Notetab : Gtk.Box {
 
-		public static Terminus.TerminusBase main_container;
-
 		private Terminus.Container top_container;
 		private Gtk.Label title;
 
@@ -42,7 +40,7 @@ namespace Terminus {
 			this.pack_start(close_button,false,true);
 			this.show_all();
 			close_button.clicked.connect( () => {
-				Terminus.Notetab.main_container.delete_page(this.top_container);
+				Terminus.TerminusBase.main_container.delete_page(this.top_container);
 			});
 		}
 

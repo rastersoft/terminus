@@ -3,4 +3,4 @@
 
 include (Translations)
 add_translations_directory("terminus")
-add_translations_catalog("terminus" ../src )
+add_translations_catalog("terminus" ../src ../data/interface )
