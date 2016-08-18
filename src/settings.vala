@@ -46,6 +46,7 @@ namespace Terminus {
 	class Properties : Gtk.Window {
 
 		private GLib.Settings settings;
+		private GLib.Settings keybind_settings;
 		private Gtk.CheckButton use_system_font;
 		private Gtk.CheckButton infinite_scroll;
 		private Gtk.SpinButton scroll_value;
@@ -54,10 +55,12 @@ namespace Terminus {
 		private Gtk.ColorButton bg_color;
 		private Gtk.ComboBox color_scheme;
 		private ColorScheme[] schemes;
+		private Gtk.ListStore keybindings;
 
-		public Properties(GLib.Settings settings) {
+		public Properties(GLib.Settings settings, GLib.Settings keybind_settings) {
 
 			this.settings = settings;
+			this.keybind_settings = keybind_settings;
 
 			this.schemes = {
 				ColorScheme(_("Custom colors"),0x00,0x00,0x00,0x00,0x00,0x00),
@@ -69,8 +72,13 @@ namespace Terminus {
 				ColorScheme(_("White on black"),0xFF,0xFF,0xFF,0x00,0x00,0x00)
 			};
 
+			this.delete_event.connect( (w) => {
+				this.hide();
+				return true;
+			});
+
 			var main_window = new Gtk.Builder();
-			string[] elements = {"properties_notebook", "list_schemes", "list_keybindings", "scroll_lines", "transparency_level"};
+			string[] elements = {"properties_notebook", "list_schemes", "scroll_lines", "transparency_level"};
 			main_window.add_objects_from_resource("/com/rastersoft/terminus/interface/properties.ui",elements);
 			this.add(main_window.get_object("properties_notebook") as Gtk.Widget);
 
@@ -144,12 +152,6 @@ namespace Terminus {
 				counter++;
 			}
 
-			this.update_interface();
-
-		}
-
-		private void update_interface() {
-
 			this.custom_font.sensitive = !this.use_system_font.active;
 			this.scroll_value.sensitive = !this.infinite_scroll.active;
 			var fg_color = Gdk.RGBA();
@@ -159,7 +161,25 @@ namespace Terminus {
 			this.fg_color.set_rgba(fg_color);
 			this.bg_color.set_rgba(bg_color);
 			this.color_scheme.set_active(this.settings.get_int("color-scheme"));
+
+			this.keybindings = new Gtk.ListStore(2, typeof(string), typeof(string));
+			this.add_keybinding(_("New tab"),"new-tab");
+			this.add_keybinding(_("Next tab"),"next-tab");
+			this.add_keybinding(_("Previous tab"),"previous-tab");
+			this.add_keybinding(_("Show guake terminal"),"guake-mode");
+
+			var keybindings_view = main_window.get_object("keybindings") as Gtk.TreeView;
+			keybindings_view.set_model(this.keybindings);
+			Gtk.CellRendererText cell = new Gtk.CellRendererText ();
+			keybindings_view.insert_column_with_attributes (-1, _("Action"), cell, "text", 0);
+			keybindings_view.insert_column_with_attributes (-1, _("Key"), cell, "text", 1);
+
 		}
 
+		private void add_keybinding(string name, string setting) {
+			Gtk.TreeIter iter;
+			this.keybindings.append(out iter);
+			this.keybindings.set(iter,0,name,1,this.keybind_settings.get_string(setting));
+		}
 	}
 }

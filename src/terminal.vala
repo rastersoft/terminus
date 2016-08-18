@@ -157,6 +157,10 @@ namespace Terminus {
 			this.add_separator();
 
 			item = new Gtk.MenuItem.with_label(_("Preferences"));
+			item.activate.connect( () => {
+				Terminus.TerminusBase.window_properties.show_all();
+				Terminus.TerminusBase.window_properties.present();
+			});
 			this.menu.add(item);
 
 			this.add_separator();

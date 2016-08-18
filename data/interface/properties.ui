@@ -2,14 +2,6 @@
 <!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkListStore" id="list_keybindings">
-    <columns>
-      <!-- column-name action -->
-      <column type="gchararray"/>
-      <!-- column-name key -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkListStore" id="list_schemes">
     <columns>
       <!-- column-name gchararray1 -->
@@ -346,19 +338,9 @@
           <object class="GtkTreeView" id="keybindings">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="model">list_keybindings</property>
+            <property name="enable_search">False</property>
             <child internal-child="selection">
               <object class="GtkTreeSelection"/>
-            </child>
-            <child>
-              <object class="GtkTreeViewColumn">
-                <property name="title" translatable="yes">Action</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkTreeViewColumn">
-                <property name="title" translatable="yes">Key</property>
-              </object>
             </child>
           </object>
           <packing>

@@ -29,6 +29,8 @@ namespace Terminus {
 	class TerminusBase : Gtk.Notebook {
 
 		public static GLib.Settings settings = null;
+		public static GLib.Settings keybind_settings = null;
+		public static Terminus.Properties window_properties;
 
 		public signal void ended();
 		public signal void new_window();
@@ -36,6 +38,8 @@ namespace Terminus {
 		public TerminusBase() {
 
 			Terminus.TerminusBase.settings = new GLib.Settings("org.rastersoft.terminus");
+			Terminus.TerminusBase.keybind_settings = new GLib.Settings("org.rastersoft.terminus.keybindings");
+			Terminus.TerminusBase.window_properties = new Terminus.Properties(Terminus.TerminusBase.settings,Terminus.TerminusBase.keybind_settings);
 			this.page_added.connect(this.check_pages);
 			this.page_removed.connect(this.check_pages);
 			this.new_terminal_tab();

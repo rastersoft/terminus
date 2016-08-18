@@ -46,6 +46,11 @@
       <summary>Scroll on user keypress</summary>
       <description></description>
     </key>
+    <key type="b" name="launch-guake-mode-at-startup">
+      <default>false</default>
+      <summary>Launch a terminal in guake mode at startup</summary>
+      <description></description>
+    </key>
 	<!--<key type="" name="">
       <default></default>
       <summary></summary>
@@ -53,23 +58,23 @@
     </key> -->
   </schema>
   <schema id="org.rastersoft.terminus.keybindings" path="/org/rastersoft/terminus/keybindings/">
-    <key type="as" name="new-tab">
-      <default><![CDATA[['<Shift><Ctrl>t']]]></default>
+    <key type="s" name="new-tab">
+      <default><![CDATA['<Shift><Ctrl>t']]></default>
       <summary>Open new tab</summary>
       <description>Pressing this key will open a new terminal</description>
     </key>
-    <key type="as" name="next-tab">
-      <default><![CDATA[['<Shift><Alt>Page_Down']]]></default>
+    <key type="s" name="next-tab">
+      <default><![CDATA['<Shift><Alt>Page_Down']]></default>
       <summary>Next tab</summary>
       <description></description>
     </key>
-    <key type="as" name="previous-tab">
-      <default><![CDATA[['<Shift><Alt>Page_Up']]]></default>
+    <key type="s" name="previous-tab">
+      <default><![CDATA['<Shift><Alt>Page_Up']]></default>
       <summary>Previous tab</summary>
       <description></description>
     </key>
-    <key type="as" name="guake-mode">
-      <default><![CDATA[['<Shift><Alt>F12']]]></default>
+    <key type="s" name="guake-mode">
+      <default><![CDATA['<Shift><Alt>F12']]></default>
       <summary>Show Guake-style terminal</summary>
       <description></description>
     </key>

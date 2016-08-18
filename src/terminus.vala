@@ -52,9 +52,6 @@ int main(string[] argv) {
 
 	create_window(false);
 
-	var tmp = new Terminus.Properties(Terminus.TerminusBase.settings);
-	tmp.hide();
-
 	Gtk.main();
 
 	return 0;
