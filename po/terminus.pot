@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-18 20:02+0200\n"
+"POT-Creation-Date: 2016-08-18 22:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,125 +38,114 @@ msgid "Green on black"
 msgstr ""
 
 #: src/settings.vala:68
-msgid "White on black"
-msgstr ""
-
-#: src/settings.vala:69
 msgid "Orange on black"
 msgstr ""
 
-#: src/terminal.vala:97
+#: src/settings.vala:69
+msgid "White on black"
+msgstr ""
+
+#: src/terminal.vala:107
 msgid "Copy"
 msgstr ""
 
-#: src/terminal.vala:103
+#: src/terminal.vala:113
 msgid "Paste"
 msgstr ""
 
-#: src/terminal.vala:113
+#: src/terminal.vala:123
 msgid "Split horizontally"
 msgstr ""
 
-#: src/terminal.vala:125
+#: src/terminal.vala:135
 msgid "Split vertically"
 msgstr ""
 
-#: src/terminal.vala:135
+#: src/terminal.vala:145
 msgid "New tab"
 msgstr ""
 
-#: src/terminal.vala:143
+#: src/terminal.vala:151
+msgid "New window"
+msgstr ""
+
+#: src/terminal.vala:159
 msgid "Preferences"
 msgstr ""
 
-#: src/terminal.vala:148
+#: src/terminal.vala:164
 msgid "Close"
 msgstr ""
 
-#: data/interface/properties.ui:28
-msgctxt "The scrollbar is: on the right side"
-msgid "On the right side"
-msgstr ""
-
-#: data/interface/properties.ui:31
-msgctxt "Wether the scrollbar is on the left side"
-msgid "On the left side"
-msgstr ""
-
-#: data/interface/properties.ui:34
-msgctxt "Wether the scroll bar is disabled"
-msgid "Disabled"
-msgstr ""
-
-#: data/interface/properties.ui:60
+#: data/interface/properties.ui:43
 msgid "Use the system fixed width font"
 msgstr ""
 
-#: data/interface/properties.ui:80
+#: data/interface/properties.ui:63
 msgid "Font:"
 msgstr ""
 
-#: data/interface/properties.ui:116
+#: data/interface/properties.ui:99
 msgid "General"
 msgstr ""
 
-#: data/interface/properties.ui:142
+#: data/interface/properties.ui:125
 msgid "Built-in schemes:"
 msgstr ""
 
-#: data/interface/properties.ui:154
+#: data/interface/properties.ui:137
 msgid "Text color:"
 msgstr ""
 
-#: data/interface/properties.ui:166
+#: data/interface/properties.ui:149
 msgid "Background color:"
 msgstr ""
 
-#: data/interface/properties.ui:223
+#: data/interface/properties.ui:206
 msgid "Foreground and Background"
 msgstr ""
 
-#: data/interface/properties.ui:235
+#: data/interface/properties.ui:218
 msgid "Colors"
 msgstr ""
 
-#: data/interface/properties.ui:256
+#: data/interface/properties.ui:239
 msgid "Scrollback lines:"
 msgstr ""
 
-#: data/interface/properties.ui:287
+#: data/interface/properties.ui:270
 msgid "Infinite Scrollback"
 msgstr ""
 
-#: data/interface/properties.ui:308
+#: data/interface/properties.ui:291
 msgid "Scroll on output"
 msgstr ""
 
-#: data/interface/properties.ui:322
+#: data/interface/properties.ui:305
 msgid "Scroll on keystroke"
 msgstr ""
 
-#: data/interface/properties.ui:343
+#: data/interface/properties.ui:326
 msgid "Scrolling"
 msgstr ""
 
-#: data/interface/properties.ui:356
+#: data/interface/properties.ui:339
 msgid "Global"
 msgstr ""
 
-#: data/interface/properties.ui:372
+#: data/interface/properties.ui:355
 msgid "Action"
 msgstr ""
 
-#: data/interface/properties.ui:377
+#: data/interface/properties.ui:360
 msgid "Key"
 msgstr ""
 
-#: data/interface/properties.ui:389
+#: data/interface/properties.ui:372
 msgid "Keybindings"
 msgstr ""
 
-#: data/interface/properties.ui:400
+#: data/interface/properties.ui:383
 msgid ""
 "Terminus\n"
 "\n"
@@ -168,6 +157,6 @@ msgid ""
 "rastersoft@gmail.com"
 msgstr ""
 
-#: data/interface/properties.ui:418
+#: data/interface/properties.ui:401
 msgid "About"
 msgstr ""

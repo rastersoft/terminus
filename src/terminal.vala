@@ -49,8 +49,8 @@ namespace Terminus {
 
 		private void add_separator() {
 			var separator = new Gtk.SeparatorMenuItem();
-			separator.margin_top = 2;
-			separator.margin_bottom = 2;
+			separator.margin_top = 5;
+			separator.margin_bottom = 5;
 			this.menu.add(separator);
 		}
 
