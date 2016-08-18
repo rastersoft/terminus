@@ -4,4 +4,6 @@ src/notetab.vala
 src/settings.vala
 src/terminal.vala
 src/terminus.vala
+src/terminusbase.vala
+src/terminuswindow.vala
 data/interface/properties.ui

@@ -2,76 +2,78 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Sergio Costas <rastersoft@gmail.com>, 2016.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-08-18 20:02+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2016-08-18 20:07+0200\n"
+"Last-Translator: Sergio Costas <rastersoft@gmail.com>\n"
+"Language-Team: Español; Castellano <rastersoft@gmail.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: src/settings.vala:63
 msgid "Custom colors"
-msgstr ""
+msgstr "Colores personalizados"
 
 #: src/settings.vala:64
 msgid "Black on light yellow"
-msgstr ""
+msgstr "Negro sobre amarillo claro"
 
 #: src/settings.vala:65
 msgid "Black on white"
-msgstr ""
+msgstr "Negro sobre blanco"
 
 #: src/settings.vala:66
 msgid "Gray on black"
-msgstr ""
+msgstr "Gris sobre blanco"
 
 #: src/settings.vala:67
 msgid "Green on black"
-msgstr ""
+msgstr "Verde sobre negro"
 
 #: src/settings.vala:68
 msgid "White on black"
-msgstr ""
+msgstr "Blanco sobre negro"
 
 #: src/settings.vala:69
 msgid "Orange on black"
-msgstr ""
+msgstr "Ambar sobre negro"
 
 #: src/terminal.vala:97
 msgid "Copy"
-msgstr ""
+msgstr "Copiar"
 
 #: src/terminal.vala:103
 msgid "Paste"
-msgstr ""
+msgstr "Pegar"
 
 #: src/terminal.vala:113
 msgid "Split horizontally"
-msgstr ""
+msgstr "Dividir horizontalmente"
 
 #: src/terminal.vala:125
 msgid "Split vertically"
-msgstr ""
+msgstr "Dividir verticalmente"
 
 #: src/terminal.vala:135
 msgid "New tab"
-msgstr ""
+msgstr "Nueva pestaña"
 
 #: src/terminal.vala:143
 msgid "Preferences"
-msgstr ""
+msgstr "Preferencias"
 
 #: src/terminal.vala:148
 msgid "Close"
-msgstr ""
+msgstr "Cerrar"
 
 #: data/interface/properties.ui:28
 msgctxt "The scrollbar is: on the right side"
@@ -90,71 +92,71 @@ msgstr ""
 
 #: data/interface/properties.ui:60
 msgid "Use the system fixed width font"
-msgstr ""
+msgstr "Usar la fuente del sistema"
 
 #: data/interface/properties.ui:80
 msgid "Font:"
-msgstr ""
+msgstr "Fuente"
 
 #: data/interface/properties.ui:116
 msgid "General"
-msgstr ""
+msgstr "General"
 
 #: data/interface/properties.ui:142
 msgid "Built-in schemes:"
-msgstr ""
+msgstr "Esquemas incluidos:"
 
 #: data/interface/properties.ui:154
 msgid "Text color:"
-msgstr ""
+msgstr "Color de texto:"
 
 #: data/interface/properties.ui:166
 msgid "Background color:"
-msgstr ""
+msgstr "Color de fondo:"
 
 #: data/interface/properties.ui:223
 msgid "Foreground and Background"
-msgstr ""
+msgstr "Texto y fondo"
 
 #: data/interface/properties.ui:235
 msgid "Colors"
-msgstr ""
+msgstr "Colores"
 
 #: data/interface/properties.ui:256
 msgid "Scrollback lines:"
-msgstr ""
+msgstr "Lineas de scroll:"
 
 #: data/interface/properties.ui:287
 msgid "Infinite Scrollback"
-msgstr ""
+msgstr "Scroll infinito"
 
 #: data/interface/properties.ui:308
 msgid "Scroll on output"
-msgstr ""
+msgstr "Scroll si hay salida"
 
 #: data/interface/properties.ui:322
 msgid "Scroll on keystroke"
-msgstr ""
+msgstr "Scroll si se pulsa una tecla"
 
 #: data/interface/properties.ui:343
 msgid "Scrolling"
-msgstr ""
+msgstr "Scrolling"
 
 #: data/interface/properties.ui:356
 msgid "Global"
-msgstr ""
+msgstr "Global"
 
 #: data/interface/properties.ui:372
 msgid "Action"
-msgstr ""
+msgstr "Acción"
 
 #: data/interface/properties.ui:377
 msgid "Key"
-msgstr ""
+msgstr "Tecla"
 
 #: data/interface/properties.ui:389
 msgid "Keybindings"
-msgstr ""
+msgstr "Teclas"
 
 #: data/interface/properties.ui:400
 msgid ""
@@ -167,7 +169,15 @@ msgid ""
 "http://www.rastersoft.com\n"
 "rastersoft@gmail.com"
 msgstr ""
+"Terminus\n"
+"\n"
+"Un emulador de terminal basado en tiles\n"
+"\n"
+"Escrito por Sergio Costas Rodríguez (rastersoft)\n"
+"\n"
+"http://www.rastersoft.com\n"
+"rastersoft@gmail.com"
 
 #: data/interface/properties.ui:418
 msgid "About"
-msgstr ""
+msgstr "Acerca de"

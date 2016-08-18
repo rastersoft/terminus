@@ -29,8 +29,11 @@ namespace Terminus {
 
 		private Terminus.Container top_container;
 		private Gtk.Label title;
+		private TerminusBase main_container;
 
-		public Notetab(Terminus.Container top_container) {
+		public Notetab(Terminus.TerminusBase main_container, Terminus.Container top_container) {
+
+			this.main_container = main_container;
 			this.top_container = top_container;
 			this.orientation = Gtk.Orientation.HORIZONTAL;
 			this.title = new Gtk.Label("");
@@ -40,7 +43,7 @@ namespace Terminus {
 			this.pack_start(close_button,false,true);
 			this.show_all();
 			close_button.clicked.connect( () => {
-				Terminus.TerminusBase.main_container.delete_page(this.top_container);
+				this.main_container.delete_page(this.top_container);
 			});
 		}
 

@@ -16,67 +16,27 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-using Vte;
 using Gtk;
+using Gee;
 
 //project version = 0.1.0
 
-namespace Terminus {
 
-	/**
-	 * This is the main class, that contains everything. This class must be
-	 * enclosed in a window.
-	 */
+Gee.List<Terminus.TerminusWindow> windows;
 
-	class TerminusBase : Gtk.Notebook {
+void create_window(bool guake_mode) {
 
-		public static GLib.Settings settings;
-		public static Terminus.TerminusBase main_container;
-
-		public TerminusBase() {
-
-			Terminus.TerminusBase.main_container = this;
-			Terminus.TerminusBase.settings = new GLib.Settings("org.rastersoft.terminus");
-			this.page_added.connect(this.check_pages);
-			this.page_removed.connect(this.check_pages);
-			this.new_terminal_tab();
-			var tmp = new Terminus.Properties(TerminusBase.settings);
-			tmp.show_all();
-
+	var window = new Terminus.TerminusWindow(guake_mode);
+	window.ended.connect( (w) => {
+		windows.remove(w);
+		if (windows.size == 0) {
+			Gtk.main_quit();
 		}
-
-		public void new_terminal_tab() {
-
-			var term = new Terminus.Container(null);
-			term.ended.connect( (w) => {
-				this.delete_page(term);
-			});
-			term.show_all();
-			var page = this.append_page(term,term.notetab);
-			this.set_current_page(page);
-		}
-
-		public void delete_page(Terminus.Container top_container) {
-			var page = this.page_num(top_container);
-			if (page != -1) {
-				this.remove_page(page);
-			}
-		}
-
-		public void check_pages(Gtk.Widget child, uint page_num) {
-
-			var npages = this.get_n_pages();
-			if (npages == 0) {
-				Gtk.main_quit();
-			}
-			if (npages <= 1) {
-				this.show_tabs = false;
-			} else {
-				this.show_tabs = true;
-			}
-		}
-
-	}
+	});
+	window.new_window.connect( () => {
+		create_window(false);
+	});
+	windows.add(window);
 }
 
 int main(string[] argv) {
@@ -88,13 +48,12 @@ int main(string[] argv) {
 
 	Gtk.init(ref argv);
 
-	var window = new Gtk.Window();
-	window.destroy.connect( (w) => {
-		Gtk.main_quit();
-	});
-	var ch = new Terminus.TerminusBase();
-	window.add(ch);
-	window.show_all();
+	windows = new Gee.ArrayList<Terminus.TerminusWindow>();
+
+	create_window(false);
+
+	var tmp = new Terminus.Properties(Terminus.TerminusBase.settings);
+	tmp.hide();
 
 	Gtk.main();
 

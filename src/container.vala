@@ -37,22 +37,23 @@ namespace Terminus {
 		private Terminus.Terminal? terminal;
 		private Terminus.PanedPercentage? paned;
 		private Terminus.Container top_container;
-
+		private Terminus.TerminusBase main_container;
 
 		public signal void ended(Terminus.Container who);
 
-		public Container(Terminus.Terminal? terminal, Terminus.Container? top_container = null) {
+		public Container(Terminus.TerminusBase main_container, Terminus.Terminal? terminal, Terminus.Container? top_container = null) {
 
+			this.main_container = main_container;
 			if (top_container == null) {
 				this.top_container = this;
-				this.notetab = new Terminus.Notetab(this);
+				this.notetab = new Terminus.Notetab(this.main_container,this);
 			} else {
 				this.top_container = top_container;
 				this.notetab = null;
 			}
 
 			if (terminal == null) {
-				this.terminal = new Terminus.Terminal(this.top_container);
+				this.terminal = new Terminus.Terminal(this.main_container,this.top_container);
 				this.terminal.grab_focus();
 			} else {
 				this.terminal = terminal;
@@ -115,8 +116,8 @@ namespace Terminus {
 			this.terminal.ended.disconnect(this.ended_cb);
 
 			this.paned = new Terminus.PanedPercentage( horizontal ? Gtk.Orientation.VERTICAL : Gtk.Orientation.HORIZONTAL, 0.5);
-			this.container1 = new Terminus.Container(this.terminal, this.top_container);
-			this.container2 = new Terminus.Container(null, this.top_container);
+			this.container1 = new Terminus.Container(this.main_container,this.terminal, this.top_container);
+			this.container2 = new Terminus.Container(this.main_container,null, this.top_container);
 			this.container1.ended.connect(this.ended_child);
 			this.container2.ended.connect(this.ended_child);
 			this.paned.add1(this.container1);

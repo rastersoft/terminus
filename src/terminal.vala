@@ -37,6 +37,7 @@ namespace Terminus {
 		private Gtk.Menu menu;
 		private Gtk.MenuItem item_copy;
 		private Terminus.Container top_container;
+		private Terminus.TerminusBase main_container;
 		private GLib.Settings settings;
 		private Gtk.Scrollbar right_scroll;
 
@@ -46,10 +47,19 @@ namespace Terminus {
 		public signal void split_vertical(Terminus.Terminal terminal);
 
 
-		public Terminal(Terminus.Container top_container, string command = "/bin/bash") {
+		private void add_separator() {
+			var separator = new Gtk.SeparatorMenuItem();
+			separator.margin_top = 2;
+			separator.margin_bottom = 2;
+			this.menu.add(separator);
+		}
+
+
+		public Terminal(Terminus.TerminusBase main_container, Terminus.Container top_container, string command = "/bin/bash") {
 
 			this.settings = Terminus.TerminusBase.settings;
 
+			this.main_container = main_container;
 			this.top_container = top_container;
 			this.orientation = Gtk.Orientation.VERTICAL;
 
@@ -106,7 +116,7 @@ namespace Terminus {
 			});
 			this.menu.add(item);
 
-			this.menu.add(new Gtk.SeparatorMenuItem());
+			this.add_separator();
 
 			item = new Gtk.MenuItem();
 			var tmpbox = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 2);
@@ -134,16 +144,22 @@ namespace Terminus {
 
 			item = new Gtk.MenuItem.with_label(_("New tab"));
 			item.activate.connect( () => {
-				Terminus.TerminusBase.main_container.new_terminal_tab();
+				this.main_container.new_terminal_tab();
 			});
 			this.menu.add(item);
 
-			this.menu.add(new Gtk.SeparatorMenuItem());
+			item = new Gtk.MenuItem.with_label(_("New window"));
+			item.activate.connect( () => {
+				this.main_container.new_terminal_window();
+			});
+			this.menu.add(item);
+
+			this.add_separator();
 
 			item = new Gtk.MenuItem.with_label(_("Preferences"));
 			this.menu.add(item);
 
-			this.menu.add(new Gtk.SeparatorMenuItem());
+			this.add_separator();
 
 			item = new Gtk.MenuItem.with_label(_("Close"));
 			item.activate.connect( () => {
