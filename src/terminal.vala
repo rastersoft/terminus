@@ -37,12 +37,17 @@ namespace Terminus {
 		private Gtk.Menu menu;
 		private Gtk.MenuItem item_copy;
 		private Terminus.Container top_container;
-		private Terminus.TerminusBase main_container;
+		private Terminus.Base main_container;
 		private GLib.Settings settings;
+		private GLib.Settings keybind_settings;
 		private Gtk.Scrollbar right_scroll;
 
+		private Gdk.EventKey new_tab_key;
+		private Gdk.EventKey new_window_key;
+		private Gdk.EventKey next_tab_key;
+		private Gdk.EventKey previous_tab_key;
+
 		public signal void ended(Terminus.Terminal terminal);
-		public signal void new_tab(Terminus.Terminal terminal);
 		public signal void split_horizontal(Terminus.Terminal terminal);
 		public signal void split_vertical(Terminus.Terminal terminal);
 
@@ -55,9 +60,10 @@ namespace Terminus {
 		}
 
 
-		public Terminal(Terminus.TerminusBase main_container, Terminus.Container top_container, string command = "/bin/bash") {
+		public Terminal(Terminus.Base main_container, Terminus.Container top_container, string command = "/bin/bash") {
 
-			this.settings = Terminus.TerminusBase.settings;
+			this.settings = Terminus.Base.settings;
+			this.keybind_settings = Terminus.Base.keybind_settings;
 
 			this.main_container = main_container;
 			this.top_container = top_container;
@@ -158,8 +164,8 @@ namespace Terminus {
 
 			item = new Gtk.MenuItem.with_label(_("Preferences"));
 			item.activate.connect( () => {
-				Terminus.TerminusBase.window_properties.show_all();
-				Terminus.TerminusBase.window_properties.present();
+				Terminus.Base.window_properties.show_all();
+				Terminus.Base.window_properties.present();
 			});
 			this.menu.add(item);
 
@@ -184,7 +190,52 @@ namespace Terminus {
 			settings_changed("bg-color");
 			settings_changed("use-system-font");
 
+			this.new_tab_key = new Gdk.Event(Gdk.EventType.KEY_RELEASE).key;
+			this.new_window_key = new Gdk.Event(Gdk.EventType.KEY_RELEASE).key;
+			this.next_tab_key = new Gdk.Event(Gdk.EventType.KEY_RELEASE).key;
+			this.previous_tab_key = new Gdk.Event(Gdk.EventType.KEY_RELEASE).key;
+
+			keybind_settings_changed("new-window");
+			keybind_settings_changed("new-tab");
+			keybind_settings_changed("next-tab");
+			keybind_settings_changed("previous-tab");
+
 			this.settings.changed.connect(this.settings_changed);
+			this.keybind_settings.changed.connect(this.keybind_settings_changed);
+
+			this.vte_terminal.key_press_event.connect(this.on_key_press);
+		}
+
+		public void keybind_settings_changed(string key) {
+
+			uint keyval;
+			Gdk.ModifierType state;
+
+			Gtk.accelerator_parse(this.keybind_settings.get_string(key), out keyval, out state);
+			if (keyval < 128) {
+				keyval |= 32;
+			}
+
+			switch(key) {
+				case "new-window":
+					this.new_window_key.keyval = keyval;
+					this.new_window_key.state = state;
+				break;
+				case "new-tab":
+					this.new_tab_key.keyval = keyval;
+					this.new_tab_key.state = state;
+				break;
+				case "next-tab":
+					this.next_tab_key.keyval = keyval;
+					this.next_tab_key.state = state;
+				break;
+				case "previous-tab":
+					this.previous_tab_key.keyval = keyval;
+					this.previous_tab_key.state = state;
+				break;
+				default:
+				break;
+			}
 		}
 
 		public void settings_changed(string key) {
@@ -225,6 +276,37 @@ namespace Terminus {
 				break;
 			}
 
+		}
+
+		public bool on_key_press(Gdk.EventKey event) {
+
+			Gdk.EventKey eventkey = event.key;
+			eventkey.state &= 0x07;
+
+			if (eventkey.keyval < 128) {
+				eventkey.keyval |= 32;
+			}
+
+			if ((eventkey.keyval == this.new_window_key.keyval) && (eventkey.state == this.new_window_key.state)) {
+				this.main_container.new_terminal_window();
+				return true;
+			}
+
+			if ((eventkey.keyval == this.new_tab_key.keyval) && (eventkey.state == this.new_tab_key.state)) {
+				this.main_container.new_terminal_tab();
+				return true;
+			}
+			if ((eventkey.keyval == this.next_tab_key.keyval) && (eventkey.state == this.next_tab_key.state)) {
+				this.main_container.next_page();
+				return true;
+			}
+
+			if ((eventkey.keyval == this.previous_tab_key.keyval) && (eventkey.state == this.previous_tab_key.state)) {
+				this.main_container.prev_page();
+				return true;
+			}
+
+			return false;
 		}
 
 		private void update_title() {

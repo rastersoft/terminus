@@ -25,23 +25,23 @@ use_gresource: extras_gresource_xml
 *vala_check_package: vte-2.91
 *vala_check_package: x11
 *vala_source: PanedPercentage.vala
+*vala_source: base.vala
 *vala_source: container.vala
 *vala_source: notetab.vala
 *vala_source: settings.vala
 *vala_source: terminal.vala
 *vala_source: terminus.vala
-*vala_source: terminusbase.vala
-*vala_source: terminuswindow.vala
+*vala_source: window.vala
 
 *po: po
 
-*translate: vala src/terminuswindow.vala
-*translate: vala src/terminusbase.vala
-*translate: vala src/terminus.vala
-*translate: vala src/settings.vala
-*translate: vala src/notetab.vala
-*translate: vala src/PanedPercentage.vala
 *translate: vala src/terminal.vala
+*translate: vala src/window.vala
+*translate: vala src/terminus.vala
+*translate: vala src/notetab.vala
+*translate: vala src/settings.vala
+*translate: vala src/PanedPercentage.vala
+*translate: vala src/base.vala
 *translate: vala src/container.vala
 *translate: glade data/interface/properties.ui
 

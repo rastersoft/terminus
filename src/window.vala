@@ -20,20 +20,20 @@ using Gtk;
 
 namespace Terminus {
 
-	class TerminusWindow : Gtk.Window {
+	class Window : Gtk.Window {
 
-		public signal void ended(Terminus.TerminusWindow window);
+		public signal void ended(Terminus.Window window);
 		public signal void new_window();
 
-		private Terminus.TerminusBase terminal;
+		private Terminus.Base terminal;
 
-		public TerminusWindow(bool guake_mode) {
+		public Window(bool guake_mode) {
 
 			this.destroy.connect( (w) => {
 				this.ended(this);
 			});
 
-			this.terminal = new Terminus.TerminusBase();
+			this.terminal = new Terminus.Base();
 			this.terminal.ended.connect( (w) => {
 				this.destroy();
 			});

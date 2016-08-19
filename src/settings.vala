@@ -162,7 +162,8 @@ namespace Terminus {
 			this.bg_color.set_rgba(bg_color);
 			this.color_scheme.set_active(this.settings.get_int("color-scheme"));
 
-			this.keybindings = new Gtk.ListStore(2, typeof(string), typeof(string));
+			this.keybindings = new Gtk.ListStore(3, typeof(string), typeof(string), typeof(string));
+			this.add_keybinding(_("New window"),"new-window");
 			this.add_keybinding(_("New tab"),"new-tab");
 			this.add_keybinding(_("Next tab"),"next-tab");
 			this.add_keybinding(_("Previous tab"),"previous-tab");
@@ -179,7 +180,7 @@ namespace Terminus {
 		private void add_keybinding(string name, string setting) {
 			Gtk.TreeIter iter;
 			this.keybindings.append(out iter);
-			this.keybindings.set(iter,0,name,1,this.keybind_settings.get_string(setting));
+			this.keybindings.set(iter,0,name,1,this.keybind_settings.get_string(setting),2,setting);
 		}
 	}
 }

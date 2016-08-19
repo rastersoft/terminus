@@ -22,11 +22,11 @@ using Gee;
 //project version = 0.1.0
 
 
-Gee.List<Terminus.TerminusWindow> windows;
+Gee.List<Terminus.Window> windows;
 
 void create_window(bool guake_mode) {
 
-	var window = new Terminus.TerminusWindow(guake_mode);
+	var window = new Terminus.Window(guake_mode);
 	window.ended.connect( (w) => {
 		windows.remove(w);
 		if (windows.size == 0) {
@@ -48,7 +48,7 @@ int main(string[] argv) {
 
 	Gtk.init(ref argv);
 
-	windows = new Gee.ArrayList<Terminus.TerminusWindow>();
+	windows = new Gee.ArrayList<Terminus.Window>();
 
 	create_window(false);
 

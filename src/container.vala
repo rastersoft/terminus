@@ -37,11 +37,11 @@ namespace Terminus {
 		private Terminus.Terminal? terminal;
 		private Terminus.PanedPercentage? paned;
 		private Terminus.Container top_container;
-		private Terminus.TerminusBase main_container;
+		private Terminus.Base main_container;
 
 		public signal void ended(Terminus.Container who);
 
-		public Container(Terminus.TerminusBase main_container, Terminus.Terminal? terminal, Terminus.Container? top_container = null) {
+		public Container(Terminus.Base main_container, Terminus.Terminal? terminal, Terminus.Container? top_container = null) {
 
 			this.main_container = main_container;
 			if (top_container == null) {

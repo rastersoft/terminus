@@ -58,23 +58,28 @@
     </key> -->
   </schema>
   <schema id="org.rastersoft.terminus.keybindings" path="/org/rastersoft/terminus/keybindings/">
+  	<key type="s" name="new-window">
+      <default><![CDATA['<Shift><Ctrl>W']]></default>
+      <summary>Open new window</summary>
+      <description>Pressing this key will open a terminal in a new window</description>
+    </key>
     <key type="s" name="new-tab">
-      <default><![CDATA['<Shift><Ctrl>t']]></default>
+      <default><![CDATA['<Shift><Ctrl>T']]></default>
       <summary>Open new tab</summary>
-      <description>Pressing this key will open a new terminal</description>
+      <description>Pressing this key will open a terminal in a new tab</description>
     </key>
     <key type="s" name="next-tab">
-      <default><![CDATA['<Shift><Alt>Page_Down']]></default>
+      <default><![CDATA['<Ctrl>Page_Down']]></default>
       <summary>Next tab</summary>
       <description></description>
     </key>
     <key type="s" name="previous-tab">
-      <default><![CDATA['<Shift><Alt>Page_Up']]></default>
+      <default><![CDATA['<Ctrl>Page_Up']]></default>
       <summary>Previous tab</summary>
       <description></description>
     </key>
     <key type="s" name="guake-mode">
-      <default><![CDATA['<Shift><Alt>F12']]></default>
+      <default><![CDATA['<Shift><Ctrl>F12']]></default>
       <summary>Show Guake-style terminal</summary>
       <description></description>
     </key>

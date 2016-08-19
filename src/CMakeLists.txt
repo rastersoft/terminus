@@ -39,13 +39,13 @@ set (VALA_PACKAGES ${VALA_PACKAGES} x11)
 
 set (APP_SOURCES ${APP_SOURCES} ${CMAKE_CURRENT_BINARY_DIR}/Config.vala)
 set (APP_SOURCES ${APP_SOURCES} PanedPercentage.vala)
+set (APP_SOURCES ${APP_SOURCES} base.vala)
 set (APP_SOURCES ${APP_SOURCES} container.vala)
 set (APP_SOURCES ${APP_SOURCES} notetab.vala)
 set (APP_SOURCES ${APP_SOURCES} settings.vala)
 set (APP_SOURCES ${APP_SOURCES} terminal.vala)
 set (APP_SOURCES ${APP_SOURCES} terminus.vala)
-set (APP_SOURCES ${APP_SOURCES} terminusbase.vala)
-set (APP_SOURCES ${APP_SOURCES} terminuswindow.vala)
+set (APP_SOURCES ${APP_SOURCES} window.vala)
 
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 " )
 
