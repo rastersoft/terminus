@@ -24,10 +24,17 @@ namespace Terminus {
 
 		public signal void ended(Terminus.Window window);
 		public signal void new_window();
+		public bool is_guake;
+
+		private int current_size;
+		private int mouseY;
+		private Gtk.Paned paned;
 
 		private Terminus.Base terminal;
 
 		public Window(bool guake_mode) {
+
+			this.is_guake = guake_mode;
 
 			this.destroy.connect( (w) => {
 				this.ended(this);
@@ -42,7 +49,50 @@ namespace Terminus {
 				this.new_window();
 			});
 
-			this.add(this.terminal);
+			if (guake_mode) {
+				this.paned = new Gtk.Paned(Gtk.Orientation.VERTICAL);
+				this.add(this.paned);
+				this.paned.add1(this.terminal);
+				var fixed = new Gtk.Fixed();
+				fixed.set_size_request(1,1);
+				this.paned.add2(fixed);
+				this.mouseY = -1;
+				this.paned.motion_notify_event.connect( (widget,event) => {
+					if (this.mouseY < 0) {
+						return false;
+					}
+					int y;
+					y = (int)(event.y_root);
+					int newval = y - this.mouseY;
+					this.current_size += newval;
+					this.mouseY = y;
+					this.resize(this.get_screen().get_width(),this.current_size);
+					this.paned.set_position(this.current_size);
+					return true;
+				});
+
+				this.paned.button_press_event.connect( (widget, event) => {
+					if (event.button != 1) {
+						return false;
+					}
+					int y;
+					y = (int)(event.y_root);
+					this.mouseY = y;
+					return true;
+				});
+
+				this.paned.button_release_event.connect( (widget,event) => {
+					if (event.button != 1) {
+						return false;
+					}
+					this.mouseY = -1;
+					Terminus.settings.set_int("guake-height", this.current_size);
+					return true;
+				});
+
+			} else {
+				this.add(this.terminal);
+			}
 			this.show_all();
 			this.present();
 			if (guake_mode) {
@@ -53,16 +103,18 @@ namespace Terminus {
 		public void present_guake() {
 			var scr = this.get_screen();
 			var screen_w = scr.get_width();
-			int screen_h = Terminus.settings.get_int("guake-height");
-			if (screen_h < 0) {
-				screen_h = scr.get_height() * 3 / 7;
+			this.current_size = Terminus.settings.get_int("guake-height");
+			if (this.current_size < 0) {
+				this.current_size = scr.get_height() * 3 / 7;
+				Terminus.settings.set_int("guake-height", this.current_size);
 			}
 			this.set_keep_above(true);
 			this.set_skip_taskbar_hint(true);
 			this.set_skip_pager_hint(true);
 			this.set_decorated(false);
 			this.move(0,0);
-			this.resize(screen_w,screen_h);
+			this.resize(screen_w,this.current_size);
+			this.paned.set_position(this.current_size);
 		}
 	}
 
