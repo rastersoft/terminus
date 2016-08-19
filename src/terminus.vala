@@ -22,21 +22,56 @@ using Gee;
 //project version = 0.1.0
 
 
-Gee.List<Terminus.Window> windows;
+namespace Terminus {
 
-void create_window(bool guake_mode) {
+	GLib.Settings settings = null;
+	GLib.Settings keybind_settings = null;
+	Gee.List<Terminus.Window> window_list;
+	bool launch_guake = false;
+	bool check_guake = false;
+	string command;
 
-	var window = new Terminus.Window(guake_mode);
-	window.ended.connect( (w) => {
-		windows.remove(w);
-		if (windows.size == 0) {
-			Gtk.main_quit();
+	void create_window(bool guake_mode) {
+
+		var window = new Terminus.Window(guake_mode);
+		window.ended.connect( (w) => {
+			window_list.remove(w);
+			if (window_list.size == 0) {
+				Gtk.main_quit();
+			}
+		});
+		window.new_window.connect( () => {
+			Terminus.create_window(false);
+		});
+		window_list.add(window);
+	}
+
+	void check_params(string[] argv) {
+
+		int param_counter = 0;
+
+		while(param_counter < argv.length) {
+			param_counter++;
+			if (argv[param_counter] == "--guake") {
+				launch_guake = true;
+				continue;
+			}
+			if (argv[param_counter] == "--check_guake") {
+				check_guake = true;
+				continue;
+			}
+			if (argv[param_counter] == "-e") {
+				if (param_counter < argv.length) {
+					param_counter++;
+					Terminus.command = argv[param_counter];
+					continue;
+				} else {
+					print(_("A command is needed after -e parameter")+"\n");
+					continue;
+				}
+			}
 		}
-	});
-	window.new_window.connect( () => {
-		create_window(false);
-	});
-	windows.add(window);
+	}
 }
 
 int main(string[] argv) {
@@ -46,13 +81,30 @@ int main(string[] argv) {
 	Intl.textdomain(Constants.GETTEXT_PACKAGE);
 	Intl.bind_textdomain_codeset(Constants.GETTEXT_PACKAGE, "UTF-8" );
 
+	Terminus.command = "/bin/bash";
+
 	Gtk.init(ref argv);
 
-	windows = new Gee.ArrayList<Terminus.Window>();
+	Terminus.window_list = new Gee.ArrayList<Terminus.Window>();
+	Terminus.settings = new GLib.Settings("org.rastersoft.terminus");
+	Terminus.keybind_settings = new GLib.Settings("org.rastersoft.terminus.keybindings");
 
-	create_window(false);
+	Terminus.check_params(argv);
 
-	Gtk.main();
+	bool launch_terminal = true;
+
+	if (Terminus.check_guake) {
+		if (false == Terminus.settings.get_boolean("enable-guake-mode")) {
+			launch_terminal = false;
+		} else {
+			Terminus.launch_guake = true;
+		}
+	}
+
+	if (launch_terminal) {
+		Terminus.create_window(Terminus.launch_guake);
+		Gtk.main();
+	}
 
 	return 0;
 }

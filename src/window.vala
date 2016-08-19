@@ -44,6 +44,25 @@ namespace Terminus {
 
 			this.add(this.terminal);
 			this.show_all();
+			this.present();
+			if (guake_mode) {
+				this.present_guake();
+			}
+		}
+
+		public void present_guake() {
+			var scr = this.get_screen();
+			var screen_w = scr.get_width();
+			int screen_h = Terminus.settings.get_int("guake-height");
+			if (screen_h < 0) {
+				screen_h = scr.get_height() * 3 / 7;
+			}
+			this.set_keep_above(true);
+			this.set_skip_taskbar_hint(true);
+			this.set_skip_pager_hint(true);
+			this.set_decorated(false);
+			this.move(0,0);
+			this.resize(screen_w,screen_h);
 		}
 	}
 

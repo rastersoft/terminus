@@ -45,10 +45,9 @@ namespace Terminus {
 
 	class Properties : Gtk.Window {
 
-		private GLib.Settings settings;
-		private GLib.Settings keybind_settings;
 		private Gtk.CheckButton use_system_font;
 		private Gtk.CheckButton infinite_scroll;
+		private Gtk.CheckButton enable_guake_mode;
 		private Gtk.SpinButton scroll_value;
 		private Gtk.Button custom_font;
 		private Gtk.ColorButton fg_color;
@@ -57,10 +56,7 @@ namespace Terminus {
 		private ColorScheme[] schemes;
 		private Gtk.ListStore keybindings;
 
-		public Properties(GLib.Settings settings, GLib.Settings keybind_settings) {
-
-			this.settings = settings;
-			this.keybind_settings = keybind_settings;
+		public Properties() {
 
 			this.schemes = {
 				ColorScheme(_("Custom colors"),0x00,0x00,0x00,0x00,0x00,0x00),
@@ -92,13 +88,13 @@ namespace Terminus {
 			this.fg_color.color_set.connect( () => {
 				var color = (this.fg_color as Gtk.ColorChooser).rgba;
 				var htmlcolor = "#%02X%02X%02X".printf((uint)(255*color.red),(uint)(255*color.green),(uint)(255*color.blue));
-				this.settings.set_string("fg-color",htmlcolor);
+				Terminus.settings.set_string("fg-color",htmlcolor);
 			});
 			this.bg_color = main_window.get_object("bg_color") as Gtk.ColorButton;
 			this.bg_color.color_set.connect( () => {
 				var color = (this.bg_color as Gtk.ColorChooser).rgba;
 				var htmlcolor = "#%02X%02X%02X".printf((uint)(255*color.red),(uint)(255*color.green),(uint)(255*color.blue));
-				this.settings.set_string("bg-color",htmlcolor);
+				Terminus.settings.set_string("bg-color",htmlcolor);
 			});
 
 			this.color_scheme = main_window.get_object("color_scheme") as Gtk.ComboBox;
@@ -109,17 +105,17 @@ namespace Terminus {
 					this.bg_color.sensitive = true;
 					var color = (this.fg_color as Gtk.ColorChooser).rgba;
 					var htmlcolor = "#%02X%02X%02X".printf((uint)(255*color.red),(uint)(255*color.green),(uint)(255*color.blue));
-					this.settings.set_string("fg-color",htmlcolor);
+					Terminus.settings.set_string("fg-color",htmlcolor);
 					color = (this.bg_color as Gtk.ColorChooser).rgba;
 					htmlcolor = "#%02X%02X%02X".printf((uint)(255*color.red),(uint)(255*color.green),(uint)(255*color.blue));
-					this.settings.set_string("bg-color",htmlcolor);
+					Terminus.settings.set_string("bg-color",htmlcolor);
 				} else {
 					this.fg_color.sensitive = false;
 					this.bg_color.sensitive = false;
 					var fg_htmlcolor = "#%02X%02X%02X".printf(this.schemes[selected].fg_red,this.schemes[selected].fg_green,this.schemes[selected].fg_blue);
 					var bg_htmlcolor = "#%02X%02X%02X".printf(this.schemes[selected].bg_red,this.schemes[selected].bg_green,this.schemes[selected].bg_blue);
-					this.settings.set_string("fg-color",fg_htmlcolor);
-					this.settings.set_string("bg-color",bg_htmlcolor);
+					Terminus.settings.set_string("fg-color",fg_htmlcolor);
+					Terminus.settings.set_string("bg-color",bg_htmlcolor);
 				}
 			});
 
@@ -130,13 +126,17 @@ namespace Terminus {
 				this.scroll_value.sensitive = !this.infinite_scroll.active;
 			});
 
-			this.settings.bind("color-scheme",this.color_scheme,"active",GLib.SettingsBindFlags.DEFAULT);
-			this.settings.bind("use-system-font",this.use_system_font,"active",GLib.SettingsBindFlags.DEFAULT);
-			this.settings.bind("terminal-font",this.custom_font,"font_name",GLib.SettingsBindFlags.DEFAULT);
-			this.settings.bind("scroll-lines",scroll_lines,"value",GLib.SettingsBindFlags.DEFAULT);
-			this.settings.bind("infinite-scroll",this.infinite_scroll,"active",GLib.SettingsBindFlags.DEFAULT);
-			this.settings.bind("scroll-on-output",main_window.get_object("scroll_on_output") as Gtk.CheckButton,"active",GLib.SettingsBindFlags.DEFAULT);
-			this.settings.bind("scroll-on-keystroke",main_window.get_object("scroll_on_keystroke") as Gtk.CheckButton,"active",GLib.SettingsBindFlags.DEFAULT);
+			this.enable_guake_mode = main_window.get_object("enable_guake_mode") as Gtk.CheckButton;
+
+			Terminus.settings.bind("color-scheme",this.color_scheme,"active",GLib.SettingsBindFlags.DEFAULT);
+			Terminus.settings.bind("use-system-font",this.use_system_font,"active",GLib.SettingsBindFlags.DEFAULT);
+			Terminus.settings.bind("terminal-font",this.custom_font,"font_name",GLib.SettingsBindFlags.DEFAULT);
+			Terminus.settings.bind("scroll-lines",scroll_lines,"value",GLib.SettingsBindFlags.DEFAULT);
+			Terminus.settings.bind("infinite-scroll",this.infinite_scroll,"active",GLib.SettingsBindFlags.DEFAULT);
+			Terminus.settings.bind("scroll-on-output",main_window.get_object("scroll_on_output") as Gtk.CheckButton,"active",GLib.SettingsBindFlags.DEFAULT);
+			Terminus.settings.bind("scroll-on-keystroke",main_window.get_object("scroll_on_keystroke") as Gtk.CheckButton,"active",GLib.SettingsBindFlags.DEFAULT);
+			Terminus.settings.bind("enable-guake-mode",this.enable_guake_mode,"active",GLib.SettingsBindFlags.DEFAULT);
+
 
 			var list_schemes = main_window.get_object("list_schemes") as Gtk.ListStore;
 			int counter = 0;
@@ -156,11 +156,11 @@ namespace Terminus {
 			this.scroll_value.sensitive = !this.infinite_scroll.active;
 			var fg_color = Gdk.RGBA();
 			var bg_color = Gdk.RGBA();
-			fg_color.parse(this.settings.get_string("fg-color"));
-			bg_color.parse(this.settings.get_string("bg-color"));
+			fg_color.parse(Terminus.settings.get_string("fg-color"));
+			bg_color.parse(Terminus.settings.get_string("bg-color"));
 			this.fg_color.set_rgba(fg_color);
 			this.bg_color.set_rgba(bg_color);
-			this.color_scheme.set_active(this.settings.get_int("color-scheme"));
+			this.color_scheme.set_active(Terminus.settings.get_int("color-scheme"));
 
 			this.keybindings = new Gtk.ListStore(3, typeof(string), typeof(string), typeof(string));
 			this.add_keybinding(_("New window"),"new-window");
@@ -180,7 +180,7 @@ namespace Terminus {
 		private void add_keybinding(string name, string setting) {
 			Gtk.TreeIter iter;
 			this.keybindings.append(out iter);
-			this.keybindings.set(iter,0,name,1,this.keybind_settings.get_string(setting),2,setting);
+			this.keybindings.set(iter,0,name,1,Terminus.keybind_settings.get_string(setting),2,setting);
 		}
 	}
 }

@@ -38,8 +38,6 @@ namespace Terminus {
 		private Gtk.MenuItem item_copy;
 		private Terminus.Container top_container;
 		private Terminus.Base main_container;
-		private GLib.Settings settings;
-		private GLib.Settings keybind_settings;
 		private Gtk.Scrollbar right_scroll;
 
 		private Gdk.EventKey new_tab_key;
@@ -60,10 +58,7 @@ namespace Terminus {
 		}
 
 
-		public Terminal(Terminus.Base main_container, Terminus.Container top_container, string command = "/bin/bash") {
-
-			this.settings = Terminus.Base.settings;
-			this.keybind_settings = Terminus.Base.keybind_settings;
+		public Terminal(Terminus.Base main_container, Terminus.Container top_container) {
 
 			this.main_container = main_container;
 			this.top_container = top_container;
@@ -94,8 +89,8 @@ namespace Terminus {
 				this.update_title();
 			});
 
-			this.settings.bind("scroll-on-output",this.vte_terminal,"scroll_on_output",GLib.SettingsBindFlags.DEFAULT);
-			this.settings.bind("scroll-on-keystroke",this.vte_terminal,"scroll_on_keystroke",GLib.SettingsBindFlags.DEFAULT);
+			Terminus.settings.bind("scroll-on-output",this.vte_terminal,"scroll_on_output",GLib.SettingsBindFlags.DEFAULT);
+			Terminus.settings.bind("scroll-on-keystroke",this.vte_terminal,"scroll_on_keystroke",GLib.SettingsBindFlags.DEFAULT);
 
 			this.right_scroll = new Gtk.Scrollbar(Gtk.Orientation.VERTICAL,this.vte_terminal.vadjustment);
 
@@ -103,7 +98,7 @@ namespace Terminus {
 			newbox.pack_start(right_scroll, false, true);
 
 			string[] cmd = {};
-			cmd += command;
+			cmd += Terminus.command;
 			this.vte_terminal.spawn_sync(Vte.PtyFlags.DEFAULT,null,cmd,GLib.Environ.get(),0,null,out this.pid);
 			this.vte_terminal.child_exited.connect( () => {
 				this.ended(this);
@@ -200,8 +195,8 @@ namespace Terminus {
 			keybind_settings_changed("next-tab");
 			keybind_settings_changed("previous-tab");
 
-			this.settings.changed.connect(this.settings_changed);
-			this.keybind_settings.changed.connect(this.keybind_settings_changed);
+			Terminus.settings.changed.connect(this.settings_changed);
+			Terminus.keybind_settings.changed.connect(this.keybind_settings_changed);
 
 			this.vte_terminal.key_press_event.connect(this.on_key_press);
 		}
@@ -211,7 +206,7 @@ namespace Terminus {
 			uint keyval;
 			Gdk.ModifierType state;
 
-			Gtk.accelerator_parse(this.keybind_settings.get_string(key), out keyval, out state);
+			Gtk.accelerator_parse(Terminus.keybind_settings.get_string(key), out keyval, out state);
 			if (keyval < 128) {
 				keyval |= 32;
 			}
@@ -243,8 +238,8 @@ namespace Terminus {
 			switch(key) {
 			case "infinite-scroll":
 			case "scroll-lines":
-				var lines = this.settings.get_uint("scroll-lines");
-				var infinite = this.settings.get_boolean("infinite-scroll");
+				var lines = Terminus.settings.get_uint("scroll-lines");
+				var infinite = Terminus.settings.get_boolean("infinite-scroll");
 				if (infinite) {
 					lines = -1;
 				}
@@ -252,22 +247,22 @@ namespace Terminus {
 				break;
 			case "fg-color":
 				var color = Gdk.RGBA();
-				color.parse(this.settings.get_string("fg-color"));
+				color.parse(Terminus.settings.get_string("fg-color"));
 				this.vte_terminal.set_color_foreground(color);
 				break;
 			case "bg-color":
 				var color = Gdk.RGBA();
-				color.parse(this.settings.get_string("bg-color"));
+				color.parse(Terminus.settings.get_string("bg-color"));
 				this.vte_terminal.set_color_background(color);
 				break;
 			case "use-system-font":
 			case "terminal-font":
-				var system_font = this.settings.get_boolean("use-system-font");
+				var system_font = Terminus.settings.get_boolean("use-system-font");
 				Pango.FontDescription? font_desc;
 				if (system_font) {
 					font_desc = null;
 				} else {
-					var font = this.settings.get_string("terminal-font");
+					var font = Terminus.settings.get_string("terminal-font");
 					font_desc = Pango.FontDescription.from_string(font);
 				}
 				this.vte_terminal.set_font(font_desc);
