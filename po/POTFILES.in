@@ -1,5 +1,6 @@
 src/PanedPercentage.vala
 src/base.vala
+src/bindkeys.vala
 src/container.vala
 src/notetab.vala
 src/settings.vala

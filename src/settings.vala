@@ -56,7 +56,14 @@ namespace Terminus {
 		private ColorScheme[] schemes;
 		private Gtk.ListStore keybindings;
 
+		private bool editing_keybind;
+		private bool changing_guake;
+		private string old_keybind;
+		private Gtk.TreePath old_keybind_path;
+
 		public Properties() {
+
+			this.editing_keybind = false;
 
 			this.schemes = {
 				ColorScheme(_("Custom colors"),0x00,0x00,0x00,0x00,0x00,0x00),
@@ -170,17 +177,103 @@ namespace Terminus {
 			this.add_keybinding(_("Show guake terminal"),"guake-mode");
 
 			var keybindings_view = main_window.get_object("keybindings") as Gtk.TreeView;
+			keybindings_view.activate_on_single_click = true;
+			keybindings_view.row_activated.connect(this.keybind_clicked_cb);
 			keybindings_view.set_model(this.keybindings);
 			Gtk.CellRendererText cell = new Gtk.CellRendererText ();
 			keybindings_view.insert_column_with_attributes (-1, _("Action"), cell, "text", 0);
 			keybindings_view.insert_column_with_attributes (-1, _("Key"), cell, "text", 1);
 
+			this.events = Gdk.EventMask.KEY_PRESS_MASK;
+			this.key_press_event.connect(this.on_key_press);
+
+			Terminus.bindkey.set_bindkey(Terminus.keybind_settings.get_string("guake-mode"));
 		}
 
 		private void add_keybinding(string name, string setting) {
 			Gtk.TreeIter iter;
 			this.keybindings.append(out iter);
 			this.keybindings.set(iter,0,name,1,Terminus.keybind_settings.get_string(setting),2,setting);
+		}
+
+		public void keybind_clicked_cb(TreePath path, TreeViewColumn column) {
+			Gtk.TreeIter iter;
+			Value val;
+
+			if (this.editing_keybind) {
+				this.editing_keybind = false;
+				this.keybindings.get_iter(out iter,this.old_keybind_path);
+				this.keybindings.set(iter,1,this.old_keybind);
+				if (this.changing_guake) {
+					Terminus.bindkey.set_bindkey(this.old_keybind);
+				}
+			} else {
+				this.editing_keybind = true;
+				this.keybindings.get_iter(out iter,path);
+				this.keybindings.get_value(iter,1,out val);
+				this.old_keybind = val.get_string();
+				this.old_keybind_path = path;
+				this.keybindings.set(iter,1,"...");
+				this.keybindings.get_value(iter,2,out val);
+				if ("guake-mode" == val.get_string()) {
+					Terminus.bindkey.unset_bindkey();
+					this.changing_guake = true;
+				} else {
+					this.changing_guake = false;
+				}
+			}
+		}
+
+		public bool on_key_press(Gdk.EventKey eventkey) {
+
+			if (this.editing_keybind == false) {
+				return false;
+			}
+
+			switch(eventkey.keyval) {
+			case Gdk.Key.Shift_L:
+			case Gdk.Key.Shift_R:
+			case Gdk.Key.Control_L:
+			case Gdk.Key.Control_R:
+			case Gdk.Key.Caps_Lock:
+			case Gdk.Key.Shift_Lock:
+			case Gdk.Key.Meta_L:
+			case Gdk.Key.Meta_R:
+			case Gdk.Key.Alt_L:
+			case Gdk.Key.Alt_R:
+			case Gdk.Key.Super_L:
+			case Gdk.Key.Super_R:
+			case Gdk.Key.ISO_Level3_Shift:
+				return false;
+			default:
+				break;
+			}
+
+			this.editing_keybind = false;
+
+			eventkey.state &= 0x07;
+
+			if (eventkey.keyval < 128) {
+				eventkey.keyval |= 32;
+			}
+
+			var new_keybind = Gtk.accelerator_name(eventkey.keyval,eventkey.state);
+
+			Gtk.TreeIter iter;
+			Value val;
+
+			this.editing_keybind = false;
+			this.keybindings.get_iter(out iter,this.old_keybind_path);
+			this.keybindings.set(iter,1,new_keybind);
+			if (this.changing_guake) {
+				Terminus.bindkey.set_bindkey(new_keybind);
+			}
+
+			this.keybindings.get_value(iter,2,out val);
+			var key = val.get_string();
+			Terminus.keybind_settings.set_string(key,new_keybind);
+
+			return false;
 		}
 	}
 }

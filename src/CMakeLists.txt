@@ -32,6 +32,7 @@ set (VALA_PACKAGES ${VALA_PACKAGES} gio-2.0)
 set (VALA_PACKAGES ${VALA_PACKAGES} glib-2.0)
 set (VALA_PACKAGES ${VALA_PACKAGES} gobject-2.0)
 set (VALA_PACKAGES ${VALA_PACKAGES} gtk+-3.0)
+set (VALA_PACKAGES ${VALA_PACKAGES} keybinder-3.0)
 set (VALA_PACKAGES ${VALA_PACKAGES} pango)
 set (VALA_PACKAGES ${VALA_PACKAGES} pangocairo)
 set (VALA_PACKAGES ${VALA_PACKAGES} vte-2.91)
@@ -40,6 +41,7 @@ set (VALA_PACKAGES ${VALA_PACKAGES} x11)
 set (APP_SOURCES ${APP_SOURCES} ${CMAKE_CURRENT_BINARY_DIR}/Config.vala)
 set (APP_SOURCES ${APP_SOURCES} PanedPercentage.vala)
 set (APP_SOURCES ${APP_SOURCES} base.vala)
+set (APP_SOURCES ${APP_SOURCES} bindkeys.vala)
 set (APP_SOURCES ${APP_SOURCES} container.vala)
 set (APP_SOURCES ${APP_SOURCES} notetab.vala)
 set (APP_SOURCES ${APP_SOURCES} settings.vala)
@@ -47,12 +49,16 @@ set (APP_SOURCES ${APP_SOURCES} terminal.vala)
 set (APP_SOURCES ${APP_SOURCES} terminus.vala)
 set (APP_SOURCES ${APP_SOURCES} window.vala)
 
+set (COMPILE_OPTIONS ${COMPILE_OPTIONS} --vapidir=/home/raster/workspace/terminus/src/vapidir )
+
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 " )
 
 vala_precompile(VALA_C terminus
 	${APP_SOURCES}
 PACKAGES
 	${VALA_PACKAGES}
+OPTIONS
+	${COMPILE_OPTIONS}
 )
 
 SET (VALA_C ${VALA_C} ${extras_gresource_xml_C_FILE})

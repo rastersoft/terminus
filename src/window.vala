@@ -29,6 +29,7 @@ namespace Terminus {
 		private int current_size;
 		private int mouseY;
 		private Gtk.Paned paned;
+		private Gtk.Fixed fixed;
 
 		private Terminus.Base terminal;
 
@@ -50,11 +51,13 @@ namespace Terminus {
 			});
 
 			if (guake_mode) {
+				this.map.connect(this.mapped);
 				this.paned = new Gtk.Paned(Gtk.Orientation.VERTICAL);
+				this.paned.wide_handle = true;
 				this.add(this.paned);
 				this.paned.add1(this.terminal);
-				var fixed = new Gtk.Fixed();
-				fixed.set_size_request(1,1);
+				this.fixed = new Gtk.Fixed();
+				this.fixed.set_size_request(1,1);
 				this.paned.add2(fixed);
 				this.mouseY = -1;
 				this.paned.motion_notify_event.connect( (widget,event) => {
@@ -93,14 +96,19 @@ namespace Terminus {
 			} else {
 				this.add(this.terminal);
 			}
-			this.show_all();
-			this.present();
 			if (guake_mode) {
 				this.present_guake();
 			}
+			this.show_all();
+			this.present();
 		}
 
-		public void present_guake() {
+		public void mapped() {
+			this.present_guake(false);
+		}
+
+		public void present_guake(bool minimum = true) {
+			this.fixed.set_size_request(1,1);
 			var scr = this.get_screen();
 			var screen_w = scr.get_width();
 			this.current_size = Terminus.settings.get_int("guake-height");
@@ -113,7 +121,12 @@ namespace Terminus {
 			this.set_skip_pager_hint(true);
 			this.set_decorated(false);
 			this.move(0,0);
-			this.resize(screen_w,this.current_size);
+			if (minimum) {
+				// a trick to ensure that everything has the desired size
+				this.resize(screen_w,this.current_size/2);
+			} else {
+				this.resize(screen_w,this.current_size);
+			}
 			this.paned.set_position(this.current_size);
 		}
 	}

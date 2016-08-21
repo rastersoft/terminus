@@ -30,6 +30,7 @@ namespace Terminus {
 	bool launch_guake = false;
 	bool check_guake = false;
 	string command;
+	Terminus.Bindkey bindkey;
 
 	void create_window(bool guake_mode) {
 
@@ -84,6 +85,8 @@ int main(string[] argv) {
 	Terminus.command = "/bin/bash";
 
 	Gtk.init(ref argv);
+
+	Terminus.bindkey = new Terminus.Bindkey();
 
 	Terminus.window_list = new Gee.ArrayList<Terminus.Window>();
 	Terminus.settings = new GLib.Settings("org.rastersoft.terminus");

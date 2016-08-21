@@ -1,9 +1,11 @@
 ### AutoVala Project ###
-autovala_version: 20
+autovala_version: 21
 project_name: terminus
 *vala_version: 0.32
 
 *gresource: extras_gresource_xml data/extras.gresource.xml
+
+*vapidir: src/vapidir
 
 
 vala_binary: src/terminus
@@ -20,12 +22,14 @@ use_gresource: extras_gresource_xml
 *vala_check_package: glib-2.0
 *vala_check_package: gobject-2.0
 *vala_check_package: gtk+-3.0
+*vala_check_package: keybinder-3.0
 *vala_check_package: pango
 *vala_check_package: pangocairo
 *vala_check_package: vte-2.91
 *vala_check_package: x11
 *vala_source: PanedPercentage.vala
 *vala_source: base.vala
+*vala_source: bindkeys.vala
 *vala_source: container.vala
 *vala_source: notetab.vala
 *vala_source: settings.vala
@@ -35,14 +39,15 @@ use_gresource: extras_gresource_xml
 
 *po: po
 
-*translate: vala src/terminal.vala
 *translate: vala src/window.vala
+*translate: vala src/container.vala
+*translate: vala src/bindkeys.vala
 *translate: vala src/terminus.vala
 *translate: vala src/notetab.vala
-*translate: vala src/settings.vala
+*translate: vala src/terminal.vala
 *translate: vala src/PanedPercentage.vala
 *translate: vala src/base.vala
-*translate: vala src/container.vala
+*translate: vala src/settings.vala
 *translate: glade data/interface/properties.ui
 
 *data: data/local
