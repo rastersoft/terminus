@@ -98,7 +98,7 @@ namespace Terminus {
 			newbox.pack_start(right_scroll, false, true);
 
 			string[] cmd = {};
-			cmd += Terminus.command;
+			cmd += Terminus.settings.get_string("shell-command");
 			this.vte_terminal.spawn_sync(Vte.PtyFlags.DEFAULT,null,cmd,GLib.Environ.get(),0,null,out this.pid);
 			this.vte_terminal.child_exited.connect( () => {
 				this.ended(this);

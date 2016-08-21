@@ -29,7 +29,6 @@ namespace Terminus {
 	Gee.List<Terminus.Window> window_list;
 	bool launch_guake = false;
 	bool check_guake = false;
-	string command;
 	Terminus.Bindkey bindkey;
 
 	void create_window(bool guake_mode) {
@@ -61,16 +60,6 @@ namespace Terminus {
 				check_guake = true;
 				continue;
 			}
-			if (argv[param_counter] == "-e") {
-				if (param_counter < argv.length) {
-					param_counter++;
-					Terminus.command = argv[param_counter];
-					continue;
-				} else {
-					print(_("A command is needed after -e parameter")+"\n");
-					continue;
-				}
-			}
 		}
 	}
 }
@@ -81,8 +70,6 @@ int main(string[] argv) {
 
 	Intl.textdomain(Constants.GETTEXT_PACKAGE);
 	Intl.bind_textdomain_codeset(Constants.GETTEXT_PACKAGE, "UTF-8" );
-
-	Terminus.command = "/bin/bash";
 
 	Gtk.init(ref argv);
 
