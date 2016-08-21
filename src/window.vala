@@ -100,10 +100,23 @@ namespace Terminus {
 			}
 			if (guake_mode) {
 				this.present_guake();
+				Terminus.bindkey.set_bindkey(Terminus.keybind_settings.get_string("guake-mode"));
+				Terminus.keybind_settings.changed.connect(this.keybind_settings_changed);
 			} else {
 				this.show_all();
 				this.present();
 			}
+		}
+
+		public void keybind_settings_changed(string key) {
+
+			uint keyval;
+			Gdk.ModifierType state;
+
+			if (key != "guake-mode") {
+				return;
+			}
+			Terminus.bindkey.set_bindkey(Terminus.keybind_settings.get_string("guake-mode"));
 		}
 
 		public void mapped() {

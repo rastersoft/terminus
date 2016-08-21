@@ -40,12 +40,19 @@ namespace Terminus {
 			this.key = null;
 		}
 
-		public void set_bindkey(string key) {
+		public bool set_bindkey(string key) {
+
+			bool retval;
+
 			if (this.key != null) {
 				this.unset_bindkey();
 			}
 			this.key = key;
-			Keybinder.bind(key,Terminus.keybind_cb,this);
+			retval = Keybinder.bind(key,Terminus.keybind_cb,this);
+			if (retval == false) {
+				print("Failed to set the guake_mode bind key\n");
+			}
+			return retval;
 		}
 
 		public void unset_bindkey() {

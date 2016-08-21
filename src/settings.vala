@@ -187,7 +187,6 @@ namespace Terminus {
 			this.events = Gdk.EventMask.KEY_PRESS_MASK;
 			this.key_press_event.connect(this.on_key_press);
 
-			Terminus.bindkey.set_bindkey(Terminus.keybind_settings.get_string("guake-mode"));
 		}
 
 		private void add_keybinding(string name, string setting) {
@@ -205,7 +204,7 @@ namespace Terminus {
 				this.keybindings.get_iter(out iter,this.old_keybind_path);
 				this.keybindings.set(iter,1,this.old_keybind);
 				if (this.changing_guake) {
-					Terminus.bindkey.set_bindkey(this.old_keybind);
+					Terminus.keybind_settings.set_string("guake-mode",old_keybind);
 				}
 			} else {
 				this.editing_keybind = true;
@@ -265,10 +264,6 @@ namespace Terminus {
 			this.editing_keybind = false;
 			this.keybindings.get_iter(out iter,this.old_keybind_path);
 			this.keybindings.set(iter,1,new_keybind);
-			if (this.changing_guake) {
-				Terminus.bindkey.set_bindkey(new_keybind);
-			}
-
 			this.keybindings.get_value(iter,2,out val);
 			var key = val.get_string();
 			Terminus.keybind_settings.set_string(key,new_keybind);

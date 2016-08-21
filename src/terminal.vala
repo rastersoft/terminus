@@ -208,7 +208,7 @@ namespace Terminus {
 
 			Gtk.accelerator_parse(Terminus.keybind_settings.get_string(key), out keyval, out state);
 			if (keyval < 128) {
-				keyval |= 32;
+				keyval &= ~32;
 			}
 
 			switch(key) {
