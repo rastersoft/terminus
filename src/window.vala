@@ -35,7 +35,11 @@ namespace Terminus {
 
 		public Window(bool guake_mode) {
 
-			this.is_guake = guake_mode;
+			if (guake_mode) {
+				this.is_guake = Terminus.bindkey.set_bindkey(Terminus.keybind_settings.get_string("guake-mode"));
+			} else {
+				this.is_guake = false;
+			}
 
 			this.destroy.connect( (w) => {
 				this.ended(this);
@@ -51,7 +55,6 @@ namespace Terminus {
 			});
 
 			if (guake_mode) {
-				this.is_guake = true;
 				Terminus.bindkey.show_guake.connect(this.show_hide);
 				this.map.connect(this.mapped);
 				this.paned = new Gtk.Paned(Gtk.Orientation.VERTICAL);
@@ -100,7 +103,6 @@ namespace Terminus {
 			}
 			if (guake_mode) {
 				this.present_guake();
-				Terminus.bindkey.set_bindkey(Terminus.keybind_settings.get_string("guake-mode"));
 				Terminus.keybind_settings.changed.connect(this.keybind_settings_changed);
 			} else {
 				this.show_all();
@@ -109,9 +111,6 @@ namespace Terminus {
 		}
 
 		public void keybind_settings_changed(string key) {
-
-			uint keyval;
-			Gdk.ModifierType state;
 
 			if (key != "guake-mode") {
 				return;

@@ -34,6 +34,10 @@ namespace Terminus {
 	void create_window(bool guake_mode) {
 
 		var window = new Terminus.Window(guake_mode);
+		if ((guake_mode) && (window.is_guake == false)) {
+			window.destroy();
+			return;
+		}
 		window.ended.connect( (w) => {
 			window_list.remove(w);
 			if (window_list.size == 0) {
@@ -82,17 +86,27 @@ int main(string[] argv) {
 	Terminus.check_params(argv);
 
 	bool launch_terminal = true;
+	bool launch_guake = Terminus.launch_guake;
+
+	if (Terminus.launch_guake) {
+		launch_terminal = false;
+		Terminus.check_guake = false;
+	}
 
 	if (Terminus.check_guake) {
-		if (false == Terminus.settings.get_boolean("enable-guake-mode")) {
-			launch_terminal = false;
-		} else {
-			Terminus.launch_guake = true;
-		}
+		launch_terminal = false;
+		launch_guake = Terminus.settings.get_boolean("enable-guake-mode");
 	}
 
 	if (launch_terminal) {
-		Terminus.create_window(Terminus.launch_guake);
+		Terminus.create_window(false);
+	}
+
+	if (launch_guake) {
+		Terminus.create_window(true);
+	}
+
+	if (launch_terminal || launch_guake) {
 		Gtk.main();
 	}
 
