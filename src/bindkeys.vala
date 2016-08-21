@@ -25,14 +25,12 @@ namespace Terminus {
 	public void keybind_cb(string key, void *udata) {
 		Bindkey obj = (Bindkey)udata;
 		obj.show_guake();
-		print("Pulsado guake\n");
 	}
 
 
 	class Bindkey : Object {
 
 		private string? key;
-		private bool binded;
 
 		public signal void show_guake();
 

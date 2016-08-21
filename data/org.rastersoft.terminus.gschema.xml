@@ -56,6 +56,11 @@
       <summary>Height of the guake-mode window</summary>
       <description></description>
     </key>
+    <key type="s" name="shell-command">
+      <default>"/bin/bash"</default>
+      <summary>Shell to use</summary>
+      <description></description>
+    </key>
 	<!--<key type="" name="">
       <default></default>
       <summary></summary>

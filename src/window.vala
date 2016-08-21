@@ -51,6 +51,8 @@ namespace Terminus {
 			});
 
 			if (guake_mode) {
+				this.is_guake = true;
+				Terminus.bindkey.show_guake.connect(this.show_hide);
 				this.map.connect(this.mapped);
 				this.paned = new Gtk.Paned(Gtk.Orientation.VERTICAL);
 				this.paned.wide_handle = true;
@@ -98,9 +100,10 @@ namespace Terminus {
 			}
 			if (guake_mode) {
 				this.present_guake();
+			} else {
+				this.show_all();
+				this.present();
 			}
-			this.show_all();
-			this.present();
 		}
 
 		public void mapped() {
@@ -128,6 +131,15 @@ namespace Terminus {
 				this.resize(screen_w,this.current_size);
 			}
 			this.paned.set_position(this.current_size);
+		}
+
+		public void show_hide() {
+			if (this.visible) {
+				this.hide();
+			} else {
+				this.show_all();
+				this.present();
+			}
 		}
 	}
 
