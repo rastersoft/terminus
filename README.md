@@ -34,7 +34,7 @@ Currently the number of options modificable is small, but more will become avail
 ## FAQ ##
 
 Q: I use Gnome-Shell and when I show the Quake terminal, it doesn't get the focus.
-A: Launch dconf-editor, and set *org.gnome.desktop.wm.preferences.disable-workarounds* to TRUE.
+A: Good question... I'm still trying to fix that.
 
 ## Contacting the author ##
 
