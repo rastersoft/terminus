@@ -34,7 +34,8 @@ Currently the number of options modificable is small, but more will become avail
 ## FAQ ##
 
 Q: I use Gnome-Shell and when I show the Quake terminal, it doesn't get the focus. git  
-A: Good question... I'm still trying to fix that.
+A: It seems that installing the "Steal my focus" extension fix it. It can be found at
+https://extensions.gnome.org/extension/234/steal-my-focus/
 
 ## Contacting the author ##
 

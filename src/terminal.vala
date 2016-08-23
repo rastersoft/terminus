@@ -279,7 +279,7 @@ namespace Terminus {
 			eventkey.state &= 0x07;
 
 			if (eventkey.keyval < 128) {
-				eventkey.keyval |= 32;
+				eventkey.keyval &= ~32;
 			}
 
 			if ((eventkey.keyval == this.new_window_key.keyval) && (eventkey.state == this.new_window_key.state)) {
