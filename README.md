@@ -31,6 +31,11 @@ to have it. You can also launch it from a terminal.
 
 Currently the number of options modificable is small, but more will become available.
 
+## FAQ ##
+
+Q: I use Gnome-Shell and when I show the Quake terminal, it doesn't get the focus.
+A: Launch dconf-editor, and set *org.gnome.desktop.wm.preferences.disable-workarounds* to TRUE.
+
 ## Contacting the author ##
 
 (C) Sergio Costas Rodriguez (raster software vigo)
