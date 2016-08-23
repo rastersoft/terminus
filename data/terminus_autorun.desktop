@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Icon=terminus.svg
+Type=Application
+TryExec=terminus
+Exec=terminus --check_guake
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-phase=Running
+Name=A terminal with the capabilities of Guake and Terminator

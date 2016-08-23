@@ -24,39 +24,40 @@ namespace Terminus {
 
 		public signal void ended(Terminus.Window window);
 		public signal void new_window();
-		public bool is_guake;
 
 		private int current_size;
 		private int mouseY;
 		private Gtk.Paned paned;
 		private Gtk.Fixed fixed;
+		private bool is_guake;
 
 		private Terminus.Base terminal;
 
-		public Window(bool guake_mode) {
+		public Window(bool guake_mode, Terminus.Base? terminal = null) {
 
-			if (guake_mode) {
-				this.is_guake = Terminus.bindkey.set_bindkey(Terminus.keybind_settings.get_string("guake-mode"));
-			} else {
-				this.is_guake = false;
-			}
+			this.is_guake = guake_mode;
+
+			this.type_hint = Gdk.WindowTypeHint.NORMAL;
 
 			this.destroy.connect( (w) => {
-				this.ended(this);
+				if (!this.is_guake) {
+					this.ended(this);
+				}
 			});
 
-			this.terminal = new Terminus.Base();
-			this.terminal.ended.connect( (w) => {
-				this.destroy();
-			});
+			if (terminal == null) {
+				this.terminal = new Terminus.Base();
+			} else {
+				this.terminal = terminal;
+			}
+			this.terminal.ended.connect(this.ended_cb);
 
 			this.terminal.new_window.connect( () => {
 				this.new_window();
 			});
 
 			if (guake_mode) {
-				Terminus.bindkey.show_guake.connect(this.show_hide);
-				this.map.connect(this.mapped);
+				this.map.connect_after(this.mapped);
 				this.paned = new Gtk.Paned(Gtk.Orientation.VERTICAL);
 				this.paned.wide_handle = true;
 				this.add(this.paned);
@@ -97,32 +98,29 @@ namespace Terminus {
 					Terminus.settings.set_int("guake-height", this.current_size);
 					return true;
 				});
+				this.paned.show_all();
 
 			} else {
 				this.add(this.terminal);
-			}
-			if (guake_mode) {
-				this.present_guake();
-				Terminus.keybind_settings.changed.connect(this.keybind_settings_changed);
-			} else {
-				this.show_all();
+				this.terminal.show_all();
 				this.present();
 			}
 		}
 
-		public void keybind_settings_changed(string key) {
 
-			if (key != "guake-mode") {
-				return;
-			}
-			Terminus.bindkey.set_bindkey(Terminus.keybind_settings.get_string("guake-mode"));
+		public void ended_cb() {
+
+			this.terminal.ended.disconnect(this.ended_cb);
+			this.destroy();
 		}
 
 		public void mapped() {
-			this.present_guake(false);
+			this.present_guake();
+			this.grab_focus();
 		}
 
-		public void present_guake(bool minimum = true) {
+		public void present_guake() {
+			this.stick();
 			this.fixed.set_size_request(1,1);
 			var scr = this.get_screen();
 			var screen_w = scr.get_width();
@@ -136,23 +134,8 @@ namespace Terminus {
 			this.set_skip_pager_hint(true);
 			this.set_decorated(false);
 			this.move(0,0);
-			if (minimum) {
-				// a trick to ensure that everything has the desired size
-				this.resize(screen_w,this.current_size/2);
-			} else {
-				this.resize(screen_w,this.current_size);
-			}
+			this.resize(screen_w,this.current_size);
 			this.paned.set_position(this.current_size);
 		}
-
-		public void show_hide() {
-			if (this.visible) {
-				this.hide();
-			} else {
-				this.show_all();
-				this.present();
-			}
-		}
 	}
-
 }

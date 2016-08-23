@@ -53,6 +53,7 @@ endif()
 add_subdirectory(po)
 add_subdirectory(data)
 add_subdirectory(src/vapidir)
+add_subdirectory(data/icons)
 add_subdirectory(data/interface)
 add_subdirectory(src)
 

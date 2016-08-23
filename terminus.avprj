@@ -39,20 +39,26 @@ use_gresource: extras_gresource_xml
 
 *po: po
 
-*translate: vala src/window.vala
-*translate: vala src/container.vala
-*translate: vala src/bindkeys.vala
-*translate: vala src/terminus.vala
-*translate: vala src/notetab.vala
-*translate: vala src/terminal.vala
-*translate: vala src/PanedPercentage.vala
 *translate: vala src/base.vala
 *translate: vala src/settings.vala
+*translate: vala src/terminus.vala
+*translate: vala src/container.vala
+*translate: vala src/window.vala
+*translate: vala src/bindkeys.vala
+*translate: vala src/terminal.vala
+*translate: vala src/notetab.vala
+*translate: vala src/PanedPercentage.vala
 *translate: glade data/interface/properties.ui
 
 *data: data/local
 
 *doc: doc
 
+*desktop: data/terminus.desktop
+
+*autostart: data/terminus_autorun.desktop
+
 *scheme: data/org.rastersoft.terminus.gschema.xml
+
+*full_icon: Hicolor Applications data/icons/terminus.svg
 

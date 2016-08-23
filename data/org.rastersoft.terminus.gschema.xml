@@ -47,13 +47,13 @@
       <description></description>
     </key>
     <key type="b" name="enable-guake-mode">
-      <default>false</default>
+      <default>true</default>
       <summary>Launch a terminal in guake mode at startup</summary>
       <description></description>
     </key>
     <key type="i" name="guake-height">
       <default>-1</default>
-      <summary>Height of the guake-mode window</summary>
+      <summary>Current height of the guake-mode window</summary>
       <description></description>
     </key>
     <key type="s" name="shell-command">
