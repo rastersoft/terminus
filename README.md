@@ -33,7 +33,7 @@ Currently the number of options modificable is small, but more will become avail
 
 ## FAQ ##
 
-Q: I use Gnome-Shell and when I show the Quake terminal, it doesn't get the focus.
+Q: I use Gnome-Shell and when I show the Quake terminal, it doesn't get the focus. 
 A: Good question... I'm still trying to fix that.
 
 ## Contacting the author ##
