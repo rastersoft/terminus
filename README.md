@@ -33,11 +33,11 @@ Currently the number of options modificable is small, but more will become avail
 
 ## FAQ ##
 
-Q: I use Gnome-Shell and when I show the Quake terminal, it doesn't get the focus. 
+Q: I use Gnome-Shell and when I show the Quake terminal, it doesn't get the focus. git  
 A: Good question... I'm still trying to fix that.
 
 ## Contacting the author ##
 
-(C) Sergio Costas Rodriguez (raster software vigo)
-rastersoft@gmail.com
-http://www.rastersoft.com
+(C) Sergio Costas Rodriguez (raster software vigo)  
+rastersoft@gmail.com  
+http://www.rastersoft.com  
