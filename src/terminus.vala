@@ -75,18 +75,20 @@ namespace Terminus {
 				this.create_window(true);
 			}
 
+			Terminus.keybind_settings.changed.connect(this.keybind_settings_changed);
+
 			if (launch_terminal || launch_guake) {
 				Gtk.main();
 			}
-
-			Terminus.keybind_settings.changed.connect(this.keybind_settings_changed);
 		}
 
 		public void keybind_settings_changed(string key) {
 
+			print("Cambio %s\n".printf(key));
 			if (key != "guake-mode") {
 				return;
 			}
+			Terminus.bindkey.show_guake.disconnect(this.show_hide);
 			Terminus.bindkey.set_bindkey(Terminus.keybind_settings.get_string("guake-mode"));
 			Terminus.bindkey.show_guake.connect(this.show_hide);
 		}
