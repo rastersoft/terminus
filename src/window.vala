@@ -20,6 +20,19 @@ using Gtk;
 
 namespace Terminus {
 
+	class Fixed : Gtk.Fixed {
+
+		public override void get_preferred_width (out int minimum_width, out int natural_width) {
+			minimum_width = 1;
+			natural_width = 1;
+		}
+
+		public override void get_preferred_height (out int minimum_height, out int natural_height) {
+			minimum_height = 1;
+			natural_height = 1;
+		}
+	}
+
 	class Window : Gtk.Window {
 
 		public signal void ended(Terminus.Window window);
@@ -28,7 +41,7 @@ namespace Terminus {
 		private int current_size;
 		private int mouseY;
 		private Gtk.Paned paned;
-		private Gtk.Fixed fixed;
+		private Terminus.Fixed fixed;
 		private bool is_guake;
 
 		private Terminus.Base terminal;
@@ -72,8 +85,8 @@ namespace Terminus {
 				this.paned.wide_handle = true;
 				this.add(this.paned);
 				this.paned.add1(this.terminal);
-				this.fixed = new Gtk.Fixed();
-				this.fixed.set_size_request(1,1);
+				this.fixed = new Terminus.Fixed();
+				//this.fixed.set_size_request(1,1);
 				this.paned.add2(fixed);
 				this.mouseY = -1;
 				this.paned.motion_notify_event.connect( (widget,event) => {
@@ -118,7 +131,7 @@ namespace Terminus {
 		}
 
 		public override void get_preferred_width (out int minimum_width, out int natural_width) {
-			if (this.is_guake) {
+			if ((this.is_guake) && (this.mouseY < 0)) {
 				var scr = this.get_screen();
 				minimum_width = scr.get_width();
 				natural_width = scr.get_width();
@@ -128,7 +141,7 @@ namespace Terminus {
 		}
 
 		public override void get_preferred_height (out int minimum_height, out int natural_height) {
-			if (this.is_guake) {
+			if ((this.is_guake) && (this.mouseY < 0)) {
 				var scr = this.get_screen();
 				this.current_size = Terminus.settings.get_int("guake-height");
 				if (this.current_size < 0) {
