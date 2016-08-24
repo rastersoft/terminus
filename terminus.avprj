@@ -9,7 +9,7 @@ vala_version: 0.30
 
 
 vala_binary: src/terminus
-*version: 0.2.0
+*version: 0.3.0
 compile_c_options: -O2
 use_gresource: extras_gresource_xml
 *vala_package: posix
