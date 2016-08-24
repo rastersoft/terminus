@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-18 22:52+0200\n"
-"PO-Revision-Date: 2016-08-18 22:50+0200\n"
+"POT-Creation-Date: 2016-08-24 19:45+0200\n"
+"PO-Revision-Date: 2016-08-24 19:46+0200\n"
 "Last-Translator: Sergio Costas <rastersoft@gmail.com>\n"
 "Language-Team: Español; Castellano <rastersoft@gmail.com>\n"
 "Language: \n"
@@ -19,138 +19,161 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Gtranslator 2.91.7\n"
 
-#: src/settings.vala:63
+#: src/settings.vala:69
 msgid "Custom colors"
 msgstr "Colores personalizados"
 
-#: src/settings.vala:64
+#: src/settings.vala:70
 msgid "Black on light yellow"
 msgstr "Negro sobre amarillo claro"
 
-#: src/settings.vala:65
+#: src/settings.vala:71
 msgid "Black on white"
 msgstr "Negro sobre blanco"
 
-#: src/settings.vala:66
+#: src/settings.vala:72
 msgid "Gray on black"
 msgstr "Gris sobre blanco"
 
-#: src/settings.vala:67
+#: src/settings.vala:73
 msgid "Green on black"
 msgstr "Verde sobre negro"
 
-#: src/settings.vala:68
+#: src/settings.vala:74
 msgid "Orange on black"
 msgstr "Ambar sobre negro"
 
-#: src/settings.vala:69
+#: src/settings.vala:75
 msgid "White on black"
 msgstr "Blanco sobre negro"
 
-#: src/terminal.vala:107
-msgid "Copy"
-msgstr "Copiar"
+#: src/settings.vala:89
+#, c-format
+msgid "Version %s"
+msgstr "Versión %s"
 
-#: src/terminal.vala:113
-msgid "Paste"
-msgstr "Pegar"
-
-#: src/terminal.vala:123
-msgid "Split horizontally"
-msgstr "Dividir horizontalmente"
-
-#: src/terminal.vala:135
-msgid "Split vertically"
-msgstr "Dividir verticalmente"
-
-#: src/terminal.vala:145
-msgid "New tab"
-msgstr "Nueva pestaña"
-
-#: src/terminal.vala:151
+#: src/settings.vala:176 src/terminal.vala:152
 msgid "New window"
 msgstr "Nueva ventana"
 
-#: src/terminal.vala:159
-msgid "Preferences"
-msgstr "Preferencias"
+#: src/settings.vala:177 src/terminal.vala:146
+msgid "New tab"
+msgstr "Nueva pestaña"
 
-#: src/terminal.vala:164
-msgid "Close"
-msgstr "Cerrar"
+#: src/settings.vala:178
+msgid "Next tab"
+msgstr "Siguiente pestaña"
 
-#: data/interface/properties.ui:43
-msgid "Use the system fixed width font"
-msgstr "Usar la fuente del sistema"
+#: src/settings.vala:179
+msgid "Previous tab"
+msgstr "Pestaña anterior"
 
-#: data/interface/properties.ui:63
-msgid "Font:"
-msgstr "Fuente"
+#: src/settings.vala:180
+msgid "Show guake terminal"
+msgstr "Mostrar terminal Guake"
 
-#: data/interface/properties.ui:99
-msgid "General"
-msgstr "General"
-
-#: data/interface/properties.ui:125
-msgid "Built-in schemes:"
-msgstr "Esquemas incluidos:"
-
-#: data/interface/properties.ui:137
-msgid "Text color:"
-msgstr "Color de texto:"
-
-#: data/interface/properties.ui:149
-msgid "Background color:"
-msgstr "Color de fondo:"
-
-#: data/interface/properties.ui:206
-msgid "Foreground and Background"
-msgstr "Texto y fondo"
-
-#: data/interface/properties.ui:218
-msgid "Colors"
-msgstr "Colores"
-
-#: data/interface/properties.ui:239
-msgid "Scrollback lines:"
-msgstr "Lineas de scroll:"
-
-#: data/interface/properties.ui:270
-msgid "Infinite Scrollback"
-msgstr "Scroll infinito"
-
-#: data/interface/properties.ui:291
-msgid "Scroll on output"
-msgstr "Scroll si hay salida"
-
-#: data/interface/properties.ui:305
-msgid "Scroll on keystroke"
-msgstr "Scroll si se pulsa una tecla"
-
-#: data/interface/properties.ui:326
-msgid "Scrolling"
-msgstr "Scrolling"
-
-#: data/interface/properties.ui:339
-msgid "Global"
-msgstr "Global"
-
-#: data/interface/properties.ui:355
+#: src/settings.vala:187
 msgid "Action"
 msgstr "Acción"
 
-#: data/interface/properties.ui:360
+#: src/settings.vala:188
 msgid "Key"
 msgstr "Tecla"
 
-#: data/interface/properties.ui:372
+#: src/terminal.vala:108
+msgid "Copy"
+msgstr "Copiar"
+
+#: src/terminal.vala:114
+msgid "Paste"
+msgstr "Pegar"
+
+#: src/terminal.vala:124
+msgid "Split horizontally"
+msgstr "Dividir horizontalmente"
+
+#: src/terminal.vala:136
+msgid "Split vertically"
+msgstr "Dividir verticalmente"
+
+#: src/terminal.vala:160
+msgid "Preferences"
+msgstr "Preferencias"
+
+#: src/terminal.vala:169
+msgid "Close"
+msgstr "Cerrar"
+
+#: data/interface/properties.ui:35
+msgid "Use the system fixed width font"
+msgstr "Usar la fuente del sistema"
+
+#: data/interface/properties.ui:55
+msgid "Font:"
+msgstr "Fuente"
+
+#: data/interface/properties.ui:87
+msgid "Enable guake mode"
+msgstr "Activar el modo Guake"
+
+#: data/interface/properties.ui:106
+msgid "General"
+msgstr "General"
+
+#: data/interface/properties.ui:132
+msgid "Built-in schemes:"
+msgstr "Esquemas incluidos:"
+
+#: data/interface/properties.ui:144
+msgid "Text color:"
+msgstr "Color de texto:"
+
+#: data/interface/properties.ui:156
+msgid "Background color:"
+msgstr "Color de fondo:"
+
+#: data/interface/properties.ui:213
+msgid "Foreground and Background"
+msgstr "Texto y fondo"
+
+#: data/interface/properties.ui:225
+msgid "Colors"
+msgstr "Colores"
+
+#: data/interface/properties.ui:246
+msgid "Scrollback lines:"
+msgstr "Lineas de scroll:"
+
+#: data/interface/properties.ui:277
+msgid "Infinite Scrollback"
+msgstr "Scroll infinito"
+
+#: data/interface/properties.ui:298
+msgid "Scroll on output"
+msgstr "Scroll si hay salida"
+
+#: data/interface/properties.ui:312
+msgid "Scroll on keystroke"
+msgstr "Scroll si se pulsa una tecla"
+
+#: data/interface/properties.ui:333
+msgid "Scrolling"
+msgstr "Scrolling"
+
+#: data/interface/properties.ui:346
+msgid "Global"
+msgstr "Global"
+
+#: data/interface/properties.ui:369
 msgid "Keybindings"
 msgstr "Teclas"
 
-#: data/interface/properties.ui:383
+#: data/interface/properties.ui:385
+msgid "Terminus"
+msgstr "Terminus"
+
+#: data/interface/properties.ui:408
 msgid ""
-"Terminus\n"
-"\n"
 "A tiled terminal emulator.\n"
 "\n"
 "Written by Sergio Costas Rodríguez (rastersoft)\n"
@@ -158,8 +181,6 @@ msgid ""
 "http://www.rastersoft.com\n"
 "rastersoft@gmail.com"
 msgstr ""
-"Terminus\n"
-"\n"
 "Un emulador de terminal basado en tiles\n"
 "\n"
 "Escrito por Sergio Costas Rodríguez (rastersoft)\n"
@@ -167,6 +188,6 @@ msgstr ""
 "http://www.rastersoft.com\n"
 "rastersoft@gmail.com"
 
-#: data/interface/properties.ui:401
+#: data/interface/properties.ui:431
 msgid "About"
 msgstr "Acerca de"

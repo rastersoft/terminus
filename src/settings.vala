@@ -85,6 +85,9 @@ namespace Terminus {
 			main_window.add_objects_from_resource("/com/rastersoft/terminus/interface/properties.ui",elements);
 			this.add(main_window.get_object("properties_notebook") as Gtk.Widget);
 
+			var label_version = main_window.get_object("label_version") as Gtk.Label;
+			label_version.label = _("Version %s").printf(Constants.VERSION);
+
 			this.use_system_font = main_window.get_object("use_system_font") as Gtk.CheckButton;
 			this.custom_font =  main_window.get_object("custom_font") as Gtk.Button;
 			use_system_font.toggled.connect( () => {
