@@ -1,0 +1,11 @@
+To build Terminus, follow these instructions:
+
+    mkdir install
+    cd install
+    cmake ..
+    make
+    sudo make install
+
+In case that cmake fails due to a missing dependency, delete
+the folder contents before running cmake again.
+
