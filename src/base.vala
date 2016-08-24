@@ -75,5 +75,26 @@ namespace Terminus {
 				this.show_tabs = true;
 			}
 		}
+
+		public void next_tab() {
+
+			var p = this.get_n_pages();
+			if (this.page + 1 == p) {
+				this.set_current_page(0);
+			} else {
+				this.next_page();
+			}
+		}
+
+		public void prev_tab() {
+
+			if (this.page == 0) {
+				var p = this.get_n_pages();
+				this.set_current_page(p - 1);
+			} else {
+				this.prev_page();
+			}
+		}
+
 	}
 }

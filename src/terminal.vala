@@ -292,12 +292,12 @@ namespace Terminus {
 				return true;
 			}
 			if ((eventkey.keyval == this.next_tab_key.keyval) && (eventkey.state == this.next_tab_key.state)) {
-				this.main_container.next_page();
+				this.main_container.next_tab();
 				return true;
 			}
 
 			if ((eventkey.keyval == this.previous_tab_key.keyval) && (eventkey.state == this.previous_tab_key.state)) {
-				this.main_container.prev_page();
+				this.main_container.prev_tab();
 				return true;
 			}
 
