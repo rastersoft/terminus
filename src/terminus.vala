@@ -111,7 +111,7 @@ namespace Terminus {
 			window.ended.connect( (w) => {
 				window_list.remove(w);
 				if (w == this.guake_window) {
-					Terminus.bindkey.unset_bindkey();
+					Terminus.bindkey.show_guake.disconnect(this.show_hide);
 					this.guake_window = null;
 					this.guake_terminal = null;
 					this.create_window(true);

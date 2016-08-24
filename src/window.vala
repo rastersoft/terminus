@@ -32,17 +32,18 @@ namespace Terminus {
 		private bool is_guake;
 
 		private Terminus.Base terminal;
+		private bool initialized;
 
 		public Window(bool guake_mode, Terminus.Base? terminal = null) {
 
 			this.is_guake = guake_mode;
+			this.initialized = false;
 
 			this.type_hint = Gdk.WindowTypeHint.NORMAL;
+			this.focus_on_map = true;
 
 			this.destroy.connect( (w) => {
-				if (!this.is_guake) {
-					this.ended(this);
-				}
+				this.ended(this);
 			});
 
 			if (terminal == null) {
@@ -57,8 +58,16 @@ namespace Terminus {
 			});
 
 			if (guake_mode) {
-				this.map.connect_after(this.mapped);
-				this.map.connect(this.mapped_b);
+
+				var scr = this.get_screen();
+				this.current_size = Terminus.settings.get_int("guake-height");
+				if (this.current_size < 0) {
+					this.current_size = scr.get_height() * 3 / 7;
+					Terminus.settings.set_int("guake-height", this.current_size);
+				}
+				this.move(0,0);
+
+				this.map.connect(this.mapped);
 				this.paned = new Gtk.Paned(Gtk.Orientation.VERTICAL);
 				this.paned.wide_handle = true;
 				this.add(this.paned);
@@ -100,7 +109,6 @@ namespace Terminus {
 					return true;
 				});
 				this.paned.show_all();
-				this.present_guake();
 
 			} else {
 				this.add(this.terminal);
@@ -109,6 +117,30 @@ namespace Terminus {
 			}
 		}
 
+		public override void get_preferred_width (out int minimum_width, out int natural_width) {
+			if (this.is_guake) {
+				var scr = this.get_screen();
+				minimum_width = scr.get_width();
+				natural_width = scr.get_width();
+			} else {
+				this.terminal.get_preferred_width(out minimum_width, out natural_width);
+			}
+		}
+
+		public override void get_preferred_height (out int minimum_height, out int natural_height) {
+			if (this.is_guake) {
+				var scr = this.get_screen();
+				this.current_size = Terminus.settings.get_int("guake-height");
+				if (this.current_size < 0) {
+					this.current_size = scr.get_height() * 3 / 7;
+					Terminus.settings.set_int("guake-height", this.current_size);
+				}
+				minimum_height = this.current_size;
+				natural_height = this.current_size;
+			} else {
+				this.terminal.get_preferred_height(out minimum_height, out natural_height);
+			}
+		}
 
 		public void ended_cb() {
 
@@ -116,39 +148,17 @@ namespace Terminus {
 			this.destroy();
 		}
 
-		public void mapped_b() {
-			this.present_guake();
-		}
-
-
 		public void mapped() {
-			this.present_guake(false);
-			this.grab_focus();
-		}
-
-		public void present_guake(bool half = true) {
 			this.stick();
-			this.fixed.set_size_request(1,1);
-			var scr = this.get_screen();
-			var screen_w = scr.get_width();
-			this.current_size = Terminus.settings.get_int("guake-height");
-			if (this.current_size < 0) {
-				this.current_size = scr.get_height() * 3 / 7;
-				Terminus.settings.set_int("guake-height", this.current_size);
-			}
 			this.set_keep_above(true);
 			this.set_skip_taskbar_hint(true);
 			this.set_skip_pager_hint(true);
 			this.set_decorated(false);
-			if (half) {
-				this.move(0,1);
-				this.resize(screen_w,this.current_size/2);
-				this.paned.set_position(this.current_size/2);
-			} else {
-				this.move(0,0);
-				this.resize(screen_w,this.current_size);
+			if (this.initialized == false) {
 				this.paned.set_position(this.current_size);
 			}
+			this.initialized = true;
 		}
+
 	}
 }
