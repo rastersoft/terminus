@@ -19,7 +19,7 @@ link_libraries ( ${DEPS_LIBRARIES} )
 link_directories ( ${DEPS_LIBRARY_DIRS} )
 find_package (Vala REQUIRED)
 include (ValaVersion)
-ensure_vala_version ("0.32" MINIMUM)
+ensure_vala_version ("0.30" MINIMUM)
 include (ValaPrecompile)
 
 set (VALA_PACKAGES ${VALA_PACKAGES} posix)
@@ -49,7 +49,7 @@ set (APP_SOURCES ${APP_SOURCES} terminal.vala)
 set (APP_SOURCES ${APP_SOURCES} terminus.vala)
 set (APP_SOURCES ${APP_SOURCES} window.vala)
 
-set (COMPILE_OPTIONS ${COMPILE_OPTIONS} --vapidir=/home/raster/workspace/terminus/src/vapidir )
+set (COMPILE_OPTIONS ${COMPILE_OPTIONS} --vapidir=${CMAKE_SOURCE_DIR}/src/vapidir )
 
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 " )
 
