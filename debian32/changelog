@@ -1,0 +1,22 @@
+terminus (0.3.0-Debian1) sid; urgency=low
+
+  * Fixed compilation paths
+  * Now can be compiled with valac-0.30
+  * Added package files
+
+ -- Sergio Costas Rodriguez <raster@rastersoft.com>  Wed, 24 Aug 2016 23:55:00 +0200
+
+terminus (0.2.0-Debian1) sid; urgency=low
+
+  * Fixed resizing
+  * Cyclic jump from tab to tab using Page Down and Page Up
+  * Added note in the README to fix the focus problem in Gnome Shell
+
+ -- Sergio Costas Rodriguez <raster@rastersoft.com>  Wed, 24 Aug 2016 23:50:00 +0200
+
+terminus (0.1.0-Debian1) sid; urgency=low
+
+  * First public version
+
+ -- Sergio Costas Rodriguez <raster@rastersoft.com>  Tue, 23 Aug 2016 23:55:00 +0200
+
