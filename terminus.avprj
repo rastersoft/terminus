@@ -9,7 +9,7 @@ vala_version: 0.30
 
 
 vala_binary: src/terminus
-*version: 0.3.0
+*version: 0.4.0
 compile_c_options: -O2
 use_gresource: extras_gresource_xml
 *vala_package: posix
@@ -44,10 +44,10 @@ use_gresource: extras_gresource_xml
 *translate: vala src/bindkeys.vala
 *translate: vala src/notetab.vala
 *translate: vala src/terminal.vala
-*translate: vala src/window.vala
 *translate: vala src/terminus.vala
 *translate: vala src/container.vala
 *translate: vala src/settings.vala
+*translate: vala src/window.vala
 *translate: glade data/interface/properties.ui
 
 *data: data/local

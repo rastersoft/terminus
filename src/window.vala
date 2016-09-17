@@ -45,12 +45,12 @@ namespace Terminus {
 		private bool is_guake;
 
 		private Terminus.Base terminal;
-		private bool initialized;
+		private int initialized;
 
 		public Window(bool guake_mode, Terminus.Base? terminal = null) {
 
 			this.is_guake = guake_mode;
-			this.initialized = false;
+			this.initialized = 0;
 
 			this.type_hint = Gdk.WindowTypeHint.NORMAL;
 			this.focus_on_map = true;
@@ -71,7 +71,6 @@ namespace Terminus {
 			});
 
 			if (guake_mode) {
-
 				var scr = this.get_screen();
 				this.current_size = Terminus.settings.get_int("guake-height");
 				if (this.current_size < 0) {
@@ -83,16 +82,25 @@ namespace Terminus {
 				this.map.connect(this.mapped);
 				this.paned = new Gtk.Paned(Gtk.Orientation.VERTICAL);
 				this.paned.wide_handle = true;
+				this.paned.events = Gdk.EventMask.BUTTON_PRESS_MASK|Gdk.EventMask.BUTTON_RELEASE_MASK|Gdk.EventMask.POINTER_MOTION_MASK|Gdk.EventMask.LEAVE_NOTIFY_MASK;
 				this.add(this.paned);
 				this.paned.add1(this.terminal);
 				this.fixed = new Terminus.Fixed();
 				//this.fixed.set_size_request(1,1);
 				this.paned.add2(fixed);
 				this.mouseY = -1;
+
 				this.paned.motion_notify_event.connect( (widget,event) => {
 					if (this.mouseY < 0) {
 						return false;
 					}
+
+					if ((event.state & Gdk.ModifierType.BUTTON1_MASK) == 0) {
+						this.mouseY = -1;
+						Terminus.settings.set_int("guake-height", this.current_size);
+						return false;
+					}
+
 					int y;
 					y = (int)(event.y_root);
 					int newval = y - this.mouseY;
@@ -121,8 +129,9 @@ namespace Terminus {
 					Terminus.settings.set_int("guake-height", this.current_size);
 					return true;
 				});
-				this.paned.show_all();
 
+				this.paned.show_all();
+				this.mapped();
 			} else {
 				this.add(this.terminal);
 				this.terminal.show_all();
@@ -167,10 +176,12 @@ namespace Terminus {
 			this.set_skip_taskbar_hint(true);
 			this.set_skip_pager_hint(true);
 			this.set_decorated(false);
-			if (this.initialized == false) {
+			if (this.initialized == 0) {
 				this.paned.set_position(this.current_size);
+			} else if (this.initialized == 1) {
+				this.resize(this.get_screen().get_width(),this.current_size);
 			}
-			this.initialized = true;
+			this.initialized++;
 		}
 
 	}
