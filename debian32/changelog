@@ -1,3 +1,11 @@
+terminus (0.4.0-Debian1) sid; urgency=low
+
+  * Fixed the window size during startup
+  * Fixed resize bug when moving the mouse too fast
+  * Fixed the "Copy" function. Now it copies the text to the clipboard
+
+ -- Sergio Costas Rodriguez <raster@rastersoft.com>  Sat, 17 Sep 2016 23:55:00 +0200
+
 terminus (0.3.0-Debian1) sid; urgency=low
 
   * Fixed compilation paths
