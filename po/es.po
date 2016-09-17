@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-24 19:45+0200\n"
+"POT-Creation-Date: 2016-09-17 23:36+0200\n"
 "PO-Revision-Date: 2016-08-24 19:46+0200\n"
 "Last-Translator: Sergio Costas <rastersoft@gmail.com>\n"
 "Language-Team: Español; Castellano <rastersoft@gmail.com>\n"
@@ -52,11 +52,11 @@ msgstr "Blanco sobre negro"
 msgid "Version %s"
 msgstr "Versión %s"
 
-#: src/settings.vala:176 src/terminal.vala:152
+#: src/settings.vala:176 src/terminal.vala:155
 msgid "New window"
 msgstr "Nueva ventana"
 
-#: src/settings.vala:177 src/terminal.vala:146
+#: src/settings.vala:177 src/terminal.vala:149
 msgid "New tab"
 msgstr "Nueva pestaña"
 
@@ -84,23 +84,23 @@ msgstr "Tecla"
 msgid "Copy"
 msgstr "Copiar"
 
-#: src/terminal.vala:114
+#: src/terminal.vala:117
 msgid "Paste"
 msgstr "Pegar"
 
-#: src/terminal.vala:124
+#: src/terminal.vala:127
 msgid "Split horizontally"
 msgstr "Dividir horizontalmente"
 
-#: src/terminal.vala:136
+#: src/terminal.vala:139
 msgid "Split vertically"
 msgstr "Dividir verticalmente"
 
-#: src/terminal.vala:160
+#: src/terminal.vala:163
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: src/terminal.vala:169
+#: src/terminal.vala:172
 msgid "Close"
 msgstr "Cerrar"
 

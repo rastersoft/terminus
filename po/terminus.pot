@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-24 19:45+0200\n"
+"POT-Creation-Date: 2016-09-17 23:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,11 +50,11 @@ msgstr ""
 msgid "Version %s"
 msgstr ""
 
-#: src/settings.vala:176 src/terminal.vala:152
+#: src/settings.vala:176 src/terminal.vala:155
 msgid "New window"
 msgstr ""
 
-#: src/settings.vala:177 src/terminal.vala:146
+#: src/settings.vala:177 src/terminal.vala:149
 msgid "New tab"
 msgstr ""
 
@@ -82,23 +82,23 @@ msgstr ""
 msgid "Copy"
 msgstr ""
 
-#: src/terminal.vala:114
+#: src/terminal.vala:117
 msgid "Paste"
 msgstr ""
 
-#: src/terminal.vala:124
+#: src/terminal.vala:127
 msgid "Split horizontally"
 msgstr ""
 
-#: src/terminal.vala:136
+#: src/terminal.vala:139
 msgid "Split vertically"
 msgstr ""
 
-#: src/terminal.vala:160
+#: src/terminal.vala:163
 msgid "Preferences"
 msgstr ""
 
-#: src/terminal.vala:169
+#: src/terminal.vala:172
 msgid "Close"
 msgstr ""
 

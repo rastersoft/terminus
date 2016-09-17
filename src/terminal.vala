@@ -108,6 +108,9 @@ namespace Terminus {
 			this.item_copy = new Gtk.MenuItem.with_label(_("Copy"));
 			this.item_copy.activate.connect( () => {
 				this.vte_terminal.copy_primary();
+				var primary = Gtk.Clipboard.get(Gdk.SELECTION_PRIMARY);
+				var clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD);
+				clipboard.set_text(primary.wait_for_text(),-1);
 			});
 			this.menu.add(this.item_copy);
 
