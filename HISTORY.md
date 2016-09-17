@@ -2,6 +2,7 @@
 * Version 0.4.0 (2016-09-17)
    * Fixed the window size during startup
    * Fixed resize bug when moving the mouse too fast
+   * Fixed the "Copy" function. Now it copies the text to the clipboard
 * Version 0.3.0 (2016-08-24)
    * Fixed compilation paths
    * Now can be compiled with valac-0.30
