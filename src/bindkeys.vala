@@ -31,12 +31,16 @@ namespace Terminus {
 	class Bindkey : Object {
 
 		private string? key;
+		private bool use_bindkey;
 
 		public signal void show_guake();
 
-		public Bindkey() {
+		public Bindkey(bool use_bindkey) {
 
-			Keybinder.init();
+			this.use_bindkey = use_bindkey;
+			if (this.use_bindkey) {
+				Keybinder.init();
+			}
 			this.key = null;
 		}
 
@@ -44,23 +48,31 @@ namespace Terminus {
 
 			bool retval;
 
-			if (this.key != null) {
-				this.unset_bindkey();
+			if (this.use_bindkey) {
+				if (this.key != null) {
+					this.unset_bindkey();
+				}
 			}
 			this.key = key;
-			retval = Keybinder.bind(key,Terminus.keybind_cb,this);
-			if (retval == false) {
-				print("Failed to set the guake_mode bind key\n");
+			if (this.use_bindkey) {
+				retval = Keybinder.bind(key,Terminus.keybind_cb,this);
+				if (retval == false) {
+					print("Failed to set the guake_mode bind key\n");
+				}
+				return retval;
+			} else {
+				return true;
 			}
-			return retval;
 		}
 
 		public void unset_bindkey() {
-			if (this.key == null) {
-				return;
+			if (this.use_bindkey) {
+				if (this.key == null) {
+					return;
+				}
+				Keybinder.unbind(this.key,Terminus.keybind_cb);
+				this.key = null;
 			}
-			Keybinder.unbind(this.key,Terminus.keybind_cb);
-			this.key = null;
 		}
 	}
 }

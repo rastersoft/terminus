@@ -1,6 +1,7 @@
 ### CMakeLists automatically created with AutoVala
 ### Do not edit
 
+SET(DBUS_PREFIX ${CMAKE_INSTALL_PREFIX})
 EXECUTE_PROCESS( COMMAND glib-compile-resources --sourcedir=${CMAKE_CURRENT_SOURCE_DIR} --generate-source --target=${CMAKE_CURRENT_BINARY_DIR}/extras.gresource.xml.c ${CMAKE_CURRENT_SOURCE_DIR}/extras.gresource.xml)
 EXECUTE_PROCESS( COMMAND glib-compile-resources --sourcedir=${CMAKE_CURRENT_SOURCE_DIR} --generate-header --target=${CMAKE_CURRENT_BINARY_DIR}/extras.gresource.xml.h ${CMAKE_CURRENT_SOURCE_DIR}/extras.gresource.xml)
 ADD_CUSTOM_COMMAND (
@@ -14,6 +15,7 @@ ADD_CUSTOM_COMMAND (
 add_custom_target(extras_gresource_xml DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/extras.gresource.xml.c)
 SET (extras_gresource_xml_C_FILE ${CMAKE_CURRENT_BINARY_DIR}/extras.gresource.xml.c PARENT_SCOPE)
 SET (extras_gresource_xml_H_FILE ${CMAKE_CURRENT_BINARY_DIR}/extras.gresource.xml.h PARENT_SCOPE)
+install(PROGRAMS ${CMAKE_CURRENT_SOURCE_DIR}/terminus_showhide.sh DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/terminus.desktop DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications/ )
 if( NOT ( ${CMAKE_INSTALL_PREFIX} MATCHES "^/home/" ) )
 	install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/terminus_autorun.desktop DESTINATION /etc/xdg/autostart/ )
@@ -24,5 +26,7 @@ else()
 	endif()
 	install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/terminus_autorun.desktop DESTINATION ${CONFIG_HOME}/autostart )
 endif()
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/com.rastersoft.terminus.service.base ${CMAKE_CURRENT_BINARY_DIR}/com.rastersoft.terminus.service)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/com.rastersoft.terminus.service DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/dbus-1/services/)
 include(GSettings)
 add_schema(org.rastersoft.terminus.gschema.xml)

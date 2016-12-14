@@ -21,9 +21,9 @@ using Gee;
 
 //project version = 0.4.0
 
-
 namespace Terminus {
 
+	TerminusRoot main_root;
 	GLib.Settings settings = null;
 	GLib.Settings keybind_settings = null;
 	Terminus.Bindkey bindkey;
@@ -38,6 +38,7 @@ namespace Terminus {
 
 		public TerminusRoot(string[] argv) {
 
+			main_root = this;
 			this.guake_terminal = null;
 			this.guake_window = null;
 
@@ -78,13 +79,21 @@ namespace Terminus {
 			Terminus.keybind_settings.changed.connect(this.keybind_settings_changed);
 
 			if (launch_terminal || launch_guake) {
+				Bus.own_name (BusType.SESSION, "com.rastersoft.terminus", BusNameOwnerFlags.NONE, this.on_bus_aquired, () => {}, () => {});
 				Gtk.main();
+			}
+		}
+
+		void on_bus_aquired (DBusConnection conn) {
+			try {
+				conn.register_object ("/com/rastersoft/terminus", new RemoteControl ());
+			} catch (IOError e) {
+				GLib.stderr.printf ("Could not register service\n");
 			}
 		}
 
 		public void keybind_settings_changed(string key) {
 
-			print("Cambio %s\n".printf(key));
 			if (key != "guake-mode") {
 				return;
 			}
@@ -144,6 +153,14 @@ namespace Terminus {
 		}
 
 		public void show_hide() {
+			this.show_hide_global(2);
+		}
+
+		public void show_hide_global(int mode) {
+			/*mode = 0: force show
+			 *mode = 1: force hide
+			 *mode = 2: hide if visible, show if hidden
+			 */
 
 			if (Terminus.settings.get_boolean("enable-guake-mode") == false) {
 				return;
@@ -154,10 +171,52 @@ namespace Terminus {
 			}
 
 			if (this.guake_window.visible) {
-				this.guake_window.hide();
+				if ((mode == 1) || (mode == 2)) {
+					this.guake_window.hide();
+				}
 			} else {
-				this.guake_window.present();
+				if ((mode == 0) || (mode == 2)) {
+					this.guake_window.present();
+				}
 			}
+		}
+	}
+
+
+	bool check_params(string[] argv) {
+
+		int param_counter = 0;
+
+		if (check_wayland() == 1) {
+			return false; // under Wayland we can't use bindkeys
+		}
+		
+		while(param_counter < argv.length) {
+			param_counter++;
+			if (argv[param_counter] == "--nobindkey") {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	[DBus (name = "com.rastersoft.terminus")]
+	public class RemoteControl : GLib.Object {
+
+		public int do_ping(int v) {
+			return (v+1);
+		}
+
+		public void show_guake() {
+			main_root.show_hide_global(0);
+		}
+
+		public void hide_guake() {
+			main_root.show_hide_global(1);
+		}
+
+		public void swap_guake() {
+			main_root.show_hide_global(2);
 		}
 	}
 }
@@ -171,12 +230,11 @@ int main(string[] argv) {
 
 	Gtk.init(ref argv);
 
-
 	Terminus.settings = new GLib.Settings("org.rastersoft.terminus");
 	Terminus.keybind_settings = new GLib.Settings("org.rastersoft.terminus.keybindings");
-	Terminus.bindkey = new Terminus.Bindkey();
+	Terminus.bindkey = new Terminus.Bindkey(Terminus.check_params(argv));
 
-	var tm = new Terminus.TerminusRoot(argv);
+	new Terminus.TerminusRoot(argv);
 
 	return 0;
 }

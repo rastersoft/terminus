@@ -7,4 +7,5 @@ src/settings.vala
 src/terminal.vala
 src/terminus.vala
 src/window.vala
+src/checkwayland.c
 data/interface/properties.ui

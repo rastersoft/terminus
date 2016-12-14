@@ -49,17 +49,27 @@ set (APP_SOURCES ${APP_SOURCES} terminal.vala)
 set (APP_SOURCES ${APP_SOURCES} terminus.vala)
 set (APP_SOURCES ${APP_SOURCES} window.vala)
 
+set (CUSTOM_VAPIS_LIST ${CUSTOM_VAPIS_LIST} ${CMAKE_SOURCE_DIR}/src/checkwayland.vapi)
+
 set (COMPILE_OPTIONS ${COMPILE_OPTIONS} --vapidir=${CMAKE_SOURCE_DIR}/src/vapidir )
 
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 " )
+if ((${CMAKE_BUILD_TYPE} STREQUAL "Debug") OR (${CMAKE_BUILD_TYPE} STREQUAL "RelWithDebInfo"))
+	set(COMPILE_OPTIONS ${COMPILE_OPTIONS} "-g")
+endif()
+
+set (COMPILE_OPTIONS ${COMPILE_OPTIONS} --gresources=${CMAKE_SOURCE_DIR}/data/extras.gresource.xml )
 
 vala_precompile(VALA_C terminus
 	${APP_SOURCES}
 PACKAGES
 	${VALA_PACKAGES}
+CUSTOM_VAPIS
+	${CUSTOM_VAPIS_LIST}
 OPTIONS
 	${COMPILE_OPTIONS}
 )
+
+set (VALA_C ${VALA_C} checkwayland.c)
 
 SET (VALA_C ${VALA_C} ${extras_gresource_xml_C_FILE})
 add_executable(terminus ${VALA_C})

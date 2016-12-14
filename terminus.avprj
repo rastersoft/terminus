@@ -1,5 +1,5 @@
 ### AutoVala Project ###
-autovala_version: 21
+autovala_version: 24
 project_name: terminus
 vala_version: 0.30
 
@@ -7,11 +7,10 @@ vala_version: 0.30
 
 *vapidir: src/vapidir
 
-
 vala_binary: src/terminus
 *version: 0.4.0
-compile_c_options: -O2
 use_gresource: extras_gresource_xml
+vala_vapi: checkwayland.vapi
 *vala_package: posix
 *vala_check_package: atk
 *vala_check_package: cairo
@@ -36,27 +35,34 @@ use_gresource: extras_gresource_xml
 *vala_source: terminal.vala
 *vala_source: terminus.vala
 *vala_source: window.vala
+*c_source: checkwayland.c
+
 
 *po: po
 
+*translate: glade data/interface/properties.ui
 *translate: vala src/PanedPercentage.vala
 *translate: vala src/base.vala
 *translate: vala src/bindkeys.vala
-*translate: vala src/notetab.vala
-*translate: vala src/terminus.vala
-*translate: vala src/terminal.vala
+*translate: c src/checkwayland.c
 *translate: vala src/container.vala
+*translate: vala src/notetab.vala
 *translate: vala src/settings.vala
+*translate: vala src/terminal.vala
+*translate: vala src/terminus.vala
 *translate: vala src/window.vala
-*translate: glade data/interface/properties.ui
 
 *data: data/local
 
 *doc: doc
 
+*binary: data/terminus_showhide.sh
+
 *desktop: data/terminus.desktop
 
 *autostart: data/terminus_autorun.desktop
+
+*dbus_service: data/com.rastersoft.terminus.service.base
 
 *scheme: data/org.rastersoft.terminus.gschema.xml
 
