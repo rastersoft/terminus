@@ -44,6 +44,7 @@ namespace Terminus {
 		private Gdk.EventKey new_window_key;
 		private Gdk.EventKey next_tab_key;
 		private Gdk.EventKey previous_tab_key;
+		private bool had_focus;
 
 		public signal void ended(Terminus.Terminal terminal);
 		public signal void split_horizontal(Terminus.Terminal terminal);
@@ -60,6 +61,7 @@ namespace Terminus {
 
 		public Terminal(Terminus.Base main_container, Terminus.Container top_container) {
 
+			had_focus = true; // when creating a new terminal, it must take the focus
 			this.map.connect_after( () => {
 				// this ensures that the title is updated when the window is shown
 				GLib.Timeout.add(500,update_title_cb);
@@ -86,20 +88,24 @@ namespace Terminus {
 			});
 			this.vte_terminal.focus_in_event.connect_after( (event) => {
 				this.update_title();
+				this.had_focus = true;
 				return false;
 			});
 			this.vte_terminal.focus_out_event.connect_after( (event) => {
 				this.update_title();
+				this.had_focus = false;
 				return false;
 			});
 			this.vte_terminal.resize_window.connect_after( (x,y) => {
 				this.update_title();
 			});
 			this.vte_terminal.map.connect_after( (w) => {
-				GLib.Timeout.add(500, () => {
-					this.vte_terminal.grab_focus();
-					return false;
-				});
+				if (this.had_focus) {
+					GLib.Timeout.add(500, () => {
+						this.vte_terminal.grab_focus();
+						return false;
+					});
+				}
 			});
 
 			Terminus.settings.bind("scroll-on-output",this.vte_terminal,"scroll_on_output",GLib.SettingsBindFlags.DEFAULT);
