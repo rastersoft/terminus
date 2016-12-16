@@ -207,6 +207,10 @@ namespace Terminus {
 			return (v+1);
 		}
 
+		public void disable_keybind() {
+			bindkey.unset_bindkey();
+		}
+
 		public void show_guake() {
 			main_root.show_hide_global(0);
 		}

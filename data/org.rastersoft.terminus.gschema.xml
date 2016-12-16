@@ -93,5 +93,10 @@
       <summary>Show Guake-style terminal</summary>
       <description></description>
     </key>
+	 <key type="as" name="guake-mode-gnome-shell">
+      <default><![CDATA[['<Shift><Ctrl>F10']]]></default>
+      <summary>A copy of guake-mode in the format needed by gnome shell</summary>
+      <description></description>
+    </key>
   </schema>
 </schemalist>
