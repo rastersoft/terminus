@@ -3,6 +3,9 @@ autovala_version: 24
 project_name: terminus
 vala_version: 0.30
 
+custom: terminus_gnome_shell/extension.js share/gnome-shell/extensions/showTerminusQuakeWindow@rastersoft.com
+custom: terminus_gnome_shell/metadata.json share/gnome-shell/extensions/showTerminusQuakeWindow@rastersoft.com
+
 *gresource: extras_gresource_xml data/extras.gresource.xml
 
 *vapidir: src/vapidir
