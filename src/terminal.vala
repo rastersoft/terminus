@@ -60,6 +60,11 @@ namespace Terminus {
 
 		public Terminal(Terminus.Base main_container, Terminus.Container top_container) {
 
+			this.map.connect_after( () => {
+				// this ensures that the title is updated when the window is shown
+				GLib.Timeout.add(500,update_title_cb);
+			});
+
 			this.main_container = main_container;
 			this.top_container = top_container;
 			this.orientation = Gtk.Orientation.VERTICAL;
@@ -73,20 +78,28 @@ namespace Terminus {
 			this.pack_start(newbox,true,true);
 
 			this.vte_terminal = new Vte.Terminal();
+
 			this.vte_terminal.set_encoding(null); // by default, UTF-8
-			this.vte_terminal.window_title_changed.connect( () => {
+
+			this.vte_terminal.window_title_changed.connect_after( () => {
 				this.update_title();
 			});
-			this.vte_terminal.focus_in_event.connect( () => {
+			this.vte_terminal.focus_in_event.connect_after( (event) => {
 				this.update_title();
 				return false;
 			});
-			this.vte_terminal.focus_out_event.connect( () => {
+			this.vte_terminal.focus_out_event.connect_after( (event) => {
 				this.update_title();
 				return false;
 			});
-			this.vte_terminal.resize_window.connect( (x,y) => {
+			this.vte_terminal.resize_window.connect_after( (x,y) => {
 				this.update_title();
+			});
+			this.vte_terminal.map.connect_after( (w) => {
+				GLib.Timeout.add(500, () => {
+					this.vte_terminal.grab_focus();
+					return false;
+				});
 			});
 
 			Terminus.settings.bind("scroll-on-output",this.vte_terminal,"scroll_on_output",GLib.SettingsBindFlags.DEFAULT);
@@ -178,9 +191,6 @@ namespace Terminus {
 
 			this.vte_terminal.button_press_event.connect(this.button_event);
 			this.vte_terminal.events = Gdk.EventMask.BUTTON_PRESS_MASK;
-			this.update_title();
-
-			this.show_all();
 
 			// Set all the properties
 			settings_changed("infinite-scroll");
@@ -202,6 +212,13 @@ namespace Terminus {
 			Terminus.keybind_settings.changed.connect(this.keybind_settings_changed);
 
 			this.vte_terminal.key_press_event.connect(this.on_key_press);
+			this.show_all();
+			this.update_title();
+		}
+
+		public bool update_title_cb() {
+			this.update_title();
+			return false;
 		}
 
 		public void keybind_settings_changed(string key) {
@@ -309,17 +326,18 @@ namespace Terminus {
 
 		private void update_title() {
 
-			string title = this.vte_terminal.get_window_title();
-			if (title == null) {
-				title = this.vte_terminal.get_current_file_uri();
+			string s_title = this.vte_terminal.get_window_title();
+			if (s_title == null) {
+				s_title = this.vte_terminal.get_current_file_uri();
 			}
-			if (title == null) {
-				title = this.vte_terminal.get_current_directory_uri();
+			if (s_title == null) {
+				s_title = this.vte_terminal.get_current_directory_uri();
 			}
-			if (title == null) {
-				title = "/bin/bash";
+			if (s_title == null) {
+				s_title = "/bin/bash";
 			}
-			this.top_container.set_tab_title(title);
+			this.top_container.set_tab_title(s_title);
+			
 			var bgcolor = Gdk.RGBA();
 			string fg;
 			string bg;
@@ -338,16 +356,16 @@ namespace Terminus {
 				fg = "#000000";
 				bg = "#AAAAAA";
 			}
-			this.title.label = "<span foreground=\"%s\" background=\"%s\" size=\"small\">%s %ldx%ld</span>".printf(fg,bg,title,this.vte_terminal.get_column_count(),this.vte_terminal.get_row_count());
-			this.titlebox.override_background_color(Gtk.StateFlags.NORMAL,bgcolor);
 			this.title.use_markup = true;
+			this.title.label = "<span foreground=\"%s\" background=\"%s\" size=\"small\">%s %ldx%ld</span>".printf(fg,bg,s_title,this.vte_terminal.get_column_count(),this.vte_terminal.get_row_count());
+			this.titlebox.override_background_color(Gtk.StateFlags.NORMAL,bgcolor);
 		}
 
 		public bool button_event(Gdk.EventButton event) {
 
 			if (event.button == 3) {
 				this.item_copy.sensitive = this.vte_terminal.get_has_selection();
-				this.menu.popup(null,null,null,3,Gtk.get_current_event_time());
+				this.menu.popup_at_pointer(event);
 				return true;
 			}
 
@@ -355,5 +373,4 @@ namespace Terminus {
 		}
 
 	}
-
 }

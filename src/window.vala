@@ -23,11 +23,13 @@ namespace Terminus {
 	class Fixed : Gtk.Fixed {
 
 		public override void get_preferred_width (out int minimum_width, out int natural_width) {
+			base.get_preferred_width(out minimum_width, out natural_width);
 			minimum_width = 1;
 			natural_width = 1;
 		}
 
 		public override void get_preferred_height (out int minimum_height, out int natural_height) {
+			base.get_preferred_height(out minimum_height, out natural_height);
 			minimum_height = 1;
 			natural_height = 1;
 		}
@@ -47,6 +49,14 @@ namespace Terminus {
 		private Terminus.Base terminal;
 		private int initialized;
 
+		private int get_monitor_width() {
+			return this.get_display().get_monitor_at_window(this.get_window().get_effective_toplevel()).get_geometry().width;
+		}
+		
+		private int get_monitor_height() {
+			return this.get_display().get_monitor_at_window(this.get_window().get_effective_toplevel()).get_geometry().height;
+		}
+
 		public Window(bool guake_mode, Terminus.Base? terminal = null) {
 
 			this.is_guake = guake_mode;
@@ -58,7 +68,7 @@ namespace Terminus {
 			this.destroy.connect( (w) => {
 				this.ended(this);
 			});
-
+			
 			if (terminal == null) {
 				this.terminal = new Terminus.Base();
 			} else {
@@ -69,17 +79,27 @@ namespace Terminus {
 			this.terminal.new_window.connect( () => {
 				this.new_window();
 			});
+			
+			this.show.connect_after( () => {
+				GLib.Timeout.add(500, () => {
+					this.present();
+					return false;
+				});
+			});
 
 			if (guake_mode) {
-				var scr = this.get_screen();
+				this.set_properties();
+				
 				this.current_size = Terminus.settings.get_int("guake-height");
 				if (this.current_size < 0) {
-					this.current_size = scr.get_height() * 3 / 7;
+					this.current_size = this.get_monitor_height() * 3 / 7;
 					Terminus.settings.set_int("guake-height", this.current_size);
 				}
-				this.move(0,0);
 
 				this.map.connect(this.mapped);
+				this.realize.connect_after( () => {
+					this.set_size();
+				});
 				this.paned = new Gtk.Paned(Gtk.Orientation.VERTICAL);
 				this.paned.wide_handle = true;
 				this.paned.events = Gdk.EventMask.BUTTON_PRESS_MASK|Gdk.EventMask.BUTTON_RELEASE_MASK|Gdk.EventMask.POINTER_MOTION_MASK|Gdk.EventMask.LEAVE_NOTIFY_MASK;
@@ -106,7 +126,7 @@ namespace Terminus {
 					int newval = y - this.mouseY;
 					this.current_size += newval;
 					this.mouseY = y;
-					this.resize(this.get_screen().get_width(),this.current_size);
+					this.resize(this.get_monitor_width(),this.current_size);
 					this.paned.set_position(this.current_size);
 					return true;
 				});
@@ -131,36 +151,10 @@ namespace Terminus {
 				});
 
 				this.paned.show_all();
-				this.mapped();
 			} else {
 				this.add(this.terminal);
 				this.terminal.show_all();
 				this.present();
-			}
-		}
-
-		public override void get_preferred_width (out int minimum_width, out int natural_width) {
-			if ((this.is_guake) && (this.mouseY < 0)) {
-				var scr = this.get_screen();
-				minimum_width = scr.get_width();
-				natural_width = scr.get_width();
-			} else {
-				this.terminal.get_preferred_width(out minimum_width, out natural_width);
-			}
-		}
-
-		public override void get_preferred_height (out int minimum_height, out int natural_height) {
-			if ((this.is_guake) && (this.mouseY < 0)) {
-				var scr = this.get_screen();
-				this.current_size = Terminus.settings.get_int("guake-height");
-				if (this.current_size < 0) {
-					this.current_size = scr.get_height() * 3 / 7;
-					Terminus.settings.set_int("guake-height", this.current_size);
-				}
-				minimum_height = this.current_size;
-				natural_height = this.current_size;
-			} else {
-				this.terminal.get_preferred_height(out minimum_height, out natural_height);
 			}
 		}
 
@@ -171,18 +165,23 @@ namespace Terminus {
 		}
 
 		public void mapped() {
+			this.set_properties();
+			this.present();
+			this.set_size();
+		}
+
+		private void set_properties(){
 			this.stick();
 			this.set_keep_above(true);
 			this.set_skip_taskbar_hint(true);
 			this.set_skip_pager_hint(true);
 			this.set_decorated(false);
-			if (this.initialized == 0) {
-				this.paned.set_position(this.current_size);
-			} else if (this.initialized == 1) {
-				this.resize(this.get_screen().get_width(),this.current_size);
-			}
-			this.initialized++;
 		}
 
+		private void set_size() {
+			this.move(0,0);
+			this.paned.set_position(this.current_size);
+			this.resize(this.get_monitor_width(),this.current_size);
+		}
 	}
 }

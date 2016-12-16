@@ -54,7 +54,6 @@ namespace Terminus {
 
 			if (terminal == null) {
 				this.terminal = new Terminus.Terminal(this.main_container,this.top_container);
-				this.terminal.grab_focus();
 			} else {
 				this.terminal = terminal;
 			}
