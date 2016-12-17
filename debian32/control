@@ -6,7 +6,7 @@ Build-Depends: build-essential, po-debconf, valac, libc6-dev, libatk1.0-dev, lib
 
 Package: terminus
 Architecture: any
-Version: 0.5.0
+Version: 0.6.0
 Depends: libatk1.0-0, libglib2.0-0, libcairo2, libgtk-3-0, libpangocairo-1.0-0, libpango-1.0-0, libgdk-pixbuf2.0-0, libcairo-gobject2, libgee-0.8-2, libkeybinder-3.0-0, libvte-2.91-0, libgnutls30, libx11-6, libglib2.0-bin
 Description: A new terminal for XWindows
  .

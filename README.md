@@ -39,9 +39,13 @@ https://extensions.gnome.org/extension/234/steal-my-focus/
 
 Q: I'm using Wayland, and pressing Alt+F12 (or my keybinding) doesn't show the Quake-like
 terminal.
-A: That's because Wayland doesn't allow to an application to set its own keybindings. You
-have to use the desktop keybindings to launch the script "terminus_showhide.sh", which
-makes use of the DBus remote control to show and hide the Quake-like terminal.
+A: That's because Wayland doesn't allow to an application to set its own keybindings.
+Fortunately, Terminus includes a Gnome Shell extension that allows to show the Quake-like
+terminal. If you have installed Terminus, just exit your session, enter again, and enable
+the extension with gnome-tweak-tool.
+
+Another way is using the desktop keybindings to launch the script "terminus_showhide.sh",
+which makes use of the DBus remote control to show and hide the Quake-like terminal.
 
 In Gnome Shell it is as easy as opening the Settings window, choose the "Keyboard" icon,
 and add there the desired hotkey, associating it with "terminus_showhide.sh" program.

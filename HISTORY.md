@@ -1,4 +1,8 @@
 ## History of versions ##
+* Version 0.6.0 (2016-12-17)
+   * Added a Gnome Shell extension, to allow to use the quake-terminal mode under Wayland with Gnome Shell
+   * Fixed the top bar (sometimes it didn't show the focus)
+   * Removed several deprecated functions
 * Version 0.5.0 (2016-12-12)
 	* Added Wayland support
 	* Added DBus remote control

@@ -1,3 +1,11 @@
+terminus (0.6.0-Debian1) sid; urgency=low
+
+  * Added a Gnome Shell extension, to allow to use the quake-terminal mode under Wayland with Gnome Shell
+  * Fixed the top bar (sometimes it didn't show the focus)
+  * Removed several deprecated functions
+
+ -- Sergio Costas Rodriguez <raster@rastersoft.com>  Sat, 17 Dec 2016 23:55:00 +0200
+
 terminus (0.5.0-Debian1) sid; urgency=low
 
   * Added Wayland support
