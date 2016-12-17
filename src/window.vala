@@ -50,11 +50,19 @@ namespace Terminus {
 		private int initialized;
 
 		private int get_monitor_width() {
+#if GTK_3_20
+			return this.get_screen().get_width();
+#else
 			return this.get_display().get_monitor_at_window(this.get_window().get_effective_toplevel()).get_geometry().width;
+#endif
 		}
 		
 		private int get_monitor_height() {
+#if GTK_3_20
+			return this.get_screen().get_height();
+#else
 			return this.get_display().get_monitor_at_window(this.get_window().get_effective_toplevel()).get_geometry().height;
+#endif
 		}
 
 		public Window(bool guake_mode, Terminus.Base? terminal = null) {
