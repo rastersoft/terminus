@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-09-17 23:36+0200\n"
-"PO-Revision-Date: 2016-08-24 19:46+0200\n"
+"PO-Revision-Date: 2016-12-22 01:55+0100\n"
 "Last-Translator: Sergio Costas <rastersoft@gmail.com>\n"
 "Language-Team: Español; Castellano <rastersoft@gmail.com>\n"
 "Language: \n"
@@ -33,7 +33,7 @@ msgstr "Negro sobre blanco"
 
 #: src/settings.vala:72
 msgid "Gray on black"
-msgstr "Gris sobre blanco"
+msgstr "Gris sobre negro"
 
 #: src/settings.vala:73
 msgid "Green on black"

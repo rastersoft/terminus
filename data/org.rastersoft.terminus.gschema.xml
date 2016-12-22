@@ -26,6 +26,36 @@
       <summary>Background color</summary>
       <description>The default color used for the terminal background</description>
     </key>
+	 <key type="s" name="bold-color">
+      <default>""</default>
+      <summary>Bold color</summary>
+      <description>The default color used for the terminal bold letters. An empty string means "use the default color".</description>
+    </key>
+	 <key type="s" name="cursor-fg-color">
+      <default>""</default>
+      <summary>Cursor foreground color</summary>
+      <description>The default color used for the terminal cursor. An empty string means "use the default color".</description>
+    </key>
+	 <key type="s" name="cursor-bg-color">
+      <default>""</default>
+      <summary>Cursor background color</summary>
+      <description>The default color used for the terminal cursor. An empty string means "use the default color".</description>
+    </key>
+	 <key type="s" name="highlight-fg-color">
+      <default>""</default>
+      <summary>Highlight foreground color</summary>
+      <description>The default color used for the terminal highlighted letters. An empty string means "use the default color".</description>
+    </key>
+	 <key type="s" name="highlight-bg-color">
+      <default>""</default>
+      <summary>Highlight background color</summary>
+      <description>The default color used for the terminal highlighted letters. An empty string means "use the default color".</description>
+    </key>
+	 <key type="as" name="color-palete">
+      <default><![CDATA[['#000000','#AA0000','#00AA00','#AA5500','#0000AA','#AA00AA','#00AAAA','#AAAAAA','#555555','#FF5555','#55FF55','#FFFF55','#5555FF','#FF55FF','#55FFFF','#FFFFFF']]]></default>
+      <summary>Highlight background color</summary>
+      <description>The default color used for the terminal highlighted letters. An empty string means "use the default color".</description>
+    </key>
     <key type="u" name="scroll-lines">
       <default>500</default>
       <summary>Scroll lines</summary>

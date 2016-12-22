@@ -57,6 +57,7 @@ if ( NOT WHERE_GRESOURCE )
 endif()
 
 add_subdirectory(po)
+add_subdirectory(data/local)
 add_subdirectory(terminus_gnome_shell)
 add_subdirectory(data)
 add_subdirectory(src/vapidir)

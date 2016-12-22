@@ -181,8 +181,8 @@ namespace Terminus {
 
 			item = new Gtk.MenuItem.with_label(_("Preferences"));
 			item.activate.connect( () => {
-				Terminus.Base.window_properties.show_all();
-				Terminus.Base.window_properties.present();
+				Terminus.main_root.window_properties.show_all();
+				Terminus.main_root.window_properties.present();
 			});
 			this.menu.add(item);
 
@@ -195,14 +195,10 @@ namespace Terminus {
 			this.menu.add(item);
 			this.menu.show_all();
 
+			this.show_all();
+
 			this.vte_terminal.button_press_event.connect(this.button_event);
 			this.vte_terminal.events = Gdk.EventMask.BUTTON_PRESS_MASK;
-
-			// Set all the properties
-			settings_changed("infinite-scroll");
-			settings_changed("fg-color");
-			settings_changed("bg-color");
-			settings_changed("use-system-font");
 
 			this.new_tab_key = new Gdk.Event(Gdk.EventType.KEY_RELEASE).key;
 			this.new_window_key = new Gdk.Event(Gdk.EventType.KEY_RELEASE).key;
@@ -218,8 +214,19 @@ namespace Terminus {
 			Terminus.keybind_settings.changed.connect(this.keybind_settings_changed);
 
 			this.vte_terminal.key_press_event.connect(this.on_key_press);
-			this.show_all();
 			this.update_title();
+
+			// Set all the properties
+			settings_changed("infinite-scroll");
+			settings_changed("color-palete");
+			settings_changed("fg-color");
+			settings_changed("bg-color");
+			settings_changed("use-system-font");
+			settings_changed("bold-color");
+			settings_changed("highlight-fg-color");
+			settings_changed("highlight-bg-color");
+			settings_changed("cursor-fg-color");
+			settings_changed("cursor-bg-color");
 		}
 
 		public bool update_title_cb() {
@@ -261,6 +268,20 @@ namespace Terminus {
 
 		public void settings_changed(string key) {
 
+			Gdk.RGBA? color = null;
+			string color_string;
+			if (key.has_suffix("-color")) {
+				color_string = Terminus.settings.get_string(key);
+				if (color_string != "") {
+					color = Gdk.RGBA();
+					if (false == color.parse(color_string)) {
+						color = null;
+					}
+				}
+			} else {
+				color_string = "";
+			}
+
 			switch(key) {
 			case "infinite-scroll":
 			case "scroll-lines":
@@ -272,14 +293,42 @@ namespace Terminus {
 				this.vte_terminal.scrollback_lines = lines;
 				break;
 			case "fg-color":
-				var color = Gdk.RGBA();
-				color.parse(Terminus.settings.get_string("fg-color"));
 				this.vte_terminal.set_color_foreground(color);
 				break;
 			case "bg-color":
-				var color = Gdk.RGBA();
-				color.parse(Terminus.settings.get_string("bg-color"));
 				this.vte_terminal.set_color_background(color);
+				break;
+			case "bold-color":
+				this.vte_terminal.set_color_bold(color);
+				break;
+			case "cursor-fg-color":
+				this.vte_terminal.set_color_cursor_foreground(color);
+				break;
+			case "cursor-bg-color":
+				this.vte_terminal.set_color_cursor(color);
+				break;
+			case "highlight-fg-color":
+				this.vte_terminal.set_color_highlight_foreground(color);
+				break;
+			case "highlight-bg-color":
+				this.vte_terminal.set_color_highlight(color);
+				break;
+			case "color-palete":
+				if (Terminus.check_palette()) {
+					return;
+				}
+				string[] palette_string = Terminus.settings.get_strv("color-palete");
+				Gdk.RGBA[] palette = {};
+				foreach(var color_string2 in palette_string) {
+					var tmpcolor = Gdk.RGBA();
+					tmpcolor.parse(color_string2);
+					palette += tmpcolor;
+				}
+				var fgcolor = Gdk.RGBA();
+				fgcolor.parse(Terminus.settings.get_string("fg-color"));
+				var bgcolor = Gdk.RGBA();
+				bgcolor.parse(Terminus.settings.get_string("bg-color"));
+				this.vte_terminal.set_colors(fgcolor,bgcolor,palette);
 				break;
 			case "use-system-font":
 			case "terminal-font":
@@ -296,7 +345,6 @@ namespace Terminus {
 			default:
 				break;
 			}
-
 		}
 
 		public bool on_key_press(Gdk.EventKey event) {

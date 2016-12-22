@@ -28,6 +28,258 @@ namespace Terminus {
 	GLib.Settings keybind_settings = null;
 	Terminus.Bindkey bindkey;
 
+	class Terminuspalette : Object {
+		
+		public bool custom;
+		public string? name;
+		public Gdk.RGBA[] palette;
+		public Gdk.RGBA? text_fg;
+		public Gdk.RGBA? text_bg;
+		/*public Gdk.RGBA? bold;
+		public Gdk.RGBA? cursor_fg;
+		public Gdk.RGBA? cursor_bg;
+		public Gdk.RGBA? highlight_fg;
+		public Gdk.RGBA? highlight_bg;*/
+		
+		
+		public Terminuspalette() {
+			this.name         = null;
+			this.palette       = {};
+			this.text_fg      = null;
+			this.text_bg      = null;
+			/*this.bold         = null;
+			this.cursor_fg    = null;
+			this.cursor_bg    = null;
+			this.highlight_fg = null;
+			this.highlight_bg = null;*/
+			this.custom       = false;
+		}
+		
+		public bool compare_scheme() {
+
+			if (this.custom) {
+				return false;
+			}
+
+			if (this.text_fg == null) {
+				return false;
+			}
+
+			var color = Gdk.RGBA();
+			string key;
+
+			color.parse(Terminus.settings.get_string("fg-color"));
+			if (!this.text_fg.equal(color)) {
+				return false;
+			}
+			color.parse(Terminus.settings.get_string("bg-color"));
+			if (!this.text_bg.equal(color)) {
+				return false;
+			}
+
+			/*key = Terminus.settings.get_string("bold-color");
+			if (((key == "") && (this.bold != null)) || ((key != "") && (this.bold == null))) {
+				return false;
+			}
+			if (this.bold != null) {
+				color.parse(key);
+				if (!this.bold.equal(color)) {
+					return false;
+				}
+			}
+			
+			key = Terminus.settings.get_string("cursor-fg-color");
+			if (((key == "") && (this.cursor_fg != null)) || ((key != "") && (this.cursor_fg == null))) {
+				return false;
+			}
+			if (this.cursor_fg != null) {
+				color.parse(key);
+				if (!this.cursor_fg.equal(color)) {
+					return false;
+				}
+			}
+			key = Terminus.settings.get_string("cursor-bg-color");
+			if (((key == "") && (this.cursor_bg != null)) || ((key != "") && (this.cursor_bg == null))) {
+				return false;
+			}
+			if (this.cursor_bg != null) {
+				color.parse(key);
+				if (!this.cursor_bg.equal(color)) {
+					return false;
+				}
+			}
+			
+			key = Terminus.settings.get_string("highlight-fg-color");
+			if (((key == "") && (this.highlight_fg != null)) || ((key != "") && (this.highlight_fg == null))) {
+				return false;
+			}
+			if (this.highlight_fg != null) {
+				color.parse(key);
+				if (!this.highlight_fg.equal(color)) {
+					return false;
+				}
+			}
+			key = Terminus.settings.get_string("highlight-bg-color");
+			if (((key == "") && (this.highlight_bg != null)) || ((key != "") && (this.highlight_bg == null))) {
+				return false;
+			}
+			if (this.highlight_bg != null) {
+				color.parse(key);
+				if (!this.highlight_bg.equal(color)) {
+					return false;
+				}
+			}*/
+			
+			return true;
+		}
+		
+		public bool readpalette(string filename) {
+
+			if (!filename.has_suffix(".color_scheme")) {
+				return true;
+			}
+
+			var file = File.new_for_path (filename);
+
+			if (!file.query_exists ()) {
+				return true;
+			}
+			bool has_more =false;
+			int line_n = 0;
+			bool has_error = false;
+			try {
+				var dis = new DataInputStream (file.read ());
+				string line;
+				while ((line = dis.read_line (null)) != null) {
+					line_n++;
+					line = line.strip();
+					if (line.length == 0) {
+						continue;
+					}
+					if (line[0] == '#') {
+						continue;
+					}
+					var pos = line.index_of_char(':');
+					if (pos == -1) {
+						GLib.stderr.printf("Error: palette file %s has unrecognized content at line %d\n",filename,line_n);
+						has_error = true;
+						continue;
+					}
+					var command = line.substring(0,pos).strip();
+					var sdata = line.substring(pos+1).strip();
+					if (command == "name") {
+						this.name = _(sdata);
+						continue;
+					}
+					if (sdata[0] != '#') {
+						sdata = "#" + sdata;
+					}
+					var data = Gdk.RGBA();
+					if (!data.parse(sdata)) {
+						GLib.stderr.printf("Error: palette file %s has an unrecognized color at line %d\n",filename,line_n);
+						has_error = true;
+						continue;
+					}
+					switch(command) {
+						case "palette":
+							if (this.palette.length < 16) {
+								this.palette += data;
+							} else {
+								if (!has_more) {
+									GLib.stderr.printf("Warning: palette file %s has more than 16 colors\n",filename);
+								}
+								has_more = true;
+							}
+							break;
+						case "text_fg":
+							this.text_fg = data;
+							break;
+						case "text_bg":
+							this.text_bg = data;
+							break;
+						/*case "cursor_fg":
+							this.cursor_fg = data;
+							break;
+						case "cursor_bg":
+							this.cursor_bg = data;
+							break;
+						case "highlight_fg":
+							this.highlight_fg = data;
+							break;
+						case "highlight_bg":
+							this.highlight_bg = data;
+							break;
+						case "bold":
+							this.bold = data;
+							break;*/
+						default:
+							GLib.stderr.printf("Error: palette file %s has unrecognized content at line %d\n",filename,line_n);
+							has_error = true;
+							break;
+					}
+				}
+			} catch (Error e) {
+				return true;
+			}
+
+			if ((this.palette.length >0) && (this.palette.length < 16)) {
+				GLib.stdout.printf("Error: Palette file %s has less than 16 colors\n",filename);
+				has_error = true;
+			}
+			if (this.name == null) {
+				GLib.stdout.printf("Error: Palette file %s has no palette name\n",filename);
+				has_error = true;
+			}
+			if ((this.text_bg == null) && (this.text_fg != null)) {
+				GLib.stdout.printf("Error: Palette file %s has text_fg color but not text_bg color\n",filename);
+				has_error = true;
+			}
+			if ((this.text_bg != null) && (this.text_fg == null)) {
+				GLib.stdout.printf("Error: Palette file %s has text_bg color but not text_fg color\n",filename);
+				has_error = true;
+			}
+			/*if ((this.cursor_fg == null) && (this.cursor_bg != null)) {
+				GLib.stdout.printf("Error: Palette file %s has cursor_bg color but not cursor_fg color\n",filename);
+				has_error = true;
+			}
+			if ((this.cursor_fg != null) && (this.cursor_bg == null)) {
+				GLib.stdout.printf("Error: Palette file %s has cursor_fg color but not cursor_bg color\n",filename);
+				has_error = true;
+			}
+			if ((this.highlight_fg == null) && (this.highlight_bg != null)) {
+				GLib.stdout.printf("Error: Palette file %s has highlight_bg color but not highlight_fg color\n",filename);
+				has_error = true;
+			}
+			if ((this.highlight_fg != null) && (this.highlight_bg == null)) {
+				GLib.stdout.printf("Error: Palette file %s has highlight_fg color but not highlight_bg color\n",filename);
+				has_error = true;
+			}
+			if ((this.text_bg == null) && (this.text_fg == null)) {
+				if (this.bold != null) {
+					GLib.stdout.printf("Error: Palette file %s has bold color but not text_fg color, neither text_bg color\n",filename);
+					has_error = true;
+				}
+				if (this.cursor_fg != null) {
+					GLib.stdout.printf("Error: Palette file %s has cursor_fg color but not text_fg color, neither text_bg color\n",filename);
+					has_error = true;
+				}
+				if (this.cursor_bg != null) {
+					GLib.stdout.printf("Error: Palette file %s has cursor_bg color but not text_fg color, neither text_bg color\n",filename);
+					has_error = true;
+				}
+				if (this.highlight_fg != null) {
+					GLib.stdout.printf("Error: Palette file %s has highlight_fg color but not text_fg color, neither text_bg color\n",filename);
+					has_error = true;
+				}
+				if (this.highlight_bg != null) {
+					GLib.stdout.printf("Error: Palette file %s has highlight_bg color but not text_fg color, neither text_bg color\n",filename);
+					has_error = true;
+				}
+			}*/
+			return has_error;
+		}
+	}
+
 	class TerminusRoot : Object {
 
 		private Gee.List<Terminus.Window> window_list;
@@ -35,6 +287,10 @@ namespace Terminus {
 		private bool check_guake = false;
 		private Terminus.Base? guake_terminal;
 		private Terminus.Window? guake_window;
+
+		public Terminuspalette[] palettes;
+		
+		public Terminus.Properties window_properties;
 
 		public TerminusRoot(string[] argv) {
 
@@ -50,6 +306,16 @@ namespace Terminus {
 
 			bool launch_terminal = true;
 			bool launch_guake;
+			
+			var palette = new Terminuspalette();
+			palette.custom = true;
+			palette.name = _("Custom colors");
+			this.palettes += palette;
+
+			this.read_color_schemes(GLib.Path.build_filename(Constants.DATADIR,"terminus"));
+			this.read_color_schemes(GLib.Path.build_filename(Environment.get_home_dir(),".local","share","terminus"));
+
+			this.window_properties = new Terminus.Properties();
 
 			if (binded_key) {
 				launch_guake = Terminus.settings.get_boolean("enable-guake-mode");;
@@ -82,6 +348,24 @@ namespace Terminus {
 				Bus.own_name (BusType.SESSION, "com.rastersoft.terminus", BusNameOwnerFlags.NONE, this.on_bus_aquired, () => {}, () => {});
 				Gtk.main();
 			}
+		}
+		
+		void read_color_schemes(string foldername) {
+			
+			try {
+		        var directory = File.new_for_path (foldername);
+
+		        var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
+
+		        FileInfo file_info;
+		        while ((file_info = enumerator.next_file ()) != null) {
+					var palette = new Terminuspalette();
+					if (!palette.readpalette(GLib.Path.build_filename(foldername,file_info.get_name()))) {
+						this.palettes += palette;
+					}
+		        }
+		    } catch (Error e) {
+		    }
 		}
 
 		void on_bus_aquired (DBusConnection conn) {
@@ -182,7 +466,6 @@ namespace Terminus {
 		}
 	}
 
-
 	bool check_params(string[] argv) {
 
 		int param_counter = 0;
@@ -198,6 +481,30 @@ namespace Terminus {
 			}
 		}
 		return true;
+	}
+	
+	/**
+	 * Ensures that the palette stored in the settings is valid
+	 * If not, replaces the ofending elements
+	 */
+	bool check_palette() {
+		
+		string[] palette_string = Terminus.settings.get_strv("color-palete");
+		if (palette_string.length != 16) {
+			string[] tmp = {};
+			for(var i=0; i<16; i++) {
+				var color = Gdk.RGBA();
+				if ((i < palette_string.length) && (color.parse(palette_string[i]))) {
+					tmp += palette_string[i];
+				} else {
+					var v = (i < 8) ? 0xAA : 0xFF;
+					tmp += "#%02X%02X%02X".printf(((v & 0x01) != 0 ? v : 0),((v & 0x02) != 0 ? v : 0),((v & 0x04) != 0 ? v : 0));
+				}
+			}
+			Terminus.settings.set_strv("color-palete",tmp);
+			return true;
+		}
+		return false;
 	}
 	
 	[DBus (name = "com.rastersoft.terminus")]
@@ -237,6 +544,8 @@ int main(string[] argv) {
 	Terminus.settings = new GLib.Settings("org.rastersoft.terminus");
 	Terminus.keybind_settings = new GLib.Settings("org.rastersoft.terminus.keybindings");
 	Terminus.bindkey = new Terminus.Bindkey(Terminus.check_params(argv));
+
+	Terminus.check_palette();
 
 	new Terminus.TerminusRoot(argv);
 

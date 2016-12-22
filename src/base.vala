@@ -28,14 +28,11 @@ namespace Terminus {
 
 	class Base : Gtk.Notebook {
 
-		public static Terminus.Properties window_properties;
-
 		public signal void ended();
 		public signal void new_window();
 
 		public Base() {
 
-			Terminus.Base.window_properties = new Terminus.Properties();
 			this.page_added.connect(this.check_pages);
 			this.page_removed.connect(this.check_pages);
 			this.new_terminal_tab();
