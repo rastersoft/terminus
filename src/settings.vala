@@ -103,7 +103,6 @@ namespace Terminus {
 				}
 				if (Terminus.settings.get_string("bold-color") != htmlcolor) {
 					Terminus.settings.set_string("bold-color",htmlcolor);
-					changed = true;
 				}
 			}
 			if ((key == null) || (key == "cursor-fg-color") || changed_text_colors) {
@@ -116,7 +115,6 @@ namespace Terminus {
 				}
 				if ((Terminus.settings.get_string("cursor-fg-color") != htmlcolor) || changed_text_colors) {
 					Terminus.settings.set_string("cursor-fg-color",htmlcolor);
-					changed = true;
 				}
 			}
 			if ((key == null) || (key == "cursor-bg-color") || changed_text_colors) {
@@ -129,7 +127,6 @@ namespace Terminus {
 				}
 				if ((Terminus.settings.get_string("cursor-bg-color") != htmlcolor) || changed_text_colors) {
 					Terminus.settings.set_string("cursor-bg-color",htmlcolor);
-					changed = true;
 				}
 			}
 			if ((key == null) || (key == "highlight-fg-color")) {
@@ -142,7 +139,6 @@ namespace Terminus {
 				}
 				if (Terminus.settings.get_string("highlight-fg-color") != htmlcolor) {
 					Terminus.settings.set_string("highlight-fg-color",htmlcolor);
-					changed = true;
 				}
 			}
 			if ((key == null) || (key == "highlight-bg-color")) {
@@ -155,12 +151,11 @@ namespace Terminus {
 				}
 				if (Terminus.settings.get_string("highlight-bg-color") != htmlcolor) {
 					Terminus.settings.set_string("highlight-bg-color",htmlcolor);
-					changed = true;
 				}
 			}
 			if (changed) {
-				//this.get_current_scheme();
-				//this.color_scheme.set_active(this.get_current_scheme());
+				this.get_current_scheme();
+				this.color_scheme.set_active(this.get_current_scheme());
 			}
 		}
 
