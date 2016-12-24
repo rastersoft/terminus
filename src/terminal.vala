@@ -222,6 +222,10 @@ namespace Terminus {
 			settings_changed("color-palete");
 			settings_changed("fg-color");
 			settings_changed("bg-color");
+			settings_changed("cursor-shape");
+			settings_changed("terminal-bell");
+			settings_changed("allow-bold");
+			settings_changed("rewrap-on-resize");
 			// These aren't needed because are refreshed with "color-palete"
 			/*settings_changed("bold-color");
 			settings_changed("highlight-fg-color");
@@ -292,6 +296,25 @@ namespace Terminus {
 					lines = -1;
 				}
 				this.vte_terminal.scrollback_lines = lines;
+				break;
+			case "cursor-shape":
+				var v = Terminus.settings.get_int("cursor-shape");
+				if (v == 0) {
+					this.vte_terminal.cursor_shape = Vte.CursorShape.BLOCK;
+				} else if (v == 1) {
+					this.vte_terminal.cursor_shape = Vte.CursorShape.IBEAM;
+				} else if (v == 2) {
+					this.vte_terminal.cursor_shape = Vte.CursorShape.UNDERLINE;
+				}
+				break;
+			case "terminal-bell":
+				this.vte_terminal.audible_bell = Terminus.settings.get_boolean(key);
+				break;
+			case "rewrap-on-resize":
+				this.vte_terminal.rewrap_on_resize = Terminus.settings.get_boolean(key);
+				break;
+			case "allow-bold":
+				this.vte_terminal.allow_bold = Terminus.settings.get_boolean(key);
 				break;
 			case "fg-color":
 				this.vte_terminal.set_color_foreground(color);

@@ -11,11 +11,6 @@
       <summary>Font used in terminals</summary>
       <description></description>
     </key>
-    <key type="i" name="color-scheme">
-      <default>1</default>
-      <summary>Color scheme used</summary>
-      <description></description>
-    </key>
     <key type="s" name="fg-color">
       <default>"#C0C0C0"</default>
       <summary>Text color</summary>
@@ -89,6 +84,26 @@
     <key type="s" name="shell-command">
       <default>"/bin/bash"</default>
       <summary>Shell to use</summary>
+      <description></description>
+    </key>
+	<key type="i" name="cursor-shape">
+      <default>1</default>
+      <summary>Desired cursor shape</summary>
+      <description>0: block; 1: double T; 2: underscore</description>
+    </key>
+	<key type="b" name="terminal-bell">
+      <default>true</default>
+      <summary></summary>
+      <description></description>
+    </key>
+	<key type="b" name="allow-bold">
+      <default>true</default>
+      <summary>Whether the terminal will allow applications to show bold text</summary>
+      <description></description>
+    </key>
+	<key type="b" name="rewrap-on-resize">
+      <default>true</default>
+      <summary>Whether the terminal should rewrap the text when the window is resized</summary>
       <description></description>
     </key>
 	<!--<key type="" name="">

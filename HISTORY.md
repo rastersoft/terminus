@@ -3,6 +3,8 @@
    * Added full palette support
    * Added all palette styles from gnome-terminal
    * Added Solarized palette
+   * Allows to set the preferred shell
+   * Allows to configure more details (cursor shape, using bolds, rewrap on resize, and terminal bell)
 * Version 0.6.0 (2016-12-17)
    * Added a Gnome Shell extension, to allow to use the quake-terminal mode under Wayland with Gnome Shell
    * Fixed the top bar (sometimes it didn't show the focus)
