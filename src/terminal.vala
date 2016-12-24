@@ -218,15 +218,16 @@ namespace Terminus {
 
 			// Set all the properties
 			settings_changed("infinite-scroll");
+			settings_changed("use-system-font");
 			settings_changed("color-palete");
 			settings_changed("fg-color");
 			settings_changed("bg-color");
-			settings_changed("use-system-font");
-			settings_changed("bold-color");
+			// These aren't needed because are refreshed with "color-palete"
+			/*settings_changed("bold-color");
 			settings_changed("highlight-fg-color");
 			settings_changed("highlight-bg-color");
 			settings_changed("cursor-fg-color");
-			settings_changed("cursor-bg-color");
+			settings_changed("cursor-bg-color");*/
 		}
 
 		public bool update_title_cb() {
@@ -329,6 +330,11 @@ namespace Terminus {
 				var bgcolor = Gdk.RGBA();
 				bgcolor.parse(Terminus.settings.get_string("bg-color"));
 				this.vte_terminal.set_colors(fgcolor,bgcolor,palette);
+				this.settings_changed("bold-color");
+				this.settings_changed("cursor-fg-color");
+				this.settings_changed("cursor-bg-color");
+				this.settings_changed("highlight-fg-color");
+				this.settings_changed("highlight-bg-color");
 				break;
 			case "use-system-font":
 			case "terminal-font":

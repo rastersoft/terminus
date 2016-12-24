@@ -133,6 +133,21 @@ namespace Terminus {
 			return true;
 		}
 		
+		public bool compare_palette() {
+			
+			string[] current = Terminus.settings.get_strv("color-palete");
+			if (current.length != this.palette.length) {
+				return false;
+			}
+			for(int i = 0; i < 16; i++) {
+				string color = "#%02X%02X%02X".printf((int)(this.palette[i].red*255),(int)(this.palette[i].green*255),(int)(this.palette[i].blue*255));
+				if (current[i].ascii_up() != color) {
+					return false;
+				}
+			}
+			return true;
+		}
+		
 		public bool readpalette(string filename) {
 
 			if (!filename.has_suffix(".color_scheme")) {
