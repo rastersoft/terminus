@@ -8,13 +8,14 @@ A new terminal for XWindows (and Wayland)
 There are plenty of graphic terminals for linux, so what makes this one different?
 
 First, it allows to split a window in several tiling subwindows, exactly like the old
-Terminator terminal. Of course it can create several simultaneous windows, and have
-tabs in each window.
+Terminator terminal. Of course it can create several simultaneous windows, and allows
+to have several tabs in each window.
 
 Second, allows to have an always-available drop-down terminal in all screens, with an
 appearance similar to the Quake console, exactly like Guake.
 
-Of course, the Guake-like terminal can be split in tiling subwindows.
+Of course, the Guake-like terminal can be split in tiling subwindows, wich is its main
+novelty.
 
 Third, it has been written in Vala and uses Gtk3, which allows it to take advantage
 of the new characteristics available and to use less resources (both guake and terminator
@@ -60,15 +61,67 @@ to have it. You can also launch it from a terminal.
 Currently the number of options modificable is small, but more will become available.
 
 
+## Creating new palettes ##
+
+It is very easy to add new palettes to Terminus. Just edit a file with *.color_scheme*
+as extension, and place it at */usr/share/terminus* (or */usr/local/share/terminus*,
+depending where you installed the binaries) to have it globally available, or at
+*~/.local/share/terminus* to make it available only to you.
+
+The format is very simple. Here is an example that defines a foreground/background
+color scheme:
+
+        name: Orange on black
+		name[es]: Naranja sobre negro
+        text_fg: #FECE12
+        text_bg: #000000
+
+This file will define the *Orange on black* color scheme, that specifies that the
+foreground will be orange, and the background will be black. It also specifies the name
+translated into spanish.
+
+Another example, this time for a palette scheme:
+
+        name: Solarized
+        palette: #002b36
+        palette: #073642
+        palette: #586e75
+        palette: #657b83
+        palette: #839496
+        palette: #93a1a1
+        palette: #eee8d5
+        palette: #fdf6e3
+        palette: #b58900
+        palette: #cb4b16
+        palette: #dc322f
+        palette: #d33682
+        palette: #6c71c4
+        palette: #268bd2
+        palette: #2aa198
+        palette: #859900
+
+This one defines the *Solarized* palette, with all its 16 colors. Each *palette*
+entry defines one color, and they will be inserted in that precise order. There
+must be exactly 16 *palette* entries; no more, no less.
+
+You can define in a single file a color scheme and a palette scheme, but they will
+be shown in the app as separated elements. This is: if you define in a single file
+a color and palette scheme called MYGREATFULLSCHEME, you will find a color scheme
+called MYGREATFULLSCHEME in the color scheme list, and it will change only the
+foreground/background colors; and you also will find a palette scheme called
+MYGREATFULLSCHEME in the palette scheme list, and it will change only the palette
+itself, but not the foreground/background colors.
+
+
 ## FAQ ##
 
-Q: I use Gnome-Shell and when I show the Quake terminal, it doesn't get the focus.
-A: It seems that installing the "Steal my focus" extension fix it. It can be found at
+*Q:* I use Gnome-Shell and when I show the Quake terminal, it doesn't get the focus.
+*A:* It seems that installing the "Steal my focus" extension fix it. It can be found at
 https://extensions.gnome.org/extension/234/steal-my-focus/
 
-Q: I'm using Wayland, and pressing Alt+F12 (or my keybinding) doesn't show the Quake-like
+*Q:* I'm using Wayland, and pressing Alt+F12 (or my keybinding) doesn't show the Quake-like
 terminal.
-A: That's because Wayland doesn't allow to an application to set its own keybindings.
+*A:* That's because Wayland doesn't allow to an application to set its own keybindings.
 Fortunately, Terminus includes a Gnome Shell extension that allows to show the Quake-like
 terminal. If you have installed Terminus, just exit your session, enter again, and enable
 the extension with gnome-tweak-tool.
@@ -79,6 +132,8 @@ which makes use of the DBus remote control to show and hide the Quake-like termi
 In Gnome Shell it is as easy as opening the Settings window, choose the "Keyboard" icon,
 and add there the desired hotkey, associating it with "terminus_showhide.sh" program.
 
+*Q:* I translated Terminus, but the color and palette schemes aren't translated. Why?
+*A:* You have to also translate the ".color_scheme" files located at data/local.
 
 ## Contacting the author ##
 

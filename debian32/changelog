@@ -1,3 +1,11 @@
+terminus (0.7.0-Debian1) sid; urgency=low
+
+  * Added full palette support
+  * Added all palette styles from gnome-terminal
+  * Added Solarized palette
+
+ -- Sergio Costas Rodriguez <raster@rastersoft.com>  Sat, 24 Dec 2016 23:55:00 +0200
+
 terminus (0.6.0-Debian1) sid; urgency=low
 
   * Added a Gnome Shell extension, to allow to use the quake-terminal mode under Wayland with Gnome Shell

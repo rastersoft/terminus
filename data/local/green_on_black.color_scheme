@@ -1,3 +1,4 @@
 name: Green on black
+name[es]: Verde sobre negro
 text_fg: #00FF00
 text_bg: #000000

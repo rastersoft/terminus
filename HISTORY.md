@@ -1,4 +1,8 @@
 ## History of versions ##
+* Version 0.7.0 (2016-12-24)
+   * Added full palette support
+   * Added all palette styles from gnome-terminal
+   * Added Solarized palette
 * Version 0.6.0 (2016-12-17)
    * Added a Gnome Shell extension, to allow to use the quake-terminal mode under Wayland with Gnome Shell
    * Fixed the top bar (sometimes it didn't show the focus)

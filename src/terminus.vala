@@ -19,7 +19,7 @@
 using Gtk;
 using Gee;
 
-//project version = 0.6.0
+//project version = 0.7.0
 
 namespace Terminus {
 
@@ -32,6 +32,7 @@ namespace Terminus {
 		
 		public bool custom;
 		public string? name;
+		public HashMap<string, string> name_locale;
 		public Gdk.RGBA[] palette;
 		public Gdk.RGBA? text_fg;
 		public Gdk.RGBA? text_bg;
@@ -47,6 +48,7 @@ namespace Terminus {
 			this.palette       = {};
 			this.text_fg      = null;
 			this.text_bg      = null;
+			this.name_locale  = new HashMap<string, string> ();
 			/*this.bold         = null;
 			this.cursor_fg    = null;
 			this.cursor_bg    = null;
@@ -176,14 +178,25 @@ namespace Terminus {
 					}
 					var pos = line.index_of_char(':');
 					if (pos == -1) {
-						GLib.stderr.printf("Error: palette file %s has unrecognized content at line %d\n",filename,line_n);
+						GLib.stderr.printf(_("Error: palette file %s has unrecognized content at line %d\n"),filename,line_n);
 						has_error = true;
 						continue;
 					}
 					var command = line.substring(0,pos).strip();
 					var sdata = line.substring(pos+1).strip();
 					if (command == "name") {
-						this.name = _(sdata);
+						this.name = sdata;
+						continue;
+					}
+					if (command.has_prefix("name[")) {
+						var p = command.index_of_char(']');
+						if (p == -1) {
+							GLib.stderr.printf(_("Error: palette file %s has opens a bracket at line %d without closing it\n"),filename,line_n);
+							has_error = true;
+							continue;
+						}
+						var lang = command.substring(5,p-5);
+						this.name_locale[lang] = sdata;
 						continue;
 					}
 					if (sdata[0] != '#') {
@@ -191,7 +204,7 @@ namespace Terminus {
 					}
 					var data = Gdk.RGBA();
 					if (!data.parse(sdata)) {
-						GLib.stderr.printf("Error: palette file %s has an unrecognized color at line %d\n",filename,line_n);
+						GLib.stderr.printf(_("Error: palette file %s has an unrecognized color at line %d\n"),filename,line_n);
 						has_error = true;
 						continue;
 					}
@@ -201,7 +214,7 @@ namespace Terminus {
 								this.palette += data;
 							} else {
 								if (!has_more) {
-									GLib.stderr.printf("Warning: palette file %s has more than 16 colors\n",filename);
+									GLib.stderr.printf(_("Warning: palette file %s has more than 16 colors\n"),filename);
 								}
 								has_more = true;
 							}
@@ -228,7 +241,7 @@ namespace Terminus {
 							this.bold = data;
 							break;*/
 						default:
-							GLib.stderr.printf("Error: palette file %s has unrecognized content at line %d\n",filename,line_n);
+							GLib.stderr.printf(_("Error: palette file %s has unrecognized content at line %d\n"),filename,line_n);
 							has_error = true;
 							break;
 					}
@@ -238,19 +251,19 @@ namespace Terminus {
 			}
 
 			if ((this.palette.length >0) && (this.palette.length < 16)) {
-				GLib.stdout.printf("Error: Palette file %s has less than 16 colors\n",filename);
+				GLib.stdout.printf(_("Error: Palette file %s has less than 16 colors\n"),filename);
 				has_error = true;
 			}
-			if (this.name == null) {
-				GLib.stdout.printf("Error: Palette file %s has no palette name\n",filename);
+			if ((this.name == null) || (this.name == "")) {
+				GLib.stdout.printf(_("Error: Palette file %s has no palette name\n"),filename);
 				has_error = true;
 			}
 			if ((this.text_bg == null) && (this.text_fg != null)) {
-				GLib.stdout.printf("Error: Palette file %s has text_fg color but not text_bg color\n",filename);
+				GLib.stdout.printf(_("Error: Palette file %s has text_fg color but not text_bg color\n"),filename);
 				has_error = true;
 			}
 			if ((this.text_bg != null) && (this.text_fg == null)) {
-				GLib.stdout.printf("Error: Palette file %s has text_bg color but not text_fg color\n",filename);
+				GLib.stdout.printf(_("Error: Palette file %s has text_bg color but not text_fg color\n"),filename);
 				has_error = true;
 			}
 			/*if ((this.cursor_fg == null) && (this.cursor_bg != null)) {
@@ -291,6 +304,12 @@ namespace Terminus {
 					has_error = true;
 				}
 			}*/
+			foreach(var locale in GLib.Intl.get_language_names()) {
+				if (this.name_locale.has_key(locale)) {
+					this.name = this.name_locale.get(locale);
+					break;
+				}
+			}
 			return has_error;
 		}
 	}
@@ -303,7 +322,7 @@ namespace Terminus {
 		private Terminus.Base? guake_terminal;
 		private Terminus.Window? guake_window;
 
-		public Terminuspalette[] palettes;
+		public Gee.List<Terminuspalette> palettes;
 		
 		public Terminus.Properties window_properties;
 
@@ -322,13 +341,15 @@ namespace Terminus {
 			bool launch_terminal = true;
 			bool launch_guake;
 			
-			var palette = new Terminuspalette();
-			palette.custom = true;
-			palette.name = _("Custom colors");
-			this.palettes += palette;
+			this.palettes = new Gee.ArrayList<Terminuspalette>();
 
 			this.read_color_schemes(GLib.Path.build_filename(Constants.DATADIR,"terminus"));
 			this.read_color_schemes(GLib.Path.build_filename(Environment.get_home_dir(),".local","share","terminus"));
+			var palette = new Terminuspalette();
+			palette.custom = true;
+			palette.name = _("Custom colors");
+			this.palettes.sort(this.ComparePalettes);
+			this.palettes.add(palette);
 
 			this.window_properties = new Terminus.Properties();
 
@@ -365,6 +386,19 @@ namespace Terminus {
 			}
 		}
 		
+		public int ComparePalettes(Terminuspalette a, Terminuspalette b) {
+			
+			if (a.name < b.name) {
+				return -1;
+			} else {
+				if (a.name > b.name) {
+					return 1;
+				} else {
+					return 0;
+				}
+			}
+		}
+		
 		void read_color_schemes(string foldername) {
 			
 			try {
@@ -376,7 +410,7 @@ namespace Terminus {
 		        while ((file_info = enumerator.next_file ()) != null) {
 					var palette = new Terminuspalette();
 					if (!palette.readpalette(GLib.Path.build_filename(foldername,file_info.get_name()))) {
-						this.palettes += palette;
+						this.palettes.add(palette);
 					}
 		        }
 		    } catch (Error e) {

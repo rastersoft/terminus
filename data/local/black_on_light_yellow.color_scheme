@@ -1,3 +1,4 @@
 name: Black on light yellow
+name[es]: Negro sobre amarillo claro
 text_fg: #000000
 text_bg: #FFFFDD

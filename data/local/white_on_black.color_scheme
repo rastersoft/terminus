@@ -1,3 +1,4 @@
 name: White on black
+name[es]: Blanco sobre negro
 text_fg: #FFFFFF
 text_bg: #000000
