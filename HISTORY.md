@@ -1,4 +1,6 @@
 ## History of versions ##
+* Version 0.8.0 (2017-08-01)
+   * Fixed some startup bugs
 * Version 0.7.0 (2016-12-24)
    * Added full palette support
    * Added all palette styles from gnome-terminal

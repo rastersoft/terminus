@@ -19,7 +19,7 @@
 using Gtk;
 using Gee;
 
-//project version = 0.7.0
+//project version = 0.8.0
 
 namespace Terminus {
 
@@ -29,7 +29,7 @@ namespace Terminus {
 	Terminus.Bindkey bindkey;
 
 	class Terminuspalette : Object {
-		
+
 		public bool custom;
 		public string? name;
 		public HashMap<string, string> name_locale;
@@ -41,8 +41,7 @@ namespace Terminus {
 		public Gdk.RGBA? cursor_bg;
 		public Gdk.RGBA? highlight_fg;
 		public Gdk.RGBA? highlight_bg;*/
-		
-		
+
 		public Terminuspalette() {
 			this.name         = null;
 			this.palette       = {};
@@ -56,7 +55,7 @@ namespace Terminus {
 			this.highlight_bg = null;*/
 			this.custom       = false;
 		}
-		
+
 		public bool compare_scheme() {
 
 			if (this.custom) {
@@ -89,7 +88,7 @@ namespace Terminus {
 					return false;
 				}
 			}
-			
+
 			key = Terminus.settings.get_string("cursor-fg-color");
 			if (((key == "") && (this.cursor_fg != null)) || ((key != "") && (this.cursor_fg == null))) {
 				return false;
@@ -110,7 +109,7 @@ namespace Terminus {
 					return false;
 				}
 			}
-			
+
 			key = Terminus.settings.get_string("highlight-fg-color");
 			if (((key == "") && (this.highlight_fg != null)) || ((key != "") && (this.highlight_fg == null))) {
 				return false;
@@ -131,12 +130,12 @@ namespace Terminus {
 					return false;
 				}
 			}*/
-			
+
 			return true;
 		}
-		
+
 		public bool compare_palette() {
-			
+
 			string[] current = Terminus.settings.get_strv("color-palete");
 			if (current.length != this.palette.length) {
 				return false;
@@ -149,7 +148,7 @@ namespace Terminus {
 			}
 			return true;
 		}
-		
+
 		public bool readpalette(string filename) {
 
 			if (!filename.has_suffix(".color_scheme")) {
@@ -322,8 +321,11 @@ namespace Terminus {
 		private Terminus.Base? guake_terminal;
 		private Terminus.Window? guake_window;
 
+		private bool tmp_launch_terminal;
+		private bool tmp_launch_guake;
+
 		public Gee.List<Terminuspalette> palettes;
-		
+
 		public Terminus.Properties window_properties;
 
 		public TerminusRoot(string[] argv) {
@@ -338,9 +340,9 @@ namespace Terminus {
 
 			this.check_params(argv);
 
-			bool launch_terminal = true;
-			bool launch_guake;
-			
+			this.tmp_launch_terminal = true;
+			this.tmp_launch_guake = false;
+
 			this.palettes = new Gee.ArrayList<Terminuspalette>();
 
 			this.read_color_schemes(GLib.Path.build_filename(Constants.DATADIR,"terminus"));
@@ -354,40 +356,39 @@ namespace Terminus {
 			this.window_properties = new Terminus.Properties();
 
 			if (binded_key) {
-				launch_guake = Terminus.settings.get_boolean("enable-guake-mode");;
+				this.tmp_launch_guake = Terminus.settings.get_boolean("enable-guake-mode");;
 			} else {
-				launch_guake = false;
+				this.tmp_launch_guake = false;
 			}
 
 			if (this.launch_guake) {
-				launch_terminal = false;
+				this.tmp_launch_terminal = false;
 				this.check_guake = false;
-				launch_guake = true;
 			}
 
 			if (this.check_guake) {
-				launch_terminal = false;
-				launch_guake = Terminus.settings.get_boolean("enable-guake-mode");
+				this.tmp_launch_terminal = false;
+				this.tmp_launch_guake = Terminus.settings.get_boolean("enable-guake-mode");
 			}
 
-			if (launch_terminal) {
-				this.create_window(false);
-			}
+			if (this.tmp_launch_terminal || this.tmp_launch_guake) {
+				Bus.own_name (BusType.SESSION, "com.rastersoft.terminus", BusNameOwnerFlags.NONE, this.on_bus_aquired, () => {
+					if (this.tmp_launch_guake) {
+						this.create_window(true);
+					}
+					this.tmp_launch_guake = false;
 
-			if (launch_guake) {
-				this.create_window(true);
-			}
+					Terminus.keybind_settings.changed.connect(this.keybind_settings_changed);
 
-			Terminus.keybind_settings.changed.connect(this.keybind_settings_changed);
-
-			if (launch_terminal || launch_guake) {
-				Bus.own_name (BusType.SESSION, "com.rastersoft.terminus", BusNameOwnerFlags.NONE, this.on_bus_aquired, () => {}, () => {});
+					}, () => {});
+				print("Entro en Gmain\n");
 				Gtk.main();
 			}
+
 		}
-		
+
 		public int ComparePalettes(Terminuspalette a, Terminuspalette b) {
-			
+
 			if (a.name < b.name) {
 				return -1;
 			} else {
@@ -398,9 +399,9 @@ namespace Terminus {
 				}
 			}
 		}
-		
+
 		void read_color_schemes(string foldername) {
-			
+
 			try {
 		        var directory = File.new_for_path (foldername);
 
@@ -423,6 +424,10 @@ namespace Terminus {
 			} catch (IOError e) {
 				GLib.stderr.printf ("Could not register service\n");
 			}
+			if (this.tmp_launch_terminal) {
+				this.create_window(false);
+			}
+			this.tmp_launch_terminal = false;
 		}
 
 		public void keybind_settings_changed(string key) {
@@ -471,6 +476,7 @@ namespace Terminus {
 		public void check_params(string[] argv) {
 
 			int param_counter = 0;
+			bool exit_at_end = false;
 
 			while(param_counter < argv.length) {
 				param_counter++;
@@ -482,6 +488,13 @@ namespace Terminus {
 					this.check_guake = true;
 					continue;
 				}
+				if ((argv[param_counter] == "-h") || (argv[param_counter] == "--help")) {
+					print("Usage: terminus [--guake] [--check_guake]\n");
+					exit_at_end = true;
+				}
+			}
+			if (exit_at_end) {
+				Posix.exit(0);
 			}
 		}
 
@@ -522,7 +535,7 @@ namespace Terminus {
 		if (check_wayland() == 1) {
 			return false; // under Wayland we can't use bindkeys
 		}
-		
+
 		while(param_counter < argv.length) {
 			param_counter++;
 			if (argv[param_counter] == "--nobindkey") {
@@ -531,13 +544,13 @@ namespace Terminus {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Ensures that the palette stored in the settings is valid
 	 * If not, replaces the ofending elements
 	 */
 	bool check_palette() {
-		
+
 		string[] palette_string = Terminus.settings.get_strv("color-palete");
 		if (palette_string.length != 16) {
 			string[] tmp = {};
@@ -555,7 +568,7 @@ namespace Terminus {
 		}
 		return false;
 	}
-	
+
 	[DBus (name = "com.rastersoft.terminus")]
 	public class RemoteControl : GLib.Object {
 

@@ -1,8 +1,16 @@
+terminus (0.8.0-Debian1) sid; urgency=low
+
+  * Fixed some startup bugs
+
+ -- Sergio Costas Rodriguez <raster@rastersoft.com>  Tue, 01 Aug 2017 23:55:00 +0200
+
 terminus (0.7.0-Debian1) sid; urgency=low
 
   * Added full palette support
   * Added all palette styles from gnome-terminal
   * Added Solarized palette
+  * Allows to set the preferred shell
+  * Allows to configure more details (cursor shape, using bolds, rewrap on resize, and terminal bell)
 
  -- Sergio Costas Rodriguez <raster@rastersoft.com>  Sat, 24 Dec 2016 23:55:00 +0200
 

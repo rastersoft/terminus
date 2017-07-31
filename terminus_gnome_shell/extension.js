@@ -22,13 +22,13 @@ const GioSSS = Gio.SettingsSchemaSource;
 
 const TerminusClass = new Lang.Class({
    Name: 'Terminus.Launcher',
-	 
+
 	_init: function() {
 
 		this._settings = new Gio.Settings({schema: 'org.rastersoft.terminus.keybindings'});
 		this._settingsChanged(null,"guake-mode"); // copy the guake-mode key to guake-mode-gnome-shell key
 		this._settingsChangedConnect = this._settings.connect('changed',Lang.bind(this,this._settingsChanged));
-		 
+
 	   let mode = Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.ALL;
 	   let flags = Meta.KeyBindingFlags.NONE;
 	   this.instance = null;
@@ -38,13 +38,12 @@ const TerminusClass = new Lang.Class({
 		   mode,
 			Lang.bind(this, this.launch_function)
 	   );
-		
 	},
-	
+
 	destroy: function() {
 		Main.wm.removeKeybinding("guake-mode");
 	},
-	
+
 	launch_function: function() {
 		if (this.instance === null) {
 			this.instance = new MyProxy(Gio.DBus.session, 'com.rastersoft.terminus','/com/rastersoft/terminus');
@@ -52,7 +51,7 @@ const TerminusClass = new Lang.Class({
 		}
 		this.instance.SwapGuakeSync();
 	},
-	
+
 	_settingsChanged: function(st,name) {
     	if (name == "guake-mode") {
 			var new_key = this._settings.get_string("guake-mode");
@@ -60,8 +59,8 @@ const TerminusClass = new Lang.Class({
 		}
 	}
 });
-	 
-	 
+
+
 function init() {
 
 }
@@ -73,5 +72,5 @@ function enable() {
 }
 
 function disable() {
-	
+
 }
