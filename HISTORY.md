@@ -1,4 +1,8 @@
 ## History of versions ##
+* Version 0.8.1 (2017-09-18)
+   * Fixed the install path when creating packages
+   * Fixed the gnome shell extension, now it works on gnome shell 3.24 and 3.26
+   * Forced GTK version to 3, to avoid compiling with GTK 4
 * Version 0.8.0 (2017-08-01)
    * Fixed some startup bugs
 * Version 0.7.0 (2016-12-24)

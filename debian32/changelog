@@ -1,3 +1,11 @@
+terminus (0.8.1-Debian1) sid; urgency=low
+
+  * Fixed the install path when creating packages
+  * Fixed the gnome shell extension, now it works on gnome shell 3.24 and 3.26
+  * Forced GTK version to 3, to avoid compiling with GTK 4
+
+ -- Sergio Costas Rodriguez <raster@rastersoft.com>  Mon, 18 Sep 2017 23:55:00 +0200
+
 terminus (0.8.0-Debian1) sid; urgency=low
 
   * Fixed some startup bugs
