@@ -126,6 +126,14 @@ namespace Terminus {
 			this.terminal = null;
 		}
 
+		public void do_grab_focus() {
+			if (this.terminal == null) {
+				this.container1.do_grab_focus();
+			} else {
+				this.terminal.do_grab_focus();
+			}
+		}
+
 		public void ended_child(Terminus.Container child) {
 
 			Terminus.Container old_container;
@@ -144,6 +152,7 @@ namespace Terminus {
 			if (new_child is Terminus.Terminal) {
 				this.terminal = new_child as Terminus.Terminal;
 				this.set_terminal_child();
+				this.terminal.do_grab_focus();
 			} else {
 				this.paned = new_child as Terminus.PanedPercentage;
 				this.container1 = old_container.container1;
@@ -152,6 +161,7 @@ namespace Terminus {
 				this.container2.ended.connect(this.ended_child);
 				this.add(this.paned);
 				this.paned.show_all();
+				this.container1.do_grab_focus();
 			}
 		}
 	}

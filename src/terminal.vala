@@ -59,6 +59,11 @@ namespace Terminus {
 		}
 
 
+		public void do_grab_focus() {
+			this.vte_terminal.grab_focus();
+		}
+
+
 		public Terminal(Terminus.Base main_container, Terminus.Container top_container) {
 
 			had_focus = true; // when creating a new terminal, it must take the focus
@@ -420,7 +425,7 @@ namespace Terminus {
 				s_title = "/bin/bash";
 			}
 			this.top_container.set_tab_title(s_title);
-			
+
 			var bgcolor = Gdk.RGBA();
 			string fg;
 			string bg;
