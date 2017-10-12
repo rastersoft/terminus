@@ -1,3 +1,10 @@
+terminus (0.9.0-Debian1) sid; urgency=low
+
+  * Now the guake-style window won't get stuck in maximized mode when resized too big
+  * Now the guake mode works fine if all terminus sessions are killed and is relaunched via D-Bus
+
+ -- Sergio Costas Rodriguez <raster@rastersoft.com>  Thu, 12 Oct 2017 23:55:00 +0200
+
 terminus (0.8.1-Debian1) sid; urgency=low
 
   * Fixed the install path when creating packages

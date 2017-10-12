@@ -56,7 +56,7 @@ namespace Terminus {
 			return this.get_display().get_monitor_at_window(this.get_window().get_effective_toplevel()).get_geometry().width;
 #endif
 		}
-		
+
 		private int get_monitor_height() {
 #if GTK_3_20
 			return this.get_screen().get_height();
@@ -76,7 +76,7 @@ namespace Terminus {
 			this.destroy.connect( (w) => {
 				this.ended(this);
 			});
-			
+
 			if (terminal == null) {
 				this.terminal = new Terminus.Base();
 			} else {
@@ -87,7 +87,7 @@ namespace Terminus {
 			this.terminal.new_window.connect( () => {
 				this.new_window();
 			});
-			
+
 			this.show.connect_after( () => {
 				GLib.Timeout.add(500, () => {
 					this.present();
@@ -97,7 +97,7 @@ namespace Terminus {
 
 			if (guake_mode) {
 				this.set_properties();
-				
+
 				this.current_size = Terminus.settings.get_int("guake-height");
 				if (this.current_size < 0) {
 					this.current_size = this.get_monitor_height() * 3 / 7;
@@ -107,6 +107,13 @@ namespace Terminus {
 				this.map.connect(this.mapped);
 				this.realize.connect_after( () => {
 					this.set_size();
+				});
+				this.window_state_event.connect( (event) => {
+					if ((event.new_window_state & Gdk.WindowState.MAXIMIZED) != 0) {
+						this.unmaximize();
+						this.set_size();
+					}
+					return false;
 				});
 				this.paned = new Gtk.Paned(Gtk.Orientation.VERTICAL);
 				this.paned.wide_handle = true;

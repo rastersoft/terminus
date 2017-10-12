@@ -19,7 +19,7 @@
 using Gtk;
 using Gee;
 
-//project version = 0.8.1
+//project version = 0.9.0
 
 namespace Terminus {
 
@@ -320,6 +320,8 @@ namespace Terminus {
 		private bool check_guake = false;
 		private Terminus.Base? guake_terminal;
 		private Terminus.Window? guake_window;
+		private bool ready;
+		private int extcall;
 
 		private bool tmp_launch_terminal;
 		private bool tmp_launch_guake;
@@ -330,6 +332,8 @@ namespace Terminus {
 
 		public TerminusRoot(string[] argv) {
 
+			this.ready = false;
+			this.extcall = -1;
 			main_root = this;
 			this.guake_terminal = null;
 			this.guake_window = null;
@@ -377,11 +381,12 @@ namespace Terminus {
 						this.create_window(true);
 					}
 					this.tmp_launch_guake = false;
-
 					Terminus.keybind_settings.changed.connect(this.keybind_settings_changed);
-
+					this.ready = true;
+					if (this.extcall != -1) {
+						show_hide_global(this.extcall);
+					}
 					}, () => {});
-				print("Entro en Gmain\n");
 				Gtk.main();
 			}
 
@@ -507,6 +512,11 @@ namespace Terminus {
 			 *mode = 1: force hide
 			 *mode = 2: hide if visible, show if hidden
 			 */
+
+			if (!this.ready) {
+				this.extcall = mode;
+				return;
+			}
 
 			if (Terminus.settings.get_boolean("enable-guake-mode") == false) {
 				return;
