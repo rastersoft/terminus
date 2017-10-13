@@ -47,9 +47,10 @@ const TerminusClass = new Lang.Class({
 	launch_function: function() {
 		if (this.instance === null) {
 			this.instance = new MyProxy(Gio.DBus.session, 'com.rastersoft.terminus','/com/rastersoft/terminus');
-			this.instance.DisableKeybindSync();
-		}
-		this.instance.SwapGuakeSync();
+        }
+		this.instance.DisableKeybindRemote(Lang.bind(this, function (result, error) {
+            this.instance.SwapGuakeSync();
+        }));
 	},
 
 	_settingsChanged: function(st,name) {

@@ -1,8 +1,10 @@
 ## History of versions ##
+* Version 0.9.1 (2017-10-13)
+   * Now doesn't lock gnome shell under wayland for 20 seconds when there are no instances of terminus running and the user presses the key to show the guake terminal
 * Version 0.9.0 (2017-10-12)
    * Now the guake-style window won't get stuck in maximized mode when resized too big
    * Now the guake mode works fine if all terminus sessions are killed and is relaunched via D-Bus
-   * Now, when closing the terminal in an split window, the other terminal will receive the focus 
+   * Now, when closing the terminal in an split window, the other terminal will receive the focus
 * Version 0.8.1 (2017-09-18)
    * Fixed the install path when creating packages
    * Fixed the gnome shell extension, now it works on gnome shell 3.24 and 3.26
