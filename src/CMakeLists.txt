@@ -72,7 +72,8 @@ set (VALA_C ${VALA_C} checkwayland.c)
 
 SET (VALA_C ${VALA_C} ${extras_gresource_xml_C_FILE})
 add_executable(terminus ${VALA_C})
-add_dependencies (terminus extras_gresource_xml)
+set ( terminus_DEPENDENCIES ${terminus_DEPENDENCIES} extras_gresource_xml )
+add_dependencies( terminus ${terminus_DEPENDENCIES} )
 
 
 install(TARGETS

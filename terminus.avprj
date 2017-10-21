@@ -1,5 +1,5 @@
 ### AutoVala Project ###
-autovala_version: 24
+autovala_version: 26
 project_name: terminus
 vala_version: 0.30
 
@@ -61,7 +61,7 @@ vala_check_package: gtk+-3.0
 
 *autostart: data/terminus_autorun.desktop
 
-*dbus_service: data/com.rastersoft.terminus.service.base
+*dbus_service: data/dbus/com.rastersoft.terminus.service.base
 
 *scheme: data/org.rastersoft.terminus.gschema.xml
 

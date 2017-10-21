@@ -1,7 +1,6 @@
 ### CMakeLists automatically created with AutoVala
 ### Do not edit
 
-SET(DBUS_PREFIX ${CMAKE_INSTALL_PREFIX})
 EXECUTE_PROCESS( COMMAND glib-compile-resources --sourcedir=${CMAKE_CURRENT_SOURCE_DIR} --generate-source --target=${CMAKE_CURRENT_BINARY_DIR}/extras.gresource.xml.c ${CMAKE_CURRENT_SOURCE_DIR}/extras.gresource.xml)
 EXECUTE_PROCESS( COMMAND glib-compile-resources --sourcedir=${CMAKE_CURRENT_SOURCE_DIR} --generate-header --target=${CMAKE_CURRENT_BINARY_DIR}/extras.gresource.xml.h ${CMAKE_CURRENT_SOURCE_DIR}/extras.gresource.xml)
 ADD_CUSTOM_COMMAND (
@@ -22,7 +21,5 @@ if( NOT ( ${CMAKE_INSTALL_PREFIX} MATCHES "^/home/" ) )
 else()
 	MESSAGE(STATUS "[33mAutostart file data/terminus_autorun.desktop will not be installed. You must create your own .desktop file and put it at ~/.config/autostart[39m")
 endif()
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/com.rastersoft.terminus.service.base ${CMAKE_CURRENT_BINARY_DIR}/com.rastersoft.terminus.service)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/com.rastersoft.terminus.service DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/dbus-1/services/)
 include(GSettings)
 add_schema(org.rastersoft.terminus.gschema.xml)
