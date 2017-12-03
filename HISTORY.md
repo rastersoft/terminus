@@ -1,4 +1,6 @@
 ## History of versions ##
+* Version 0.10.0 (2017-12-03)
+   * Now guake mode works better under Wayland
 * Version 0.9.1 (2017-10-13)
    * Now doesn't lock gnome shell under wayland for 20 seconds when there are no instances of terminus running and the user presses the key to show the guake terminal
 * Version 0.9.0 (2017-10-12)

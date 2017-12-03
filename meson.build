@@ -26,7 +26,7 @@ extras_gresource_xml_file_c = extras_gresource_xml_generator.process(['data/extr
 
 meson.add_install_script(join_paths(meson.current_source_dir(),'meson_scripts','install_data.sh'),join_paths(get_option('prefix'),get_option('datadir'),'terminus'),join_paths(meson.current_source_dir(),'data/local','','*'))
 
-meson.add_install_script(join_paths(meson.current_source_dir(),'meson_scripts','install_data.sh'),join_paths(get_option('prefix'),get_option('datadir'),'doc'),join_paths(meson.current_source_dir(),'doc','','*'))
+meson.add_install_script(join_paths(meson.current_source_dir(),'meson_scripts','install_data.sh'),join_paths(get_option('prefix'),get_option('datadir'),'doc','terminus'),join_paths(meson.current_source_dir(),'doc','','*'))
 
 installfile_1 = files('data/terminus_showhide.sh')
 install_data(installfile_1, install_dir: get_option('bindir'))

@@ -19,7 +19,7 @@
 using Gtk;
 using Gee;
 
-//project version = 0.9.1
+//project version = 0.10.0
 
 namespace Terminus {
 
@@ -322,6 +322,7 @@ namespace Terminus {
 		private Terminus.Window? guake_window;
 		private bool ready;
 		private int extcall;
+		private bool guake_has_focus;
 
 		private bool tmp_launch_terminal;
 		private bool tmp_launch_guake;
@@ -337,6 +338,7 @@ namespace Terminus {
 			main_root = this;
 			this.guake_terminal = null;
 			this.guake_window = null;
+			this.guake_has_focus = false;
 
 			bool binded_key = Terminus.bindkey.set_bindkey(Terminus.keybind_settings.get_string("guake-mode"));
 
@@ -445,6 +447,16 @@ namespace Terminus {
 			Terminus.bindkey.show_guake.connect(this.show_hide);
 		}
 
+		public bool focus_in(Gdk.EventFocus event) {
+			this.guake_has_focus = true;
+			return false;
+		}
+
+		public bool focus_out(Gdk.EventFocus event) {
+			this.guake_has_focus = false;
+			return false;
+		}
+
 		public void create_window(bool guake_mode) {
 
 			Terminus.Window window;
@@ -456,6 +468,8 @@ namespace Terminus {
 				window = new Terminus.Window(true,this.guake_terminal);
 				this.guake_window = window;
 				Terminus.bindkey.show_guake.connect(this.show_hide);
+				this.guake_window.focus_in_event.connect(this.focus_in);
+				this.guake_window.focus_out_event.connect(this.focus_out);
 			} else {
 				window = new Terminus.Window(false);
 			}
@@ -526,14 +540,30 @@ namespace Terminus {
 				this.create_window(true);
 			}
 
+			if (mode == 0) {
+				if (!this.guake_window.visible) {
+					this.guake_window.show();
+				}
+				return;
+			}
+
+			if (mode == 1) {
+				if (this.guake_window.visible) {
+					this.guake_window.hide();
+				}
+				return;
+			}
+
+			// mode 2
 			if (this.guake_window.visible) {
-				if ((mode == 1) || (mode == 2)) {
+				if ((check_wayland() != 0) && (!this.guake_has_focus)) {
+					this.guake_window.hide();
+					this.guake_window.show();
+				} else {
 					this.guake_window.hide();
 				}
 			} else {
-				if ((mode == 0) || (mode == 2)) {
-					this.guake_window.present();
-				}
+				this.guake_window.present();
 			}
 		}
 	}
