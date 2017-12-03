@@ -1,6 +1,12 @@
+terminus (0.10.0-Debian1) sid; urgency=low
+
+  * Now guake mode works better under Wayland
+
+ -- Sergio Costas Rodriguez <raster@rastersoft.com>  Sun, 03 Dec 2017 23:55:00 +0200
+
 terminus (0.9.1-Debian1) sid; urgency=low
 
-  * Now doesn't lock gnome shell for 20 seconds when there are no instances of terminus running and the user presses the key to show the guake terminal
+  * Now doesn't lock gnome shell under wayland for 20 seconds when there are no instances of terminus running and the user presses the key to show the guake terminal
 
  -- Sergio Costas Rodriguez <raster@rastersoft.com>  Fry, 13 Oct 2017 23:55:00 +0200
 
