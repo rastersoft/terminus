@@ -13,7 +13,7 @@ custom: terminus_gnome_shell/metadata.json share/gnome-shell/extensions/showTerm
 *vapidir: src/vapidir
 
 vala_binary: src/terminus
-*version: 0.9.1
+*version: 0.10.0
 use_gresource: extras_gresource_xml
 vala_vapi: checkwayland.vapi
 *vala_package: posix
