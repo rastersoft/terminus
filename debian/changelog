@@ -8,7 +8,7 @@ terminus (0.9.1-Debian1) sid; urgency=low
 
   * Now doesn't lock gnome shell under wayland for 20 seconds when there are no instances of terminus running and the user presses the key to show the guake terminal
 
- -- Sergio Costas Rodriguez <raster@rastersoft.com>  Fry, 13 Oct 2017 23:55:00 +0200
+ -- Sergio Costas Rodriguez <raster@rastersoft.com>  Fri, 13 Oct 2017 23:55:00 +0200
 
 terminus (0.9.0-Debian1) sid; urgency=low
 
