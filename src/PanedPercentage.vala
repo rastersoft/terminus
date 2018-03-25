@@ -2,7 +2,6 @@ using Gtk;
 using Gdk;
 
 namespace Terminus {
-
 	/**
 	 * This is a Gtk.Paned that can be set to a percentage value, instead of
 	 * having to use absolute values (which depends on the current size of
@@ -10,7 +9,6 @@ namespace Terminus {
 	 */
 
 	public class PanedPercentage : Gtk.Paned {
-
 		private int current_paned_position;
 		private int current_paned_size;
 		private double desired_paned_percentage;
@@ -18,10 +16,9 @@ namespace Terminus {
 		private bool horizontal;
 
 		public PanedPercentage(Gtk.Orientation orientation, double percentage) {
-
 			this.current_paned_position = -1;
-			this.current_paned_size = -1;
-			this.changed_paned_size = false;
+			this.current_paned_size     = -1;
+			this.changed_paned_size     = false;
 
 			this.orientation = orientation;
 			if (orientation == Gtk.Orientation.VERTICAL) {
@@ -37,30 +34,28 @@ namespace Terminus {
 			 */
 
 			this.size_allocate.connect_after((allocation) => {
-
 				if (this.horizontal) {
-					if (this.current_paned_size != allocation.height) {
-						this.current_paned_size = allocation.height;
-						this.changed_paned_size = true;
+				    if (this.current_paned_size != allocation.height) {
+				        this.current_paned_size = allocation.height;
+				        this.changed_paned_size = true;
 					}
 				} else {
-					if (this.current_paned_size != allocation.width) {
-						this.current_paned_size = allocation.width;
-						this.changed_paned_size = true;
+				    if (this.current_paned_size != allocation.width) {
+				        this.current_paned_size = allocation.width;
+				        this.changed_paned_size = true;
 					}
 				}
 			});
 
 			this.draw.connect((cr) => {
-
 				if (changed_paned_size) {
-					this.current_paned_position=(int)(this.current_paned_size * this.desired_paned_percentage);
-					this.set_position(this.current_paned_position);
-					this.changed_paned_size = false;
+				    this.current_paned_position = (int) (this.current_paned_size * this.desired_paned_percentage);
+				    this.set_position(this.current_paned_position);
+				    this.changed_paned_size = false;
 				} else {
-					if (this.position != this.current_paned_position) {
-						this.current_paned_position = this.position;
-						this.desired_paned_percentage = ((double)this.current_paned_position)/((double)this.current_paned_size);
+				    if (this.position != this.current_paned_position) {
+				        this.current_paned_position   = this.position;
+				        this.desired_paned_percentage = ((double) this.current_paned_position) / ((double) this.current_paned_size);
 					}
 				}
 				return false;

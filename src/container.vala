@@ -1,27 +1,26 @@
 /*
- Copyright 2016 (C) Raster Software Vigo (Sergio Costas)
-
- This file is part of Terminus
-
- Terminus is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- Terminus is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>. */
+ * Copyright 2016 (C) Raster Software Vigo (Sergio Costas)
+ *
+ * This file is part of Terminus
+ *
+ * Terminus is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terminus is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
 using Vte;
 using Gtk;
 using GLib;
 
 namespace Terminus {
-
 	/**
 	 * This is the terminal container. It can contain one terminal, or a Paned with
 	 * two containers. It can be splited in two elements and reagruped in a single
@@ -29,31 +28,29 @@ namespace Terminus {
 	 */
 
 	class Container : Gtk.Bin {
+		public Terminus.Container ? container1;
+		public Terminus.Container ? container2;
+		public Terminus.Notetab ? notetab;
 
-		public Terminus.Container? container1;
-		public Terminus.Container? container2;
-		public Terminus.Notetab? notetab;
-
-		private Terminus.Terminal? terminal;
-		private Terminus.PanedPercentage? paned;
+		private Terminus.Terminal ? terminal;
+		private Terminus.PanedPercentage ? paned;
 		private Terminus.Container top_container;
 		private Terminus.Base main_container;
 
 		public signal void ended(Terminus.Container who);
 
-		public Container(Terminus.Base main_container, Terminus.Terminal? terminal, Terminus.Container? top_container = null) {
-
+		public Container(Terminus.Base main_container, Terminus.Terminal ? terminal, Terminus.Container ? top_container = null) {
 			this.main_container = main_container;
 			if (top_container == null) {
 				this.top_container = this;
-				this.notetab = new Terminus.Notetab(this.main_container,this);
+				this.notetab       = new Terminus.Notetab(this.main_container, this);
 			} else {
 				this.top_container = top_container;
-				this.notetab = null;
+				this.notetab       = null;
 			}
 
 			if (terminal == null) {
-				this.terminal = new Terminus.Terminal(this.main_container,this.top_container);
+				this.terminal = new Terminus.Terminal(this.main_container, this.top_container);
 			} else {
 				this.terminal = terminal;
 			}
@@ -62,7 +59,6 @@ namespace Terminus {
 		}
 
 		public void set_tab_title(string title) {
-
 			if (this.notetab != null) {
 				this.notetab.change_title(title);
 			}
@@ -75,13 +71,12 @@ namespace Terminus {
 			this.terminal.split_horizontal.connect(this.split_horizontal_cb);
 			this.terminal.split_vertical.connect(this.split_vertical_cb);
 
-			this.paned = null;
+			this.paned      = null;
 			this.container1 = null;
 			this.container2 = null;
 		}
 
-		public Gtk.Widget? get_current_child() {
-
+		public Gtk.Widget ? get_current_child() {
 			if (this.terminal != null) {
 				this.terminal.split_horizontal.disconnect(this.split_horizontal_cb);
 				this.terminal.split_vertical.disconnect(this.split_vertical_cb);
@@ -114,9 +109,9 @@ namespace Terminus {
 			this.terminal.split_vertical.disconnect(this.split_vertical_cb);
 			this.terminal.ended.disconnect(this.ended_cb);
 
-			this.paned = new Terminus.PanedPercentage( horizontal ? Gtk.Orientation.VERTICAL : Gtk.Orientation.HORIZONTAL, 0.5);
-			this.container1 = new Terminus.Container(this.main_container,this.terminal, this.top_container);
-			this.container2 = new Terminus.Container(this.main_container,null, this.top_container);
+			this.paned      = new Terminus.PanedPercentage(horizontal ? Gtk.Orientation.VERTICAL : Gtk.Orientation.HORIZONTAL, 0.5);
+			this.container1 = new Terminus.Container(this.main_container, this.terminal, this.top_container);
+			this.container2 = new Terminus.Container(this.main_container, null, this.top_container);
 			this.container1.ended.connect(this.ended_child);
 			this.container2.ended.connect(this.ended_child);
 			this.paned.add1(this.container1);
@@ -135,7 +130,6 @@ namespace Terminus {
 		}
 
 		public void ended_child(Terminus.Container child) {
-
 			Terminus.Container old_container;
 
 			if (child == this.container1) {
@@ -154,7 +148,7 @@ namespace Terminus {
 				this.set_terminal_child();
 				this.terminal.do_grab_focus();
 			} else {
-				this.paned = new_child as Terminus.PanedPercentage;
+				this.paned      = new_child as Terminus.PanedPercentage;
 				this.container1 = old_container.container1;
 				this.container2 = old_container.container2;
 				this.container1.ended.connect(this.ended_child);
