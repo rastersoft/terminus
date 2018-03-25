@@ -10,7 +10,7 @@ Files:     cmake/*
 Copyright: 2009-2010 Jakob Westhoff
            2013 Valama development team
            2014 Raster Software Vigo
-	   2012 elementary
+           2012 elementary
 License:   BSD-2-Clause
 
 Files:     debian/*
