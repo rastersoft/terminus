@@ -3,3 +3,12 @@
 set -e
 
 glib-compile-schemas /usr/share/glib-2.0/schemas
+
+case "$1" in
+    configure)
+        # Alternatives
+        update-alternatives --quiet \
+            --install /usr/bin/x-terminal-emulator \
+	      x-terminal-emulator /usr/bin/terminus 20
+        ;;
+esac
