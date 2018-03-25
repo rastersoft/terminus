@@ -55,7 +55,7 @@ vala_check_package: gtk+-3.0
 
 *doc: doc
 
-*binary: data/terminus_showhide.sh
+binary: data/terminus_showhide
 
 *desktop: data/terminus.desktop
 

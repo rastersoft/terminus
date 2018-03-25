@@ -28,7 +28,7 @@ meson.add_install_script(join_paths(meson.current_source_dir(),'meson_scripts','
 
 meson.add_install_script(join_paths(meson.current_source_dir(),'meson_scripts','install_data.sh'),join_paths(get_option('prefix'),get_option('datadir'),'doc','terminus'),join_paths(meson.current_source_dir(),'doc','','*'))
 
-installfile_1 = files('data/terminus_showhide.sh')
+installfile_1 = files('data/terminus_showhide')
 install_data(installfile_1, install_dir: get_option('bindir'))
 install_data('data/terminus.desktop',install_dir:join_paths(get_option('prefix'),get_option('datadir'),'applications'))
 if (get_option('prefix').startswith('/home/'))

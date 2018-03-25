@@ -2,16 +2,18 @@ Source: terminus
 Maintainer: Sergio Costas <rastersoft@gmail.com>
 Priority: optional
 Section: misc
-Build-Depends: build-essential, po-debconf, valac, libc6-dev, libgtk-3-dev, libgee-0.8-dev, libglib2.0-dev, libkeybinder-3.0-dev, libvte-2.91-dev, cmake, gettext, pkg-config, gcc, g++, make, intltool
+Standards-Version: 4.1.3
+Homepage: https://github.com/rastersoft/terminus
+Build-Depends: build-essential, po-debconf, valac (>=0.30), libc6-dev, libgee-0.8-dev, libkeybinder-3.0-dev, libvte-2.91-dev, cmake, intltool
 
 Package: terminus
 Architecture: any
 Version: 0.10.0
-Depends: libgtk-3-0, libpangocairo-1.0-0, libpango-1.0-0, libgdk-pixbuf2.0-0, libcairo-gobject2, libcairo2, libglib2.0-0, libatk1.0-0, libgee-0.8-2, libkeybinder-3.0-0, libvte-2.91-0, zlib1g, libpcre2-8-0, libgnutls30
+Depends: libgee-0.8-2, libkeybinder-3.0-0, libvte-2.91-0
 Description: A new terminal for X11 and Wayland both for classic,
  in-window terminal, and Guake-like (hot-key drop-down mode)
  terminal. It also allows to split the window both in horizontal
  and vertical, like Terminator, all in one program. Other features
  include a scroll-back buffer, tabs, and the usual compatibility
  features.
-
+ .

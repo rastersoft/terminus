@@ -2,8 +2,7 @@
 
 A new terminal for XWindows (and Wayland)
 
-
-## What is it? ##
+## What is it ##
 
 There are plenty of graphic terminals for linux, so what makes this one different?
 
@@ -22,16 +21,15 @@ of the new characteristics available and to use less resources (both guake and t
 are written in python 2, which needs more memory, and uses Gtk2, which can be considered
 obsolete).
 
-
 ## Compiling it ##
 
 Just follow the classic cmake instructions:
 
     mkdir install
-	 cd install
-	 cmake ..
-	 make
-	 sudo make install
+    cd install
+    cmake ..
+    make
+    sudo make install
 
 If, during cmake stage, you receive an error for missing libraries, install them,
 delete all the contents inside *install*, and run cmake again. Launching cmake
@@ -42,12 +40,11 @@ If your system has an old Gtk version (like Ubuntu yakkety yak, which has Gtk 3.
 you would need to define GTK_3_20 to use some old functions, not available in versions
 older than Gtk 3.22. You can do it this way:
 
-	mkdir install
-	cd install
-	cmake .. -DGTK_3_20=on
-	make
-	sudo make install
-
+    mkdir install
+    cd install
+    cmake .. -DGTK_3_20=on
+    make
+    sudo make install
 
 ## Using it ##
 
@@ -60,7 +57,6 @@ to have it. You can also launch it from a terminal.
 
 Currently the number of options modificable is small, but more will become available.
 
-
 ## Creating new palettes ##
 
 It is very easy to add new palettes to Terminus. Just edit a file with *.color_scheme*
@@ -71,8 +67,7 @@ depending where you installed the binaries) to have it globally available, or at
 The format is very simple. Here is an example that defines a foreground/background
 color scheme:
 
-
-	name: Orange on black
+    name: Orange on black
     name[es]: Naranja sobre negro
     text_fg: #FECE12
     text_bg: #000000
@@ -113,7 +108,6 @@ foreground/background colors; and you also will find a palette scheme called
 MYGREATFULLSCHEME in the palette scheme list, and it will change only the palette
 itself, but not the foreground/background colors.
 
-
 ## FAQ ##
 
 **Q:** I use Gnome-Shell and when I show the Quake terminal, it doesn't get the focus.  
@@ -127,11 +121,11 @@ Fortunately, Terminus includes a Gnome Shell extension that allows to show the Q
 terminal. If you have installed Terminus, just exit your session, enter again, and enable
 the extension with gnome-tweak-tool.
 
-Another way is using the desktop keybindings to launch the script "terminus_showhide.sh",
+Another way is using the desktop keybindings to launch the script "terminus_showhide",
 which makes use of the DBus remote control to show and hide the Quake-like terminal.
 
 In Gnome Shell it is as easy as opening the Settings window, choose the "Keyboard" icon,
-and add there the desired hotkey, associating it with "terminus_showhide.sh" program.
+and add there the desired hotkey, associating it with "terminus_showhide" program.
 
 **Q:** I translated Terminus, but the color and palette schemes aren't translated. Why?  
 **A:** You have to also translate the ".color_scheme" files located at data/local.
