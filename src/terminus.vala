@@ -19,7 +19,7 @@
 using Gtk;
 using Gee;
 
-//project version = 0.10.0
+//project version = 0.11.0
 
 namespace Terminus {
 

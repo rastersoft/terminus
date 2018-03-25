@@ -1,3 +1,10 @@
+terminus (0.11.0-Debian1) sid; urgency=low
+
+  * Now the CAPS LOCK state doesn't interfere with the hot keys
+  * Several fixes to the Debian packaging files (thanks to Barak)
+
+ -- Sergio Costas Rodriguez <raster@rastersoft.com>  Sun, 25 Mar 2018 23:55:00 +0200
+
 terminus (0.10.0-Debian1) sid; urgency=low
 
   * Now guake mode works better under Wayland

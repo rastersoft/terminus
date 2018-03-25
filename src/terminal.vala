@@ -384,10 +384,11 @@ namespace Terminus {
 		public bool on_key_press(Gdk.EventKey event) {
 
 			Gdk.EventKey eventkey = event.key;
-			eventkey.state &= 0x07;
+			// SHIFT, CTRL, LEFT ALT, ALT+GR
+			eventkey.state &= Gdk.ModifierType.SHIFT_MASK | Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.MOD1_MASK | Gdk.ModifierType.MOD5_MASK;
 
 			if (eventkey.keyval < 128) {
-				eventkey.keyval &= ~32;
+				eventkey.keyval &= ~32; // to avoid problems with upper and lower case
 			}
 
 			if ((eventkey.keyval == this.new_window_key.keyval) && (eventkey.state == this.new_window_key.state)) {

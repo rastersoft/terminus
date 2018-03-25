@@ -8,7 +8,7 @@ Build-Depends: build-essential, po-debconf, valac (>=0.30), libc6-dev, libgee-0.
 
 Package: terminus
 Architecture: any
-Version: 0.10.0
+Version: 0.11.0
 Depends: libgee-0.8-2, libkeybinder-3.0-0, libvte-2.91-0
 Description: A new terminal for X11 and Wayland both for classic,
  in-window terminal, and Guake-like (hot-key drop-down mode)
