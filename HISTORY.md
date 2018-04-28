@@ -1,6 +1,6 @@
 # History of versions #
 
-* Version 0.11.0 (2018-3-25)
+* Version 0.11.0 (2018-03-25)
   * Now the CAPS LOCK state doesn't interfere with the hot keys
   * Several fixes to the Debian packaging files (thanks to Barak)
 * Version 0.10.0 (2017-12-03)
