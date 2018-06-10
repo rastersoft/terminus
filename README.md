@@ -132,6 +132,7 @@ and add there the desired hotkey, associating it with "terminus_showhide" progra
 
 ## Contacting the author ##
 
-(C) Sergio Costas Rodriguez (raster software vigo)  
+Sergio Costas Rodriguez  
 rastersoft@gmail.com  
 http://www.rastersoft.com  
+https://gitlab.com/rastersoft/terminus
