@@ -1,5 +1,9 @@
 # Terminus #
 
+**IMPORTANT: Terminus has been migrated to Gitlab**
+
+https://gitlab.com/rastersoft/terminus
+
 A new terminal for XWindows (and Wayland)
 
 ## What is it ##
